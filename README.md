@@ -1,4 +1,4 @@
-Proyecto 2 de Base de Datos Avanzadas 
+Proyecto 2 de Base de Datos Avanzadas \n
 Instituto Tecnológico de Sonora (ITSON)
 *- Francisco de Jesús López Ruiz 
 *- Francisco Abel Corona Quintero 
