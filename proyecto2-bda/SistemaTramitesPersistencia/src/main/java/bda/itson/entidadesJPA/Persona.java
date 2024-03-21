@@ -79,6 +79,24 @@ public class Persona implements Serializable {
         this.apellidoMaterno = apellidoMaterno;
         this.vehiculos = vehiculos;
     }
+    /**
+     * Constructor que recibe todo, excepto ID y listas de licencias y vehículos
+     * @param fechaNacimiento
+     * @param esDiscapacitado
+     * @param telefono
+     * @param nombres
+     * @param apellidoPaterno
+     * @param apellidoMaterno
+     */
+    public Persona(Calendar fechaNacimiento, boolean esDiscapacitado, String telefono, String nombres, String apellidoPaterno, String apellidoMaterno) {
+        this.fechaNacimiento = fechaNacimiento;
+        this.esDiscapacitado = esDiscapacitado;
+        this.telefono = telefono;
+        this.nombres = nombres;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+    }
+    
 
     
 
