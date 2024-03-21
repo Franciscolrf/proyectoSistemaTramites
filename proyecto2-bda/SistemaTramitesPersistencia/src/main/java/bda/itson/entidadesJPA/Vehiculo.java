@@ -5,10 +5,9 @@
 package bda.itson.entidadesJPA;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.List;
+
+import javax.persistence.*;
 
 /**
  *
@@ -19,8 +18,22 @@ public class Vehiculo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String numeroSerie;
+    private String estado;
+    private String color;
+    private String modelo;
+    private String marca;
+    private String linea;
+
+    @ManyToOne
+    @JoinColumn(name = "RFC_propietario")
+    private Persona propietario;
+
+    @OneToMany(mappedBy = "vehiculo")
+    private List<Placa> placas;
 
     public Long getId() {
         return id;
@@ -28,6 +41,70 @@ public class Vehiculo implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNumeroSerie() {
+        return numeroSerie;
+    }
+
+    public void setNumeroSerie(String numeroSerie) {
+        this.numeroSerie = numeroSerie;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getLinea() {
+        return linea;
+    }
+
+    public void setLinea(String linea) {
+        this.linea = linea;
+    }
+
+    public Persona getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(Persona propietario) {
+        this.propietario = propietario;
+    }
+
+    public List<Placa> getPlacas() {
+        return placas;
+    }
+
+    public void setPlacas(List<Placa> placas) {
+        this.placas = placas;
     }
 
     @Override
@@ -39,7 +116,6 @@ public class Vehiculo implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Vehiculo)) {
             return false;
         }

@@ -19,9 +19,8 @@ public class Persona implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="RFC", length=13)
     private Long id;
-
-    private String RFC;
     
     @Temporal(TemporalType.DATE)
     private Calendar fechaNacimiento;
@@ -35,7 +34,7 @@ public class Persona implements Serializable {
     @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL)
     private List<Licencia> licencias;
 
-    @OneToMany(mappedBy = "RFC_propietario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "propietario", cascade = CascadeType.ALL)
     private List<Vehiculo> vehiculos;
 
     public Long getId() {
