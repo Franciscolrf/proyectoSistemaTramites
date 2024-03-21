@@ -14,6 +14,7 @@ import javax.persistence.*;
  * @author ID145
  */
 @Entity
+@Table(name = "placa")
 public class Placa implements Serializable {
 
     
