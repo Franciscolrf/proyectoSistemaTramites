@@ -5,7 +5,7 @@
 package bda.itson.entidadesJPA;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.*;
 
@@ -25,11 +25,11 @@ public class Licencia implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "fechaExpedicion", nullable = false)
-    private Date fechaExpedicion;
+    private Calendar fechaExpedicion;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "fechaVencimiento", nullable = false)
-    private Date fechaVencimiento;
+    private Calendar fechaVencimiento;
 
     private double costo;
 
@@ -38,6 +38,44 @@ public class Licencia implements Serializable {
     @ManyToOne
     @JoinColumn(name = "RFC_persona")
     private Persona persona;
+
+    /*
+     * Constructor que recibe todo.
+     * @param idLicencia
+     * @param fechaExpedicion
+     * @param fechaVencimiento
+     * @param costo
+     * @param estado
+     * @param persona
+     * @return Objeto de tipo Licencia
+     */
+    public Licencia(Integer idLicencia, Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, String estado,
+            Persona persona) {
+        this.idLicencia = idLicencia;
+        this.fechaExpedicion = fechaExpedicion;
+        this.fechaVencimiento = fechaVencimiento;
+        this.costo = costo;
+        this.estado = estado;
+        this.persona = persona;
+    }
+
+    /**
+     * Constructor que recibe todo excepto el id
+     * @param fechaExpedicion
+     * @param fechaVencimiento
+     * @param costo
+     * @param estado
+     * @param persona
+     * @return Objeto de tipo Licencia
+     */
+    public Licencia(Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, String estado, Persona persona) {
+        this.fechaExpedicion = fechaExpedicion;
+        this.fechaVencimiento = fechaVencimiento;
+        this.costo = costo;
+        this.estado = estado;
+        this.persona = persona;
+    }
+
 
     /**
      * Método que regresa el id de la licencia
@@ -62,7 +100,7 @@ public class Licencia implements Serializable {
      *
      * @return
      */
-    public Date getFechaExpedicion() {
+    public Calendar getFechaExpedicion() {
         return fechaExpedicion;
     }
 
@@ -71,7 +109,7 @@ public class Licencia implements Serializable {
      *
      * @param fechaExpedicion
      */
-    public void setFechaExpedicion(Date fechaExpedicion) {
+    public void setFechaExpedicion(Calendar fechaExpedicion) {
         this.fechaExpedicion = fechaExpedicion;
     }
 
@@ -80,7 +118,7 @@ public class Licencia implements Serializable {
      *
      * @return
      */
-    public Date getFechaVencimiento() {
+    public Calendar getFechaVencimiento() {
         return fechaVencimiento;
     }
 
@@ -89,7 +127,7 @@ public class Licencia implements Serializable {
      *
      * @param fechaVencimiento
      */
-    public void setFechaVencimiento(Date fechaVencimiento) {
+    public void setFechaVencimiento(Calendar fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
     }
 
@@ -149,6 +187,7 @@ public class Licencia implements Serializable {
 
     /**
      * Método que regresa el hash
+     * 
      * @return hash
      */
     @Override
@@ -160,6 +199,7 @@ public class Licencia implements Serializable {
 
     /**
      * Método que compara objetos
+     * 
      * @param object
      * @return true si son iguales, false si no
      */
@@ -169,7 +209,8 @@ public class Licencia implements Serializable {
             return false;
         }
         Licencia other = (Licencia) object;
-        if ((this.idLicencia == null && other.idLicencia != null) || (this.idLicencia != null && !this.idLicencia.equals(other.idLicencia))) {
+        if ((this.idLicencia == null && other.idLicencia != null)
+                || (this.idLicencia != null && !this.idLicencia.equals(other.idLicencia))) {
             return false;
         }
         return true;
@@ -177,6 +218,7 @@ public class Licencia implements Serializable {
 
     /**
      * Método que regresa la representación en cadena del objeto
+     * 
      * @return
      */
     @Override
@@ -185,6 +227,4 @@ public class Licencia implements Serializable {
                 + fechaVencimiento + ", costo=" + costo + ", estado=" + estado + ", persona=" + persona + "]";
     }
 
-    
-    
 }
