@@ -12,12 +12,15 @@ import javax.persistence.*;
  * @author ID145
  */
 @Entity
+@Table(name="automovil")
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name="tipoAutomovil")
 public class Automovil implements Serializable {
 
     // Atributos de la clase
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAutomovil;
 
     private String tipoAutomovil;
