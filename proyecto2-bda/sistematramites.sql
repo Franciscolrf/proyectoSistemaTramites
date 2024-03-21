@@ -4,7 +4,8 @@ USE sistematramites;
 
 -- Crear la tabla Persona
 CREATE TABLE IF NOT EXISTS Persona (
-    RFC VARCHAR(13) PRIMARY KEY,
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    RFC VARCHAR(13) UNIQUE,
     fechaNacimiento DATE,
     esDiscapacitado BOOLEAN,
     telefono VARCHAR(15),
