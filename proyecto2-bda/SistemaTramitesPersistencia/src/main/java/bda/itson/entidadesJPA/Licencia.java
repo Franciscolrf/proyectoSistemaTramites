@@ -33,49 +33,35 @@ public class Licencia implements Serializable {
 
     private double costo;
 
+    private int vigencia;
+
     private String estado;
 
     @ManyToOne
-    @JoinColumn(name = "RFC_persona")
+    @JoinColumn(name = "idPersona")
     private Persona persona;
 
-    /*
-     * Constructor que recibe todo.
-     * @param idLicencia
-     * @param fechaExpedicion
-     * @param fechaVencimiento
-     * @param costo
-     * @param estado
-     * @param persona
-     * @return Objeto de tipo Licencia
-     */
-    public Licencia(Integer idLicencia, Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, String estado,
-            Persona persona) {
+    public Licencia(Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, int vigencia, String estado, Persona persona) {
+        this.fechaExpedicion = fechaExpedicion;
+        this.fechaVencimiento = fechaVencimiento;
+        this.costo = costo;
+        this.vigencia = vigencia;
+        this.estado = estado;
+        this.persona = persona;
+    }
+
+    public Licencia(Integer idLicencia, Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, int vigencia, String estado, Persona persona) {
         this.idLicencia = idLicencia;
         this.fechaExpedicion = fechaExpedicion;
         this.fechaVencimiento = fechaVencimiento;
         this.costo = costo;
+        this.vigencia = vigencia;
         this.estado = estado;
         this.persona = persona;
     }
 
-    /**
-     * Constructor que recibe todo excepto el id
-     * @param fechaExpedicion
-     * @param fechaVencimiento
-     * @param costo
-     * @param estado
-     * @param persona
-     * @return Objeto de tipo Licencia
-     */
-    public Licencia(Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, String estado, Persona persona) {
-        this.fechaExpedicion = fechaExpedicion;
-        this.fechaVencimiento = fechaVencimiento;
-        this.costo = costo;
-        this.estado = estado;
-        this.persona = persona;
+    public Licencia() {
     }
-
 
     /**
      * Método que regresa el id de la licencia
@@ -187,7 +173,7 @@ public class Licencia implements Serializable {
 
     /**
      * Método que regresa el hash
-     * 
+     *
      * @return hash
      */
     @Override
@@ -199,7 +185,7 @@ public class Licencia implements Serializable {
 
     /**
      * Método que compara objetos
-     * 
+     *
      * @param object
      * @return true si son iguales, false si no
      */
@@ -218,7 +204,7 @@ public class Licencia implements Serializable {
 
     /**
      * Método que regresa la representación en cadena del objeto
-     * 
+     *
      * @return
      */
     @Override

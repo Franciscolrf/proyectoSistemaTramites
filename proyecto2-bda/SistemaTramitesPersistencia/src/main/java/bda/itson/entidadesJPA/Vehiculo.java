@@ -20,9 +20,9 @@ public class Vehiculo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "numeroSerie")
+    @Column(name = "idVehiculo")
     private Long id;
-
+    private String numeroSerie;
     private String estado;
     private String color;
     private String modelo;
@@ -30,7 +30,7 @@ public class Vehiculo implements Serializable {
     private String linea;
 
     @ManyToOne
-    @JoinColumn(name = "RFC_propietario")
+    @JoinColumn(name = "idPersona")
     private Persona propietario;
 
     @OneToMany(mappedBy = "vehiculo")
@@ -42,17 +42,20 @@ public class Vehiculo implements Serializable {
     public Vehiculo() {
     }
 
-    /**
-     * Constructor que recibe todo, excepto el id
-     * @param estado
-     * @param color
-     * @param modelo
-     * @param marca
-     * @param linea
-     * @param propietario
-     * @param placas
-     */
-    public Vehiculo(String estado, String color, String modelo, String marca, String linea, Persona propietario, List<Placa> placas) {
+    public Vehiculo(String numeroSerie, String estado, String color, String modelo, String marca, String linea, Persona propietario, List<Placa> placas) {
+        this.numeroSerie = numeroSerie;
+        this.estado = estado;
+        this.color = color;
+        this.modelo = modelo;
+        this.marca = marca;
+        this.linea = linea;
+        this.propietario = propietario;
+        this.placas = placas;
+    }
+
+    public Vehiculo(Long id, String numeroSerie, String estado, String color, String modelo, String marca, String linea, Persona propietario, List<Placa> placas) {
+        this.id = id;
+        this.numeroSerie = numeroSerie;
         this.estado = estado;
         this.color = color;
         this.modelo = modelo;
@@ -63,24 +66,8 @@ public class Vehiculo implements Serializable {
     }
 
     /**
-     * Constructor que recibe todo, excepto el id
-     * @param estado
-     * @param color
-     * @param modelo
-     * @param marca
-     * @param linea
-     * @param propietario
-     */
-    public Vehiculo(String estado, String color, String modelo, String marca, String linea, Persona propietario) {
-        this.estado = estado;
-        this.color = color;
-        this.modelo = modelo;
-        this.marca = marca;
-        this.linea = linea;
-        this.propietario = propietario;
-    }
-    /**
      * Método que regresa el id del vehículo
+     *
      * @return
      */
     public Long getId() {
@@ -89,6 +76,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que recibe el id del vehículo
+     *
      * @param id
      */
     public void setId(Long id) {
@@ -97,6 +85,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que regresa el estado del vehículo
+     *
      * @return
      */
     public String getEstado() {
@@ -105,6 +94,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que establece el estado del vehículo
+     *
      * @param estado
      */
     public void setEstado(String estado) {
@@ -113,6 +103,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que regresa el color del vehículo
+     *
      * @return
      */
     public String getColor() {
@@ -121,6 +112,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que establece el color del vehículo
+     *
      * @param color
      */
     public void setColor(String color) {
@@ -129,6 +121,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que regresa el modelo del vehículo
+     *
      * @return
      */
     public String getModelo() {
@@ -137,6 +130,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que establece el modelo del vehículo
+     *
      * @param modelo
      */
     public void setModelo(String modelo) {
@@ -145,6 +139,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que regresa la marca del vehículo
+     *
      * @return
      */
     public String getMarca() {
@@ -153,6 +148,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que establece la marca del vehículo
+     *
      * @param marca
      */
     public void setMarca(String marca) {
@@ -161,6 +157,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que regresa la línea del vehículo
+     *
      * @return
      */
     public String getLinea() {
@@ -169,6 +166,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que establece la línea del vehículo
+     *
      * @param linea
      */
     public void setLinea(String linea) {
@@ -177,6 +175,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que regresa el propietario
+     *
      * @return
      */
     public Persona getPropietario() {
@@ -185,6 +184,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que establece el propietario
+     *
      * @param propietario
      */
     public void setPropietario(Persona propietario) {
@@ -193,6 +193,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que regresa las placas
+     *
      * @return
      */
     public List<Placa> getPlacas() {
@@ -201,6 +202,7 @@ public class Vehiculo implements Serializable {
 
     /**
      * Método que establece las placas
+     *
      * @param placas
      */
     public void setPlacas(List<Placa> placas) {
@@ -245,7 +247,4 @@ public class Vehiculo implements Serializable {
                 + marca + ", linea=" + linea + ", propietario=" + propietario + ", placas=" + placas + "]";
     }
 
-    
-
-    
 }
