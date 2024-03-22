@@ -7,6 +7,7 @@ package bda.itson.entidadesJPA;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,12 +20,12 @@ public class Persona implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="RFC", length=13)
+    @Column(name="idPersona")
     private Long id;
     
+    private String RFC;
     @Temporal(TemporalType.DATE)
     private Calendar fechaNacimiento;
-    
     private boolean esDiscapacitado;
     private String telefono;
     private String nombres;
@@ -36,20 +37,10 @@ public class Persona implements Serializable {
 
     @OneToMany(mappedBy = "propietario", cascade = CascadeType.ALL)
     private List<Vehiculo> vehiculos;
+    private static final Logger LOG = Logger.getLogger(Persona.class.getName());
 
-
-    /**
-     * Constructor que recibe todo, excepto el id
-     * @param fechaNacimiento
-     * @param esDiscapacitado
-     * @param telefono
-     * @param nombres
-     * @param apellidoPaterno
-     * @param apellidoMaterno
-     * @param licencias
-     * @param vehiculos
-     */
-    public Persona(Calendar fechaNacimiento, boolean esDiscapacitado, String telefono, String nombres, String apellidoPaterno, String apellidoMaterno, List<Licencia> licencias, List<Vehiculo> vehiculos) {
+    public Persona(String RFC, Calendar fechaNacimiento, boolean esDiscapacitado, String telefono, String nombres, String apellidoPaterno, String apellidoMaterno, List<Licencia> licencias, List<Vehiculo> vehiculos) {
+        this.RFC = RFC;
         this.fechaNacimiento = fechaNacimiento;
         this.esDiscapacitado = esDiscapacitado;
         this.telefono = telefono;
@@ -60,60 +51,9 @@ public class Persona implements Serializable {
         this.vehiculos = vehiculos;
     }
 
-    /**
-     * Constructor que recibe todo, excepto ID y lista de licencias
-     * @param fechaNacimiento
-     * @param esDiscapacitado
-     * @param telefono
-     * @param nombres
-     * @param apellidoPaterno
-     * @param apellidoMaterno
-     * @param vehiculos
-     */
-    public Persona(Calendar fechaNacimiento, boolean esDiscapacitado, String telefono, String nombres, String apellidoPaterno, String apellidoMaterno, List<Vehiculo> vehiculos) {
-        this.fechaNacimiento = fechaNacimiento;
-        this.esDiscapacitado = esDiscapacitado;
-        this.telefono = telefono;
-        this.nombres = nombres;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.vehiculos = vehiculos;
-    }
-    /**
-     * Constructor que recibe todo, excepto ID y listas de licencias y vehículos
-     * @param fechaNacimiento
-     * @param esDiscapacitado
-     * @param telefono
-     * @param nombres
-     * @param apellidoPaterno
-     * @param apellidoMaterno
-     */
-    public Persona(Calendar fechaNacimiento, boolean esDiscapacitado, String telefono, String nombres, String apellidoPaterno, String apellidoMaterno) {
-        this.fechaNacimiento = fechaNacimiento;
-        this.esDiscapacitado = esDiscapacitado;
-        this.telefono = telefono;
-        this.nombres = nombres;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-    }
-    
-
-    
-
-    /**
-     * Constructor que recibe todo.
-     * @param id
-     * @param fechaNacimiento
-     * @param esDiscapacitado
-     * @param telefono
-     * @param nombres
-     * @param apellidoPaterno
-     * @param apellidoMaterno
-     * @param licencias
-     * @param vehiculos
-     */
-    public Persona(Long id, Calendar fechaNacimiento, boolean esDiscapacitado, String telefono, String nombres, String apellidoPaterno, String apellidoMaterno, List<Licencia> licencias, List<Vehiculo> vehiculos) {
+    public Persona(Long id, String RFC, Calendar fechaNacimiento, boolean esDiscapacitado, String telefono, String nombres, String apellidoPaterno, String apellidoMaterno, List<Licencia> licencias, List<Vehiculo> vehiculos) {
         this.id = id;
+        this.RFC = RFC;
         this.fechaNacimiento = fechaNacimiento;
         this.esDiscapacitado = esDiscapacitado;
         this.telefono = telefono;
@@ -123,6 +63,8 @@ public class Persona implements Serializable {
         this.licencias = licencias;
         this.vehiculos = vehiculos;
     }
+
+
 
     /**
      * Constructor vacío

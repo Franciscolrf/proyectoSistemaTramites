@@ -22,8 +22,10 @@ public class Placa implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "numeroSerie")
+    @Column(name = "idPlaca")
     private Long id;
+    
+    private String codigo;
     
     private double costo;
     
@@ -36,7 +38,7 @@ public class Placa implements Serializable {
     private Calendar fechaExpedicion;
     
     @ManyToOne
-    @JoinColumn(name = "numeroSerieVehiculo")
+    @JoinColumn(name = "idVehiculo")
     private Vehiculo vehiculo;
 
     /**
@@ -44,34 +46,19 @@ public class Placa implements Serializable {
      */
     public Placa() {
     }
-
-    /**
-     * Constructor que recibe todo, excepto el id
-     * @param costo
-     * @param fechaRecepcion
-     * @param estado
-     * @param fechaExpedicion
-     * @param vehiculo
-     */
-    public Placa(double costo, Calendar fechaRecepcion, String estado, Calendar fechaExpedicion, Vehiculo vehiculo) {
-        this.costo = costo;
-        this.fechaRecepcion = fechaRecepcion;
-        this.estado = estado;
-        this.fechaExpedicion = fechaExpedicion;
-        this.vehiculo = vehiculo;
-    }
-
-    /**
-     * Constructor que recibe todo.
-     * @param id
-     * @param costo
-     * @param fechaRecepcion
-     * @param estado
-     * @param fechaExpedicion
-     * @param vehiculo
-     */
-    public Placa(Long id, double costo, Calendar fechaRecepcion, String estado, Calendar fechaExpedicion, Vehiculo vehiculo) {
+/**
+ * 
+ * @param id
+ * @param codigo
+ * @param costo
+ * @param fechaRecepcion
+ * @param estado
+ * @param fechaExpedicion
+ * @param vehiculo 
+ */
+    public Placa(Long id, String codigo, double costo, Calendar fechaRecepcion, String estado, Calendar fechaExpedicion, Vehiculo vehiculo) {
         this.id = id;
+        this.codigo = codigo;
         this.costo = costo;
         this.fechaRecepcion = fechaRecepcion;
         this.estado = estado;
@@ -79,20 +66,26 @@ public class Placa implements Serializable {
         this.vehiculo = vehiculo;
     }
 
-    /**
-     * Constructor que recibe todo excepto el id y el vehículo.
-     * @param costo
-     * @param fechaRecepcion
-     * @param estado
-     * @param fechaExpedicion
-     */
-    public Placa( double costo, Calendar fechaRecepcion, String estado, Calendar fechaExpedicion ) {
+    public Placa(String codigo, double costo, Calendar fechaRecepcion, String estado, Calendar fechaExpedicion, Vehiculo vehiculo) {
+        this.codigo = codigo;
         this.costo = costo;
         this.fechaRecepcion = fechaRecepcion;
         this.estado = estado;
         this.fechaExpedicion = fechaExpedicion;
+        this.vehiculo = vehiculo;
     }
 
+    
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    
+    
     /**
      * Método que regresa el id de la placa
      * @return
