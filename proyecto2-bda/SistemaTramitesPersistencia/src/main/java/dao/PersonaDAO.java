@@ -1,0 +1,119 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package dao;
+
+import bda.itson.entidadesJPA.Persona;
+import excepciones.PersistenciaException;
+import interfaces.IConexion;
+import interfaces.IPersona;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+/**
+ *
+ * @author abelc 
+ * Clase que implementa la interfaz IPersona para realizar
+ * operaciones relacionadas con entidades Persona en la base de datos.
+ */
+public class PersonaDAO implements IPersona {
+
+    private final IConexion conexion;
+
+    /**
+     * Constructor de la clase PersonaDAO.
+     *
+     * @param conexion Objeto que proporciona la conexión a la base de datos.
+     */
+    public PersonaDAO(IConexion conexion) {
+        this.conexion = conexion;
+    }
+
+    /**
+     * Registra una nueva persona en la base de datos.
+     *
+     * @param persona Objeto de tipo Persona que se registrará.
+     * @return El objeto Persona registrado.
+     * @throws PersistenciaException Si ocurre un error durante el registro de
+     * la persona.
+     */
+    @Override
+    public Persona registrarPersona(Persona persona) throws PersistenciaException {
+        EntityManager entityManager = null;
+        try {
+            entityManager = conexion.getEntityManager();
+            entityManager.getTransaction().begin();
+            entityManager.persist(persona);
+            entityManager.getTransaction().commit();
+            return persona;
+        } catch (Exception ex) {
+            if (entityManager != null && entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al registrar persona", ex);
+        } finally {
+            conexion.close();
+        }
+    }
+
+    /**
+     * Realiza una inserción masiva de personas en la base de datos.
+     *
+     * @param personas Lista de objetos Persona que se insertarán.
+     * @return La lista de personas insertadas.
+     * @throws PersistenciaException Si ocurre un error durante la inserción
+     * masiva.
+     */
+    @Override
+    public List<Persona> insercionMasivaPersonas(List<Persona> personas) throws PersistenciaException {
+        EntityManager entityManager = null;
+        try {
+            entityManager = conexion.getEntityManager();
+            entityManager.getTransaction().begin();
+            for (Persona persona : personas) {
+                entityManager.persist(persona);
+            }
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            if (entityManager != null && entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al insertar personas: " + e.getMessage(), e);
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+        return personas;
+    }
+
+    /**
+     * Obtiene una persona de la base de datos según su RFC (Registro Federal de
+     * Contribuyentes).
+     *
+     * @param rfc El RFC de la persona que se busca.
+     * @return El objeto Persona correspondiente al RFC proporcionado, o null si
+     * no se encuentra.
+     * @throws PersistenciaException Si ocurre un error durante la búsqueda de
+     * la persona por RFC.
+     */
+    public Persona obtenerPersonaRFC(String rfc) throws PersistenciaException {
+        EntityManager entityManager = null;
+        try {
+            entityManager = conexion.getEntityManager();
+            Query query = entityManager.createQuery("SELECT p FROM Persona p WHERE p.RFC = :rfc");
+            query.setParameter("rfc", rfc);
+            Persona persona = (Persona) query.getSingleResult();
+            return persona;
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al obtener persona por RFC: " + e.getMessage(), e);
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
+}
