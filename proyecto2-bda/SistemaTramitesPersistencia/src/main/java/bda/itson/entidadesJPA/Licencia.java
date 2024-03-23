@@ -39,6 +39,7 @@ public class Licencia implements Serializable {
         EXPIRADA,
         NOEXPIRADA
     }
+    @Column(name = "estado")
     estado estadoActual;
 
     @ManyToOne

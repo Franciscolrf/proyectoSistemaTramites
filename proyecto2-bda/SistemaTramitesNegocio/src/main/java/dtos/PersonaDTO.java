@@ -4,10 +4,12 @@
  */
 package dtos;
 
+
 /**
  *
  * @author abelc
  */
 public class PersonaDTO {
+
     
 }
