@@ -4,7 +4,10 @@
  */
 package interfaces;
 
+import java.util.List;
+
 import bda.itson.entidadesJPA.Automovil;
+import excepciones.PersistenciaException;
 
 /**
  * Interfaz de la clase AutomovilDAO
@@ -25,4 +28,6 @@ public interface IAutomovilDAO {
      * @return
      */
     public Automovil consultar(Long idAutomovil);
+
+    public List<Automovil> insercionMasivaAutomovil(List <Automovil> automoviles) throws PersistenciaException;
 }
