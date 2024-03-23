@@ -53,7 +53,7 @@ public class AutomovilDAO implements IAutomovilDAO {
     public List<Automovil> insercionMasivaAutomovil(List<Automovil> automoviles) throws PersistenciaException {
         EntityManager entityManager = null;
         try {
-            entityManager = conexion.getEntityManager()
+            entityManager = conexion.getEntityManager();
             entityManager.getTransaction().begin();
             for (Automovil automovil : automoviles) {
                 entityManager.persist(automovil);
