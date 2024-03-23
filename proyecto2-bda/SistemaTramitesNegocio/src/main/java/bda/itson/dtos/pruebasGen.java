@@ -2,12 +2,12 @@ package bda.itson.dtos;
 
 import java.util.Calendar;
 
-import otros.GeneradorPersonas;
+import otros.Generadores;
 import otros.GeneradorVehiculos;
 
 public class pruebasGen {
     public static void main(String[] args) {
-        GeneradorPersonas generadorPersonas = new GeneradorPersonas();
+        Generadores generadorPersonas = new Generadores();
 
         System.out.println("----- Generación de personas -----");
         for (int i = 0; i < 5; i++) {
