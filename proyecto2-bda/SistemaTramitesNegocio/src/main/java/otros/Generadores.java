@@ -14,31 +14,43 @@ import java.util.Random;
 /**
  *
  * @author abelc
+ * Clase que proporciona métodos para generar datos aleatorios relacionados con personas.
  */
 public class Generadores {
 
+    // Listas de nombres masculinos y femeninos
     private static final String[] nombresMasculinos = {"Juan", "Luis", "Pedro", "Carlos", "José"};
     private static final String[] nombresFemeninos = {"María", "Ana", "Laura", "Elena", "Sofía"};
+
+    // Listas de apellidos paternos y maternos
     private static final String[] apellidosPaternos = {"González", "Rodríguez", "López", "Martínez", "Pérez"};
     private static final String[] apellidosMaternos = {"Gómez", "Fernández", "Díaz", "Martín", "Ruiz"};
+
     private Random random;
 
+    /**
+     * Constructor de la clase Generadores.
+     */
     public Generadores() {
         this.random = new Random();
     }
 
+    /**
+     * Genera un nombre completo concatenando un nombre masculino y uno femenino.
+     * @return Un nombre completo generado aleatoriamente.
+     */
     public String generarNombre() {
         String nombre;
         String nombre1;
         String nombre2;
+        
+        // Se elige aleatoriamente si se usará un nombre masculino o femenino
         if (random.nextBoolean()) {
             nombre1 = nombresMasculinos[random.nextInt(nombresMasculinos.length)];
             nombre2 = nombresMasculinos[random.nextInt(nombresMasculinos.length)];
-            nombre = nombre1 + " " + nombre2;
         } else {
             nombre1 = nombresFemeninos[random.nextInt(nombresFemeninos.length)];
             nombre2 = nombresFemeninos[random.nextInt(nombresFemeninos.length)];
-            nombre = nombre1 + " " + nombre2;
         }
 
         while (nombre1.equals(nombre2)) {
@@ -48,20 +60,34 @@ public class Generadores {
                 nombre2 = nombresFemeninos[random.nextInt(nombresFemeninos.length)];
             }
         }
+
         nombre = nombre1 + " " + nombre2;
         return nombre;
     }
 
+    /**
+     * Genera un apellido paterno aleatorio.
+     * @return Un apellido paterno generado aleatoriamente.
+     */
     public String generarApellidoPaterno() {
         String apPaterno = apellidosPaternos[random.nextInt(apellidosPaternos.length)];
         return apPaterno;
     }
 
+    /**
+     * Genera un apellido materno aleatorio.
+     * @return Un apellido materno generado aleatoriamente.
+     */
     public String generarApellidoMaterno() {
         String apMaterno = apellidosMaternos[random.nextInt(apellidosMaternos.length)];
         return apMaterno;
     }
 
+    /**
+     * Retorna la primera vocal encontrada en un apellido dado.
+     * @param apellido El apellido del cual se desea obtener la primera vocal.
+     * @return La primera vocal encontrada en el apellido.
+     */
     public String obtenerPrimeraVocal(String apellido) {
         for (int i = 0; i < apellido.length(); i++) {
             char c = apellido.charAt(i);
@@ -72,15 +98,18 @@ public class Generadores {
         return "";
     }
 
+    /**
+     * Genera una fecha de nacimiento aleatoria dentro de un rango de años especificado.
+     * @param añoInicial El año inicial del rango.
+     * @param añoFinal El año final del rango.
+     * @return Un objeto Calendar que representa una fecha de nacimiento generada aleatoriamente.
+     */
     public Calendar generarFechaAleatoria(int añoInicial, int añoFinal) {
-        Random random = new Random();
-
         int año = añoInicial + random.nextInt(añoFinal - añoInicial + 1);
-        int mes = random.nextInt(12) + 1; // Se agrega 1 ya que los meses en java.time.Month van de 1 a 12
+        int mes = random.nextInt(12) + 1; 
         int dia = random.nextInt(Month.of(mes).length(true)) + 1;
 
         LocalDate fechaLocal = LocalDate.of(año, mes, dia);
-
         int añoCalendar = fechaLocal.getYear();
         int mesCalendar = fechaLocal.getMonthValue();
         int diaCalendar = fechaLocal.getDayOfMonth();
@@ -88,22 +117,24 @@ public class Generadores {
         return new GregorianCalendar(añoCalendar, mesCalendar - 1, diaCalendar);
     }
 
+    /**
+     * Genera un número de teléfono aleatorio.
+     * @return Un número de teléfono generado aleatoriamente.
+     */
     public String generarNumeroTelefono() {
-        Random random = new Random();
+        // Se generan tres bloques de números aleatorios y se concatenan
         String lada = String.format("%03d", random.nextInt(1000));
         String bloque1 = String.format("%03d", random.nextInt(1000));
         String bloque2 = String.format("%04d", random.nextInt(10000));
         return lada + bloque1 + bloque2;
     }
 
+    /**
+     * Genera un valor booleano aleatorio.
+     * @return Un valor booleano generado aleatoriamente.
+     */
     public Boolean generarBooleanoAleatorio() {
-        Random random = new Random();
-        int opcion = random.nextInt(2);
-
-        if (opcion == 0) {
-            return false;
-        } else {
-            return true;
-        }
+    
+        return random.nextInt(2) == 1;
     }
 }

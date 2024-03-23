@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
 import negocio.RegistrarPersona;
@@ -241,9 +242,9 @@ Conversiones tabla;
 
         listaPersonas.add(persona);
     }
-
     persona.registroMasivo(listaPersonas);
-    this.dispose();
+   model.setRowCount(0);
+   JOptionPane.showMessageDialog(this, "El registro se ha realizado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_registrarBtnActionPerformed
 
     private void regresarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtn1ActionPerformed

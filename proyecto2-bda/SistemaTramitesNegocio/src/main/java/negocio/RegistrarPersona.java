@@ -6,6 +6,7 @@ import dao.PersonaDAO;
 import dtos.PersonaDTO;
 import excepciones.PersistenciaException;
 import interfaces.IConexion;
+import interfaces.IPersona;
 import interfaces.IregistrarPersona;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,27 +16,36 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import otros.Generadores;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 /**
  *
  * @author abelc
  */
 public class RegistrarPersona implements IregistrarPersona {
-
+/** Unidad de persistencia para la conexión JPA. */
     String unidadPersistencia = "bda.itson_SistemaTramitesPersistencia_jar_1.0-SNAPSHOTPU";
-    IConexion conexionJPA;
-    PersonaDAO Personadao;
-    Generadores g;
 
+    /** Objeto para la conexión JPA. */
+    IConexion conexionJPA;
+
+    /** Objeto para el acceso a datos de Persona. */
+    IPersona Personadao;
+
+    /** Objeto para la generación de datos aleatorios. */
+    Generadores g;
+ /**
+     * Constructor de la clase.
+     * Inicializa los objetos de conexión JPA, acceso a datos de Persona y generación de datos aleatorios.
+     */
     public RegistrarPersona() {
         this.conexionJPA = new ConexionJPA(unidadPersistencia);
         this.Personadao = new PersonaDAO(conexionJPA);
         this.g = new Generadores();
     }
-
+ /**
+     * Método para realizar un registro masivo de personas en el sistema.
+     * @param personas Lista de objetos PersonaDTO a registrar.
+     * @return True si el registro fue exitoso, False si ocurrió algún error.
+     */
     @Override
     public boolean registroMasivo(List<PersonaDTO> personas) {
         List<Persona> personasEntidad = new ArrayList<>();
@@ -58,7 +68,12 @@ public class RegistrarPersona implements IregistrarPersona {
             return false;
         }
     }
-
+   
+    /**
+     * Método para generar una lista de personas con datos aleatorios.
+     * @param cantidad Cantidad de personas a generar.
+     * @return Lista de objetos PersonaDTO generados.
+     */
     @Override
     public List<PersonaDTO> generarlista(int cantidad) {
         List<PersonaDTO> personas = new ArrayList<>();;
@@ -76,7 +91,11 @@ public class RegistrarPersona implements IregistrarPersona {
         }
         return personas;
     }
-
+/**
+     * Método para generar un RFC válido para una persona.
+     * @param dto Objeto PersonaDTO para el cual se generará el RFC.
+     * @return RFC generado.
+     */
     private String generarRFCValidado(PersonaDTO dto) {
         String rfc = generarRFC(dto);
         while (Personadao.obtenerPersonaRFC(rfc) != null) {
@@ -84,7 +103,11 @@ public class RegistrarPersona implements IregistrarPersona {
         }
         return rfc;
     }
-
+ /**
+     * Método para generar un RFC para una persona.
+     * @param dto Objeto PersonaDTO para el cual se generará el RFC.
+     * @return RFC generado.
+     */
     private String generarRFC(PersonaDTO dto) {
         String nombre = dto.getNombres().toUpperCase();
         String apellidoPaterno = dto.getApellidoPaterno().toUpperCase();
