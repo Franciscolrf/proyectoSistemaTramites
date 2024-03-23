@@ -4,7 +4,7 @@ USE sistematramites;
 
 -- Crear la tabla Persona
 CREATE TABLE IF NOT EXISTS Persona (
-    idPersona int PRIMARY KEY,
+    idPersona int PRIMARY KEY AUTO_INCREMENT,
     RFC VARCHAR(13) UNIQUE ,
     fechaNacimiento DATE,
     esDiscapacitado BOOLEAN,
@@ -43,7 +43,7 @@ DELIMITER ;
 
 -- Crear la tabla Vehiculo
 CREATE TABLE IF NOT EXISTS Vehiculo (
-    idVehiculo int PRIMARY KEY,
+    idVehiculo int PRIMARY KEY AUTO_INCREMENT,
     numeroSerie VARCHAR(20) UNIQUE,
     estado VARCHAR(50),
     color VARCHAR(50),
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS Vehiculo (
 
 -- Crear la tabla Automovil que hereda de Vehiculo
 CREATE TABLE IF NOT EXISTS Automovil (
-    idAutomovil INT AUTO_INCREMENT PRIMARY KEY,
+    idAutomovil INT PRIMARY KEY AUTO_INCREMENT,
     tipoAutomovil VARCHAR(50),
 	idVehiculo int,
     FOREIGN KEY ( idVehiculo) REFERENCES Vehiculo( idVehiculo)
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS Automovil (
 
 -- Crear la tabla Placa
 CREATE TABLE IF NOT EXISTS Placa (
-    idPlaca int PRIMARY KEY,
+    idPlaca int PRIMARY KEY AUTO_INCREMENT,
     idVehiculo int,
     codigo VARCHAR(20) UNIQUE,
     fechaRecepcion DATE,
@@ -80,7 +80,7 @@ CREATE TRIGGER asegurar_placa_activa BEFORE INSERT ON Placa
 FOR EACH ROW
 BEGIN
     DECLARE count_active INT;
-    SELECT COUNT(*) INTO count_active FROM Placa WHERE numeroSerie = NEW.numeroSerie AND estado = 'activa';
+    SELECT COUNT(*) INTO count_active FROM Placa WHERE codigo = NEW.codigo AND estado = 'activa';
     IF count_active > 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se puede tener más de una placa activa por vehículo';
     END IF;
@@ -94,7 +94,7 @@ CREATE TRIGGER asegurar_licencia_activa BEFORE INSERT ON Placa
 FOR EACH ROW
 BEGIN
     DECLARE count_active_licenses INT;
-    SELECT COUNT(*) INTO count_active_licenses FROM Licencia WHERE RFC_persona = (SELECT RFC_propietario FROM Vehiculo WHERE numeroSerie = NEW.numeroSerie) AND estado = 'no expirada';
+    SELECT COUNT(*) INTO count_active_licenses FROM Licencia WHERE RFC_persona = (SELECT RFC_propietario FROM Vehiculo WHERE codigo = NEW.codigo) AND estado = 'no expirada';
     IF count_active_licenses = 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se puede solicitar una placa sin una licencia activa';
     END IF;
@@ -110,7 +110,7 @@ FOR EACH ROW
 BEGIN
     IF OLD.estado != NEW.estado THEN
         IF NEW.estado = 'activa' THEN
-            UPDATE Placa SET estado = 'inactiva' WHERE numeroSerie = NEW.numeroSerie AND estado = 'activa';
+            UPDATE Placa SET estado = 'inactiva' WHERE codigo = NEW.codigo AND estado = 'activa';
         END IF;
     END IF;
 END;
