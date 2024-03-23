@@ -20,7 +20,7 @@ import interfaces.IVehiculoDAO;
 public class VehiculoDAO implements IVehiculoDAO {
     private IConexion conexion;
 
-    public VehiculoDAO(IConexion conexion) {
+    public VehiculoDAO (IConexion conexion) {
         this.conexion = conexion;
     }
 

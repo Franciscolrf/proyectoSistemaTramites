@@ -6,28 +6,28 @@ package interfaces;
 
 import java.util.List;
 
-import bda.itson.entidadesJPA.Automovil;
+import bda.itson.entidadesJPA.Vehiculo;
 import excepciones.PersistenciaException;
 
 /**
- * Interfaz de la clase AutomovilDAO
+ * Interfaz de la clase VehiculoDAO
  * @author ID145
  */
 public interface IVehiculoDAO {
     
     /**
-     * Método que agrega un automovil
-     * @param automovil
+     * Método que agrega un Vehiculo
+     * @param vehiculo
      * @return
      */
-    public Automovil agregar (Automovil automovil);
+    public Vehiculo agregar (Vehiculo vehiculo);
 
     /**
-     * Método para consultar una automovil por su id.
+     * Método para consultar una Vehiculo por su id.
      * @param idAutomovil
      * @return
      */
-    public Automovil consultar(Long idAutomovil);
+    public Vehiculo consultar(Long id);
 
-    public List<Automovil> insercionMasivaAutomovil(List <Automovil> automoviles) throws PersistenciaException;
+    public List<Vehiculo> insercionMasivaAutomovil(List <Vehiculo> vehiculos) throws PersistenciaException;
 }
