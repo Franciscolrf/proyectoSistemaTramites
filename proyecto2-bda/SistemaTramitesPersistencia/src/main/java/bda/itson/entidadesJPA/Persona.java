@@ -39,6 +39,18 @@ public class Persona implements Serializable {
     private List<Vehiculo> vehiculos;
     private static final Logger LOG = Logger.getLogger(Persona.class.getName());
 
+    /**
+     * Constructor que recibe todo excepto el id.
+     * @param RFC
+     * @param fechaNacimiento
+     * @param esDiscapacitado
+     * @param telefono
+     * @param nombres
+     * @param apellidoPaterno
+     * @param apellidoMaterno
+     * @param licencias
+     * @param vehiculos
+     */
     public Persona(String RFC, Calendar fechaNacimiento, boolean esDiscapacitado, String telefono, String nombres, String apellidoPaterno, String apellidoMaterno, List<Licencia> licencias, List<Vehiculo> vehiculos) {
         this.RFC = RFC;
         this.fechaNacimiento = fechaNacimiento;
@@ -51,6 +63,19 @@ public class Persona implements Serializable {
         this.vehiculos = vehiculos;
     }
 
+    /**
+     * Constructor que recibe todo.
+     * @param id
+     * @param RFC
+     * @param fechaNacimiento
+     * @param esDiscapacitado
+     * @param telefono
+     * @param nombres
+     * @param apellidoPaterno
+     * @param apellidoMaterno
+     * @param licencias
+     * @param vehiculos
+     */
     public Persona(Long id, String RFC, Calendar fechaNacimiento, boolean esDiscapacitado, String telefono, String nombres, String apellidoPaterno, String apellidoMaterno, List<Licencia> licencias, List<Vehiculo> vehiculos) {
         this.id = id;
         this.RFC = RFC;
@@ -64,7 +89,27 @@ public class Persona implements Serializable {
         this.vehiculos = vehiculos;
     }
 
-
+    /**
+     * Constructor que recibe todo, excepto el id y las listas.
+     * @param RFC
+     * @param fechaNacimiento
+     * @param esDiscapacitado
+     * @param telefono
+     * @param nombres
+     * @param apellidoPaterno
+     * @param apellidoMaterno
+     */
+    public Persona(String RFC, Calendar fechaNacimiento, boolean esDiscapacitado, String telefono, String nombres, String apellidoPaterno, String apellidoMaterno) {
+        this.RFC = RFC;
+        this.fechaNacimiento = fechaNacimiento;
+        this.esDiscapacitado = esDiscapacitado;
+        this.telefono = telefono;
+        this.nombres = nombres;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+    }
+    
+     
 
     /**
      * Constructor vacío
