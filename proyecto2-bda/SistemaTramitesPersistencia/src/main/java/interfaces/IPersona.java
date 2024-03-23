@@ -17,4 +17,6 @@ public interface IPersona {
     Persona registrarPersona(Persona persona) throws PersistenciaException;
 
     List<Persona> insercionMasivaPersonas(List<Persona> personas) throws PersistenciaException;
+    
+  Persona obtenerPersonaRFC(String rfc);
 }
