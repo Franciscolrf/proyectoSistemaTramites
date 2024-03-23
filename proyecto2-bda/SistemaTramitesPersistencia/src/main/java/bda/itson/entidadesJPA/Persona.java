@@ -87,6 +87,14 @@ public class Persona implements Serializable {
         this.id = id;
     }
 
+    public String getRFC() {
+        return RFC;
+    }
+
+    public void setRFC(String RFC) {
+        this.RFC = RFC;
+    }
+
     /**
      * Método que regresa la fecha de nacimiento
      * @return fechaNacimiento
