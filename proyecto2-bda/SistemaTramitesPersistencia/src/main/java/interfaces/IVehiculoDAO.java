@@ -23,11 +23,11 @@ public interface IVehiculoDAO {
     public Vehiculo agregar (Vehiculo vehiculo);
 
     /**
-     * Método para consultar una Vehiculo por su id.
-     * @param idAutomovil
+     * Método para consultar un Vehiculo por su id.
+     * @param id
      * @return
      */
     public Vehiculo consultar(Long id);
 
-    public List<Vehiculo> insercionMasivaAutomovil(List <Vehiculo> vehiculos) throws PersistenciaException;
+    public List<Vehiculo> insercionMasivaVehiculo(List <Vehiculo> vehiculos) throws PersistenciaException;
 }

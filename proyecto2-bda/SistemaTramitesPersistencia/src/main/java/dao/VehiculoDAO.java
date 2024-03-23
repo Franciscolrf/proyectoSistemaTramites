@@ -36,21 +36,21 @@ public class VehiculoDAO implements IVehiculoDAO {
     }
 
     @Override
-    public Vehiculo consultar(Long idAutomovil) {
+    public Vehiculo consultar(Long id) {
         EntityManager entityManager = conexion.getEntityManager();
-        Vehiculo Vehiculo = entityManager.find(Vehiculo.class, idAutomovil);
+        Vehiculo Vehiculo = entityManager.find(Vehiculo.class, id);
         entityManager.close();
         return Vehiculo;
     }
 
     /**
-     * Realiza una inserción masiva de automóviles en la base de datos.
+     * Realiza una inserción masiva de Vehiculos en la base de datos.
      *
-     * @param automoviles Lista de objetos Automovil que se insertarán.
-     * @return La lista de automóviles insertados.
+     * @param Vehiculos Lista de objetos Vehiculo que se insertarán.
+     * @return La lista de Vehiculos insertados.
      * @throws PersistenciaException Si ocurre un error durante la inserción masiva.
      */
-    public List<Vehiculo> insercionMasivaAutomovil(List<Vehiculo> Vehiculos) throws PersistenciaException {
+    public List<Vehiculo> insercionMasivaVehiculo(List<Vehiculo> Vehiculos) throws PersistenciaException {
         EntityManager entityManager = null;
         try {
             entityManager = conexion.getEntityManager();
