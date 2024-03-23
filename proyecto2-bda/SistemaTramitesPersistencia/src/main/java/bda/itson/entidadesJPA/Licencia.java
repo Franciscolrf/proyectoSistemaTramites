@@ -35,32 +35,36 @@ public class Licencia implements Serializable {
 
     private int vigencia;
 
-    private String estado;
+    public enum estado {
+        EXPIRADA,
+        NOEXPIRADA
+    }
+    estado estadoActual;
 
     @ManyToOne
     @JoinColumn(name = "idPersona")
     private Persona persona;
 
-    public Licencia(Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, int vigencia, String estado, Persona persona) {
+    public Licencia() {
+    }
+
+    public Licencia(Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, int vigencia, estado estadoActual, Persona persona) {
         this.fechaExpedicion = fechaExpedicion;
         this.fechaVencimiento = fechaVencimiento;
         this.costo = costo;
         this.vigencia = vigencia;
-        this.estado = estado;
+        this.estadoActual = estadoActual;
         this.persona = persona;
     }
 
-    public Licencia(Integer idLicencia, Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, int vigencia, String estado, Persona persona) {
+    public Licencia(Integer idLicencia, Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, int vigencia, estado estadoActual, Persona persona) {
         this.idLicencia = idLicencia;
         this.fechaExpedicion = fechaExpedicion;
         this.fechaVencimiento = fechaVencimiento;
         this.costo = costo;
         this.vigencia = vigencia;
-        this.estado = estado;
+        this.estadoActual = estadoActual;
         this.persona = persona;
-    }
-
-    public Licencia() {
     }
 
     /**
@@ -135,22 +139,30 @@ public class Licencia implements Serializable {
         this.costo = costo;
     }
 
+    public int getVigencia() {
+        return vigencia;
+    }
+
+    public void setVigencia(int vigencia) {
+        this.vigencia = vigencia;
+    }
+
     /**
      * Método que regresa el estado
      *
      * @return
      */
-    public String getEstado() {
-        return estado;
+    public estado getEstadoActual() {
+        return estadoActual;
     }
 
     /**
      * Método que recibe el estado
      *
-     * @param estado
+     * @param estadoActual
      */
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setEstadoActual(estado estadoActual) {
+        this.estadoActual = estadoActual;
     }
 
     /**
@@ -209,8 +221,7 @@ public class Licencia implements Serializable {
      */
     @Override
     public String toString() {
-        return "Licencia [idLicencia=" + idLicencia + ", fechaExpedicion=" + fechaExpedicion + ", fechaVencimiento="
-                + fechaVencimiento + ", costo=" + costo + ", estado=" + estado + ", persona=" + persona + "]";
+        return "Licencia{" + "idLicencia=" + idLicencia + ", fechaExpedicion=" + fechaExpedicion + ", fechaVencimiento=" + fechaVencimiento + ", costo=" + costo + ", vigencia=" + vigencia + ", estadoActual=" + estadoActual + ", persona=" + persona + '}';
     }
 
 }
