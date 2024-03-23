@@ -1,18 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package bda.itson.entidadesJPA;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.*;
 
-/**
- *
- * @author ID145
- */
 @Entity
 @Table(name = "vehiculo")
 public class Vehiculo implements Serializable {
@@ -28,6 +19,7 @@ public class Vehiculo implements Serializable {
     private String modelo;
     private String marca;
     private String linea;
+    private String tipoVehiculo; 
 
     @ManyToOne
     @JoinColumn(name = "idPersona")
@@ -42,18 +34,20 @@ public class Vehiculo implements Serializable {
     public Vehiculo() {
     }
 
-    public Vehiculo(String numeroSerie, String estado, String color, String modelo, String marca, String linea, Persona propietario, List<Placa> placas) {
-        this.numeroSerie = numeroSerie;
-        this.estado = estado;
-        this.color = color;
-        this.modelo = modelo;
-        this.marca = marca;
-        this.linea = linea;
-        this.propietario = propietario;
-        this.placas = placas;
-    }
-
-    public Vehiculo(Long id, String numeroSerie, String estado, String color, String modelo, String marca, String linea, Persona propietario, List<Placa> placas) {
+    /**
+     * Constructor que recibe todo.
+     * @param id
+     * @param numeroSerie
+     * @param estado
+     * @param color
+     * @param modelo
+     * @param marca
+     * @param linea
+     * @param tipoVehiculo
+     * @param propietario
+     * @param placas 
+     */
+    public Vehiculo(Long id, String numeroSerie, String estado, String color, String modelo, String marca, String linea, String tipoVehiculo, Persona propietario, List<Placa> placas) {
         this.id = id;
         this.numeroSerie = numeroSerie;
         this.estado = estado;
@@ -61,10 +55,64 @@ public class Vehiculo implements Serializable {
         this.modelo = modelo;
         this.marca = marca;
         this.linea = linea;
+        this.tipoVehiculo = tipoVehiculo;
         this.propietario = propietario;
         this.placas = placas;
     }
 
+    /**
+     * Constructor que recibe todo excepto el ID.
+     * @param numeroSerie
+     * @param estado
+     * @param color
+     * @param modelo
+     * @param marca
+     * @param linea
+     * @param tipoVehiculo
+     * @param propietario
+     * @param placas 
+     */
+    public Vehiculo(String numeroSerie, String estado, String color, String modelo, String marca, String linea, String tipoVehiculo, Persona propietario, List<Placa> placas) {
+        this.numeroSerie = numeroSerie;
+        this.estado = estado;
+        this.color = color;
+        this.modelo = modelo;
+        this.marca = marca;
+        this.linea = linea;
+        this.tipoVehiculo = tipoVehiculo;
+        this.propietario = propietario;
+        this.placas = placas;
+    }
+    
+    /**
+     * Constructor que recibe todo excepto el id y la lista de placas.
+     * @return 
+     */
+
+    
+    
+    
+
+    
+    public Vehiculo(String numeroSerie, String estado, String color, String modelo, String marca, String linea, String tipoVehiculo, Persona propietario) {
+        this.numeroSerie = numeroSerie;
+        this.estado = estado;
+        this.color = color;
+        this.modelo = modelo;
+        this.marca = marca;
+        this.linea = linea;
+        this.tipoVehiculo = tipoVehiculo;
+        this.propietario = propietario;
+    }
+
+    public String getTipoVehiculo() {
+        return tipoVehiculo;
+    }
+
+    public void setTipoVehiculo(String tipoVehiculo) {
+        this.tipoVehiculo = tipoVehiculo;
+    }
+    
     /**
      * Método que regresa el id del vehículo
      *

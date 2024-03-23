@@ -8,39 +8,39 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import bda.itson.entidadesJPA.Automovil;
+import bda.itson.entidadesJPA.Vehiculo;
 import excepciones.PersistenciaException;
-import interfaces.IAutomovilDAO;
 import interfaces.IConexion;
+import interfaces.IVehiculoDAO;
 
 /**
  *
  * @author ID145
  */
-public class AutomovilDAO implements IAutomovilDAO {
+public class VehiculoDAO implements IVehiculoDAO {
     private IConexion conexion;
 
-    public AutomovilDAO(IConexion conexion) {
+    public VehiculoDAO(IConexion conexion) {
         this.conexion = conexion;
     }
 
     @Override
-    public Automovil agregar(Automovil automovil) {
+    public Vehiculo agregar(Vehiculo Vehiculo) {
         EntityManager entityManager = conexion.getEntityManager();
         entityManager.getTransaction().begin();
-        entityManager.persist(automovil);
+        entityManager.persist(Vehiculo);
         entityManager.getTransaction().commit();
-        entityManager.refresh(automovil);
+        entityManager.refresh(Vehiculo);
         entityManager.close();
-        return automovil;
+        return Vehiculo;
     }
 
     @Override
-    public Automovil consultar(Long idAutomovil) {
+    public Vehiculo consultar(Long idAutomovil) {
         EntityManager entityManager = conexion.getEntityManager();
-        Automovil automovil = entityManager.find(Automovil.class, idAutomovil);
+        Vehiculo Vehiculo = entityManager.find(Vehiculo.class, idAutomovil);
         entityManager.close();
-        return automovil;
+        return Vehiculo;
     }
 
     /**
@@ -50,26 +50,26 @@ public class AutomovilDAO implements IAutomovilDAO {
      * @return La lista de automóviles insertados.
      * @throws PersistenciaException Si ocurre un error durante la inserción masiva.
      */
-    public List<Automovil> insercionMasivaAutomovil(List<Automovil> automoviles) throws PersistenciaException {
+    public List<Vehiculo> insercionMasivaAutomovil(List<Vehiculo> Vehiculos) throws PersistenciaException {
         EntityManager entityManager = null;
         try {
             entityManager = conexion.getEntityManager();
             entityManager.getTransaction().begin();
-            for (Automovil automovil : automoviles) {
-                entityManager.persist(automovil);
+            for (Vehiculo Vehiculo : Vehiculos) {
+                entityManager.persist(Vehiculo);
             }
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             if (entityManager != null && entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
             }
-            throw new PersistenciaException("Error al insertar automóviles: " + e.getMessage(), e);
+            throw new PersistenciaException("Error al insertar Vehiculos: " + e.getMessage(), e);
         } finally {
             if (entityManager != null) {
                 entityManager.close();
             }
         }
-        return automoviles;
+        return Vehiculos;
     }
 
 }

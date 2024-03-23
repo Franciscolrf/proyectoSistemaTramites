@@ -13,7 +13,7 @@ import excepciones.PersistenciaException;
  * Interfaz de la clase AutomovilDAO
  * @author ID145
  */
-public interface IAutomovilDAO {
+public interface IVehiculoDAO {
     
     /**
      * Método que agrega un automovil
