@@ -118,7 +118,7 @@ Conversiones tabla;
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return false;
             }
         });
         jScrollPane1.setViewportView(tablaPersonas);
