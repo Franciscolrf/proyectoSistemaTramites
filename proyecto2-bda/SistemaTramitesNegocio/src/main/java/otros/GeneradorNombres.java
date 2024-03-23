@@ -16,7 +16,7 @@ import java.util.Random;
  * @author abelc
  * Clase que proporciona métodos para generar datos aleatorios relacionados con personas.
  */
-public class Generadores {
+public class GeneradorNombres {
 
     // Listas de nombres masculinos y femeninos
     private static final String[] nombresMasculinos = {"Juan", "Luis", "Pedro", "Carlos", "José"};
@@ -31,7 +31,7 @@ public class Generadores {
     /**
      * Constructor de la clase Generadores.
      */
-    public Generadores() {
+    public GeneradorNombres() {
         this.random = new Random();
     }
 
