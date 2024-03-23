@@ -88,12 +88,6 @@ public class Vehiculo implements Serializable {
      * Constructor que recibe todo excepto el id y la lista de placas.
      * @return 
      */
-
-    
-    
-    
-
-    
     public Vehiculo(String numeroSerie, String estado, String color, String modelo, String marca, String linea, String tipoVehiculo, Persona propietario) {
         this.numeroSerie = numeroSerie;
         this.estado = estado;
@@ -257,6 +251,16 @@ public class Vehiculo implements Serializable {
         this.placas = placas;
     }
 
+    public String getNumeroSerie() {
+        return numeroSerie;
+    }
+
+    public void setNumeroSerie(String numeroSerie) {
+        this.numeroSerie = numeroSerie;
+    }
+
+    
+    
     /*
      * Método que regresa el hash
      * @return hash
