@@ -48,7 +48,7 @@ Conversiones tabla;
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaPersonas = new javax.swing.JTable();
         generarPersonasBtn = new javax.swing.JButton();
         registrarBtn = new javax.swing.JButton();
         regresarBtn1 = new javax.swing.JButton();
@@ -105,15 +105,23 @@ Conversiones tabla;
                     .addContainerGap(15, Short.MAX_VALUE)))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaPersonas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
                 "Nombres", "Apellido Paterno", "Apellido Materno", "Telefono", "RFC", "Discapacidad", "Fecha de nacimiento"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        });
+        jScrollPane1.setViewportView(tablaPersonas);
 
         generarPersonasBtn.setBackground(new java.awt.Color(107, 27, 56));
         generarPersonasBtn.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
@@ -149,7 +157,7 @@ Conversiones tabla;
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(regresarBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -157,7 +165,7 @@ Conversiones tabla;
                 .addComponent(registrarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(86, Short.MAX_VALUE)
+                .addContainerGap(72, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(generarPersonasBtn)
@@ -174,7 +182,7 @@ Conversiones tabla;
                 .addComponent(generarPersonasBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(regresarBtn1)
                     .addComponent(registrarBtn))
@@ -185,11 +193,11 @@ Conversiones tabla;
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
         );
 
         pack();
@@ -197,13 +205,13 @@ Conversiones tabla;
     }// </editor-fold>//GEN-END:initComponents
 
     private void generarPersonasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarPersonasBtnActionPerformed
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
     model.setRowCount(0);
 
     // Llenar la tabla con la lista generada
     List<PersonaDTO> listaPersonas = persona.generarlista(20); 
     DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
-    jTable1.setModel(newModel);
+    tablaPersonas.setModel(newModel);
     }//GEN-LAST:event_generarPersonasBtnActionPerformed
 /*
     Metodo que recupera todo lo que hay en la tabla y lo mete en una lista para despues meterla
@@ -211,7 +219,7 @@ Conversiones tabla;
     */
     private void registrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarBtnActionPerformed
      List<PersonaDTO> listaPersonas = new ArrayList<>();
-    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
     int rowCount = model.getRowCount();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -294,8 +302,8 @@ Conversiones tabla;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton registrarBtn;
     private javax.swing.JButton regresarBtn1;
+    private javax.swing.JTable tablaPersonas;
     // End of variables declaration//GEN-END:variables
 }
