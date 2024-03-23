@@ -10,12 +10,12 @@ import interfaces.IConexion;
 import interfaces.IPersona;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 /**
  *
- * @author abelc 
- * Clase que implementa la interfaz IPersona para realizar
+ * @author abelc Clase que implementa la interfaz IPersona para realizar
  * operaciones relacionadas con entidades Persona en la base de datos.
  */
 public class PersonaDAO implements IPersona {
@@ -96,24 +96,22 @@ public class PersonaDAO implements IPersona {
      * @param rfc El RFC de la persona que se busca.
      * @return El objeto Persona correspondiente al RFC proporcionado, o null si
      * no se encuentra.
-     * @throws PersistenciaException Si ocurre un error durante la búsqueda de
-     * la persona por RFC.
      */
-    public Persona obtenerPersonaRFC(String rfc) throws PersistenciaException {
-        EntityManager entityManager = null;
-        try {
-            entityManager = conexion.getEntityManager();
-            Query query = entityManager.createQuery("SELECT p FROM Persona p WHERE p.RFC = :rfc");
-            query.setParameter("rfc", rfc);
-            Persona persona = (Persona) query.getSingleResult();
-            return persona;
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al obtener persona por RFC: " + e.getMessage(), e);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
+  public Persona obtenerPersonaRFC(String rfc) {
+    EntityManager entityManager = null;
+    Persona persona = null;
+    try {
+        entityManager = conexion.getEntityManager();
+        Query query = entityManager.createQuery("SELECT p FROM Persona p WHERE p.RFC = :rfc");
+        query.setParameter("rfc", rfc);
+        persona = (Persona) query.getSingleResult();
+    } catch (NoResultException e) {
+        persona = null;
+    } finally {
+        if (entityManager != null) {
+            entityManager.close();
         }
     }
-
+    return persona;
+}
 }

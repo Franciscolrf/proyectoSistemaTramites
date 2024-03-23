@@ -86,13 +86,6 @@ public class pruebaPersonaDAO {
             Logger.getLogger(pruebaPersonaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         */
-        Persona persona=null;
-        try {
-            persona=daoPrueba.obtenerPersonaRFC("GHI789");
-        } catch (PersistenciaException ex) {
-            Logger.getLogger(pruebaPersonaDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.out.println(persona.getNombres());
         
     }
     

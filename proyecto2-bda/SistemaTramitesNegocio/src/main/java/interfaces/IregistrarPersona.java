@@ -4,11 +4,15 @@
  */
 package interfaces;
 
+import dtos.PersonaDTO;
+import java.util.List;
+
 /**
  *
  * @author abelc
  */
 public interface IregistrarPersona {
-    public boolean registroMasivo(int cantidadRegistros);
+    public boolean registroMasivo(List<PersonaDTO> personas);
+    public List<PersonaDTO> generarlista(int cantidad);
     
 }
