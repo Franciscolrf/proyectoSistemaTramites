@@ -4,8 +4,8 @@ USE sistematramites;
 
 -- Crear la tabla Persona
 CREATE TABLE IF NOT EXISTS Persona (
-    idPersona INT PRIMARY KEY AUTO_INCREMENT,
-    RFC VARCHAR(13) UNIQUE,
+    idPersona int PRIMARY KEY AUTO_INCREMENT,
+    RFC VARCHAR(13) UNIQUE ,
     fechaNacimiento DATE,
     esDiscapacitado BOOLEAN,
     telefono VARCHAR(20),
@@ -14,19 +14,20 @@ CREATE TABLE IF NOT EXISTS Persona (
     apellidoMaterno VARCHAR(50)
 );
 
+
 -- Crear la tabla Licencia
 CREATE TABLE IF NOT EXISTS Licencia (
     idLicencia INT AUTO_INCREMENT PRIMARY KEY,
-    idPersona INT,
+    idPersona int,
     fechaExpedicion DATE,
     fechaVencimiento DATE,
     costo DECIMAL(10, 2),
     estado ENUM('expirada', 'no expirada'),
-    vigencia INT,
+    vigencia int,
     FOREIGN KEY (idPersona) REFERENCES Persona(idPersona)
 );
 
--- Crear trigger para actualizar el estado de la licencia
+/*Crear trigger para actualizar el estado de la licencia */
 DELIMITER //
 CREATE TRIGGER actualizar_estado_licencia BEFORE INSERT ON Licencia
 FOR EACH ROW
@@ -42,22 +43,29 @@ DELIMITER ;
 
 -- Crear la tabla Vehiculo
 CREATE TABLE IF NOT EXISTS Vehiculo (
-    idVehiculo INT PRIMARY KEY AUTO_INCREMENT,
+    idVehiculo int PRIMARY KEY AUTO_INCREMENT,
     numeroSerie VARCHAR(20) UNIQUE,
     estado VARCHAR(50),
     color VARCHAR(50),
     modelo VARCHAR(50),
     marca VARCHAR(50),
     linea VARCHAR(50),
-    idPersona INT,
-    tipoVehiculo VARCHAR(50),
+    idPersona int,
     FOREIGN KEY (idPersona) REFERENCES Persona(idPersona)
+);
+
+-- Crear la tabla Automovil que hereda de Vehiculo
+CREATE TABLE IF NOT EXISTS Automovil (
+    idAutomovil INT PRIMARY KEY AUTO_INCREMENT,
+    tipoAutomovil VARCHAR(50),
+	idVehiculo int,
+    FOREIGN KEY ( idVehiculo) REFERENCES Vehiculo( idVehiculo)
 );
 
 -- Crear la tabla Placa
 CREATE TABLE IF NOT EXISTS Placa (
-    idPlaca INT PRIMARY KEY AUTO_INCREMENT,
-    idVehiculo INT,
+    idPlaca int PRIMARY KEY AUTO_INCREMENT,
+    idVehiculo int,
     codigo VARCHAR(20) UNIQUE,
     fechaRecepcion DATE,
     estado ENUM('activa', 'inactiva'),
@@ -66,7 +74,7 @@ CREATE TABLE IF NOT EXISTS Placa (
     FOREIGN KEY (idVehiculo) REFERENCES Vehiculo(idVehiculo)
 );
 
--- Trigger para asegurar que no se pueda tener más de una placa activa por vehículo
+/*Crear trigger para asegurar que no se pueda tener más de una placa activa por vehículo */
 DELIMITER //
 CREATE TRIGGER asegurar_placa_activa BEFORE INSERT ON Placa
 FOR EACH ROW
@@ -80,13 +88,13 @@ END;
 //
 DELIMITER ;
 
--- Trigger para asegurar que no se pueda solicitar una placa sin una licencia activa
+/*Crear trigger para asegurar que no se pueda solicitar una placa sin una licencia activa */
 DELIMITER //
 CREATE TRIGGER asegurar_licencia_activa BEFORE INSERT ON Placa
 FOR EACH ROW
 BEGIN
     DECLARE count_active_licenses INT;
-    SELECT COUNT(*) INTO count_active_licenses FROM Licencia WHERE idPersona = (SELECT idPersona FROM Vehiculo WHERE idVehiculo = NEW.idVehiculo) AND estado = 'no expirada';
+    SELECT COUNT(*) INTO count_active_licenses FROM Licencia WHERE RFC_persona = (SELECT RFC_propietario FROM Vehiculo WHERE codigo = NEW.codigo) AND estado = 'no expirada';
     IF count_active_licenses = 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se puede solicitar una placa sin una licencia activa';
     END IF;
@@ -94,7 +102,8 @@ END;
 //
 DELIMITER ;
 
--- Trigger para actualizar automáticamente el estado de la placa
+
+/*Trigger para actualizar automaticamente el estado de la placa*/
 DELIMITER //
 CREATE TRIGGER actualizar_estado_placa BEFORE UPDATE ON Placa
 FOR EACH ROW
@@ -107,3 +116,4 @@ BEGIN
 END;
 //
 DELIMITER ;
+

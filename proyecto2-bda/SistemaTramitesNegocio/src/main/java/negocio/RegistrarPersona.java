@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import otros.GeneradorPersonas;
+import otros.Generadores;
 
 /**
  *
@@ -31,7 +31,7 @@ public class RegistrarPersona implements IregistrarPersona {
     IPersona Personadao;
 
     /** Objeto para la generación de datos aleatorios. */
-    GeneradorPersonas g;
+    Generadores g;
  /**
      * Constructor de la clase.
      * Inicializa los objetos de conexión JPA, acceso a datos de Persona y generación de datos aleatorios.
@@ -39,7 +39,7 @@ public class RegistrarPersona implements IregistrarPersona {
     public RegistrarPersona() {
         this.conexionJPA = new ConexionJPA(unidadPersistencia);
         this.Personadao = new PersonaDAO(conexionJPA);
-        this.g = new GeneradorPersonas();
+        this.g = new Generadores();
     }
  /**
      * Método para realizar un registro masivo de personas en el sistema.
