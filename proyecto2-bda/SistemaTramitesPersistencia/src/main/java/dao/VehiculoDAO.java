@@ -25,14 +25,14 @@ public class VehiculoDAO implements IVehiculoDAO {
     }
 
     @Override
-    public Vehiculo agregar(Vehiculo Vehiculo) {
+    public Vehiculo agregar(Vehiculo vehiculo) {
         EntityManager entityManager = conexion.getEntityManager();
         entityManager.getTransaction().begin();
-        entityManager.persist(Vehiculo);
+        entityManager.persist(vehiculo);
         entityManager.getTransaction().commit();
-        entityManager.refresh(Vehiculo);
+        entityManager.refresh(vehiculo);
         entityManager.close();
-        return Vehiculo;
+        return vehiculo;
     }
 
     @Override
@@ -50,12 +50,12 @@ public class VehiculoDAO implements IVehiculoDAO {
      * @return La lista de Vehiculos insertados.
      * @throws PersistenciaException Si ocurre un error durante la inserción masiva.
      */
-    public List<Vehiculo> insercionMasivaVehiculo(List<Vehiculo> Vehiculos) throws PersistenciaException {
+    public List<Vehiculo> insercionMasivaVehiculo(List<Vehiculo> vehiculos) throws PersistenciaException {
         EntityManager entityManager = null;
         try {
             entityManager = conexion.getEntityManager();
             entityManager.getTransaction().begin();
-            for (Vehiculo Vehiculo : Vehiculos) {
+            for (Vehiculo Vehiculo : vehiculos) {
                 entityManager.persist(Vehiculo);
             }
             entityManager.getTransaction().commit();
@@ -69,7 +69,7 @@ public class VehiculoDAO implements IVehiculoDAO {
                 entityManager.close();
             }
         }
-        return Vehiculos;
+        return vehiculos;
     }
 
 }

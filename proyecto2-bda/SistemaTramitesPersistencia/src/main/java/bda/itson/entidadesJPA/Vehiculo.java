@@ -99,10 +99,18 @@ public class Vehiculo implements Serializable {
         this.propietario = propietario;
     }
 
+    /**
+     * Método que regresa el tipo de vehículo
+     * @return
+     */
     public String getTipoVehiculo() {
         return tipoVehiculo;
     }
 
+    /**
+     * Método que establece el tipo de vehículo
+     * @param tipoVehiculo
+     */
     public void setTipoVehiculo(String tipoVehiculo) {
         this.tipoVehiculo = tipoVehiculo;
     }
@@ -251,10 +259,18 @@ public class Vehiculo implements Serializable {
         this.placas = placas;
     }
 
+    /**
+     * Método que regresa el número de serie
+     * @return
+     */
     public String getNumeroSerie() {
         return numeroSerie;
     }
 
+    /**
+     * Método que establece el número de serie
+     * @param numeroSerie
+     */
     public void setNumeroSerie(String numeroSerie) {
         this.numeroSerie = numeroSerie;
     }
