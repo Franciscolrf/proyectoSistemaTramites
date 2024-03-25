@@ -26,4 +26,6 @@ public interface IregistrarPersona {
      * @return Lista de objetos PersonaDTO generados.
      */
     public List<PersonaDTO> generarlista(int cantidad);   
+    
+    public PersonaDTO buscarRFC(String rfc);
 }

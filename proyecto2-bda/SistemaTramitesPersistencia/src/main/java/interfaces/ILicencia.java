@@ -5,7 +5,9 @@
 package interfaces;
 
 import bda.itson.entidadesJPA.Licencia;
+import bda.itson.entidadesJPA.Persona;
 import excepciones.PersistenciaException;
+import java.util.List;
 
 /**
  *
@@ -15,4 +17,5 @@ public interface ILicencia {
 
     public boolean registrarLicencia(Licencia licencia) throws PersistenciaException;
 
+   public List<Persona> buscarPersonas(String buscarParametro) throws PersistenciaException;
 }
