@@ -17,7 +17,7 @@ import java.util.Calendar;
 public class PersonaDTO {
    
    /** Identificador único de la persona. */
-   private int id;
+   private Long id;
    
    /** RFC (Registro Federal de Contribuyentes) de la persona. */
    private String RFC;
@@ -78,7 +78,7 @@ public class PersonaDTO {
      * @param apellidoPaterno El apellido paterno de la persona.
      * @param apellidoMaterno El apellido materno de la persona.
      */
-    public PersonaDTO(int id, String RFC, Calendar fechaNacimiento, boolean esDiscapacitado, String telefono, String nombres, String apellidoPaterno, String apellidoMaterno) {
+    public PersonaDTO(Long id, String RFC, Calendar fechaNacimiento, boolean esDiscapacitado, String telefono, String nombres, String apellidoPaterno, String apellidoMaterno) {
         this.id = id;
         this.RFC = RFC;
         this.fechaNacimiento = fechaNacimiento;
@@ -93,7 +93,7 @@ public class PersonaDTO {
      * Método getter para el identificador único de la persona.
      * @return El identificador único de la persona.
      */
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -101,7 +101,7 @@ public class PersonaDTO {
      * Método setter para el identificador único de la persona.
      * @param id El identificador único de la persona a establecer.
      */
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

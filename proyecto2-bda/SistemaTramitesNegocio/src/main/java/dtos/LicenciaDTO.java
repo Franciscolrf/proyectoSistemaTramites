@@ -13,11 +13,12 @@ import java.util.Calendar;
  */
 public class LicenciaDTO {
 
-    private int idLicencia;
-    private Persona persona;
+    private Long idLicencia;
+    private PersonaDTO persona;
     private Calendar fechaExpedicion;
     private Calendar fechaVencimiento;
     private double costo;
+    private int vigencia;
 
     public enum estadoDTO {
         EXPIRADA,
@@ -28,7 +29,7 @@ public class LicenciaDTO {
     public LicenciaDTO() {
     }
 
-    public LicenciaDTO(int idLicencia, Persona persona, Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, estadoDTO estadoActual) {
+    public LicenciaDTO(Long idLicencia, PersonaDTO persona, Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, estadoDTO estadoActual) {
         this.idLicencia = idLicencia;
         this.persona = persona;
         this.fechaExpedicion = fechaExpedicion;
@@ -37,19 +38,19 @@ public class LicenciaDTO {
         this.estadoActual = estadoActual;
     }
 
-    public int getIdLicencia() {
+    public Long getIdLicencia() {
         return idLicencia;
     }
 
-    public void setIdLicencia(int idLicencia) {
+    public void setIdLicencia(Long idLicencia) {
         this.idLicencia = idLicencia;
     }
 
-    public Persona getPersona() {
+    public PersonaDTO getPersona() {
         return persona;
     }
 
-    public void setPersona(Persona persona) {
+    public void setPersona(PersonaDTO persona) {
         this.persona = persona;
     }
 
@@ -83,6 +84,14 @@ public class LicenciaDTO {
 
     public void setEstadoActual(estadoDTO estadoActual) {
         this.estadoActual = estadoActual;
+    }
+
+    public int getVigencia() {
+        return vigencia;
+    }
+
+    public void setVigencia(int vigencia) {
+        this.vigencia = vigencia;
     }
 
     @Override
