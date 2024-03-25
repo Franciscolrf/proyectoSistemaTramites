@@ -25,6 +25,13 @@ public class LicenciaDAO implements ILicencia {
         conexion = new ConexionJPA("bda.itson_SistemaTramitesPersistencia_jar_1.0-SNAPSHOTPU");
     }
 
+    /**
+     * Método para registrar una licencia
+     * 
+     * @param licencia Licencia a registrar
+     * @return true si se registró correctamente, false en caso contrario
+     * @throws PersistenciaException
+     */
     @Override
     public boolean registrarLicencia(Licencia licencia) throws PersistenciaException {
         EntityManager entityManager = null;
@@ -45,6 +52,13 @@ public class LicenciaDAO implements ILicencia {
 
     }
 
+    /**
+     * Método para obtener una licencia a partir de un parametro de busqueda
+     * 
+     * @param buscarParametro Parámetro de busqueda
+     * @return Licencia con el parametro de busqueda especificado
+     * @throws PersistenciaException
+     */
     @Override
     public List<Persona> buscarPersonas(String buscarParametro) throws PersistenciaException {
       EntityManager entityManager = null;
@@ -54,6 +68,33 @@ public class LicenciaDAO implements ILicencia {
             Persona.class);
     query.setParameter("parametro", "%" + buscarParametro + "%");
     return query.getResultList();
+    }
+
+    /**
+     * Método para obtener licencias a partir de un periodo entre dos fechas.
+     * 
+     * @param fechaInicio Fecha de inicio del periodo
+     * @param fechaFin    Fecha de fin del periodo
+     * @return Lista de licencias en el periodo especificado
+     * @throws PersistenciaException
+     * 
+     */
+    public List<Licencia> obtenerLicenciasPorPeriodo(String fechaInicio, String fechaFin) throws PersistenciaException{
+
+        EntityManager entityManager = null;
+        try {
+            entityManager = conexion.getEntityManager();
+            TypedQuery<Licencia> query = entityManager.createQuery(
+                    "SELECT l FROM Licencia l WHERE l.fechaTramite BETWEEN :fechaInicio AND :fechaFin",
+                    Licencia.class);
+            query.setParameter("fechaInicio", fechaInicio);
+            query.setParameter("fechaFin", fechaFin);
+            return query.getResultList();
+        } catch (Exception ex) {
+            throw new PersistenciaException("Error al realizar la solicitud de consulta de licencias", ex);
+        } finally {
+            conexion.close();
+        }
     }
 
 }

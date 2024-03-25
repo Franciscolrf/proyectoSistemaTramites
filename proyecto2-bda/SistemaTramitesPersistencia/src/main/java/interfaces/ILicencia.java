@@ -33,4 +33,15 @@ public interface ILicencia {
      * @throws PersistenciaException
      */
     public List<Persona> buscarPersonas(String buscarParametro) throws PersistenciaException;
+
+    /**
+     * Método para obtener licencias a partir de un periodo entre dos fechas.
+     * 
+     * @param fechaInicio Fecha de inicio del periodo
+     * @param fechaFin    Fecha de fin del periodo
+     * @return Lista de licencias en el periodo especificado
+     * @throws PersistenciaException
+     * 
+     */
+    public List<Licencia> obtenerLicenciasPorPeriodo(String fechaInicio, String fechaFin) throws PersistenciaException;
 }
