@@ -4,6 +4,9 @@
  */
 package interfaces;
 
+import java.util.Calendar;
+import java.util.List;
+
 import bda.itson.entidadesJPA.Placa;
 
 /**
@@ -27,4 +30,13 @@ public interface IPlacaDAO {
      */
     public Placa consultar(Long idPlaca);
 
+    /**
+     * Método para consultar las placas tramitadas entre dos fechas.
+     * 
+     * @param fechaInicio Fecha de inicio del rango de búsqueda.
+     * @param fechaFin    Fecha de fin del rango de búsqueda.
+     * @return Lista de placas tramitadas entre las fechas especificadas.
+     * 
+     */
+    public List<Placa> consultarPlacasTramitadasPorPeriodo(Calendar fechaInicio, Calendar fechaFin);
 }
