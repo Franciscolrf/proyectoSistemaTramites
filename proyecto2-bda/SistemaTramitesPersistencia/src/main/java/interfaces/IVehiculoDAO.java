@@ -32,5 +32,11 @@ public interface IVehiculoDAO {
      */
     public Vehiculo consultar(Long id);
 
+    /**
+     * Método para realizar una inserción masiva de Vehiculos.
+     * @param vehiculos
+     * @return
+     * @throws PersistenciaException
+     */
     public List<Vehiculo> insercionMasivaVehiculo(List<Vehiculo> vehiculos) throws PersistenciaException;
 }

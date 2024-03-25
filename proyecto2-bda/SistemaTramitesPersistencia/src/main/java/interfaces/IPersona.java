@@ -9,8 +9,7 @@ import excepciones.PersistenciaException;
 import java.util.List;
 
 /**
- * Interfaz para la clase Persona
- * 
+ *  Interfaz para el registro de personas en el sistema.
  * @author abelc
  */
 public interface IPersona {
@@ -26,7 +25,6 @@ public interface IPersona {
 
   /**
    * Método para inserar masivamente personas en la base de datos.
-   * 
    * @param personas Lista de personas a insertar.
    * @return Lista de personas insertadas.
    * @throws PersistenciaException
@@ -35,7 +33,6 @@ public interface IPersona {
 
   /**
    * Metodo para obtener una persona por su rfc.
-   * 
    * @param rfc RFC de la persona a obtener
    * @return Persona con el RFC especificado
    */
