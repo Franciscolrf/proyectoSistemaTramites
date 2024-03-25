@@ -1,9 +1,11 @@
 package negocio;
 
 import bda.itson.entidadesJPA.Persona;
+import bda.itson.entidadesJPA.Vehiculo;
 import dao.ConexionJPA;
 import dao.PersonaDAO;
 import dtos.PersonaDTO;
+import dtos.VehiculoDTO;
 import excepciones.PersistenciaException;
 import interfaces.IConexion;
 import interfaces.IPersona;
@@ -15,6 +17,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import otros.GeneradorPersonas;
+import otros.GeneradorVehiculos;
 
 /**
  *
@@ -43,6 +46,11 @@ public class RegistrarPersona implements IregistrarPersona {
     GeneradorPersonas g;
 
     /**
+     * objeto para para la generación de vehiculos aleatorios.
+     */
+    GeneradorVehiculos gv;
+
+    /**
      * Constructor de la clase. Inicializa los objetos de conexión JPA, acceso a
      * datos de Persona y generación de datos aleatorios.
      */
@@ -50,6 +58,7 @@ public class RegistrarPersona implements IregistrarPersona {
         this.conexionJPA = new ConexionJPA(unidadPersistencia);
         this.Personadao = new PersonaDAO();
         this.g = new GeneradorPersonas();
+        gv = new GeneradorVehiculos();
     }
 
     /**
@@ -62,14 +71,15 @@ public class RegistrarPersona implements IregistrarPersona {
     public boolean registroMasivo(List<PersonaDTO> personas) {
         List<Persona> personasEntidad = new ArrayList<>();
         for (PersonaDTO persona : personas) {
-            Persona pEntidad = new Persona();;
-            pEntidad.setNombres(persona.getNombres());
-            pEntidad.setApellidoPaterno(persona.getApellidoPaterno());
-            pEntidad.setApellidoMaterno(persona.getApellidoMaterno());
-            pEntidad.setFechaNacimiento(persona.getFechaNacimiento());
-            pEntidad.setRFC(persona.getRFC());
-            pEntidad.setTelefono(persona.getTelefono());
-            pEntidad.setEsDiscapacitado(persona.isEsDiscapacitado());
+            Persona pEntidad = convertirPersonaDTOaEntidad(persona);
+            List<VehiculoDTO> vehiculosDTO = gv.generarVehiculos(5);
+            List<Vehiculo> vehiculos = convertirVehiculosDTOaEntidad(vehiculosDTO);
+            for (Vehiculo vehiculo : vehiculos) {
+                vehiculo.setPropietario(pEntidad);
+            }
+
+            pEntidad.setVehiculos(vehiculos);
+
             personasEntidad.add(pEntidad);
         }
         try {
@@ -153,7 +163,12 @@ public class RegistrarPersona implements IregistrarPersona {
 
         return rfc;
     }
-
+/**
+ * Convierte una entidad de Persona a un DTO de Persona.
+ * 
+ * @param persona La entidad de Persona a convertir.
+ * @return El DTO de Persona generado.
+ */
     public PersonaDTO daoAdto(Persona persona) {
         PersonaDTO personaDto = new PersonaDTO();
         personaDto.setId(persona.getId());
@@ -166,7 +181,51 @@ public class RegistrarPersona implements IregistrarPersona {
         personaDto.setEsDiscapacitado(persona.isEsDiscapacitado());
         return personaDto;
     }
+/**
+ * Convierte un DTO de Persona a una entidad de Persona.
+ * 
+ * @param personaDTO El DTO de Persona a convertir.
+ * @return La entidad de Persona generada.
+ */
+    private Persona convertirPersonaDTOaEntidad(PersonaDTO personaDTO) {
+        Persona personaEntidad = new Persona();
+        personaEntidad.setNombres(personaDTO.getNombres());
+        personaEntidad.setApellidoPaterno(personaDTO.getApellidoPaterno());
+        personaEntidad.setApellidoMaterno(personaDTO.getApellidoMaterno());
+        personaEntidad.setFechaNacimiento(personaDTO.getFechaNacimiento());
+        personaEntidad.setRFC(personaDTO.getRFC());
+        personaEntidad.setTelefono(personaDTO.getTelefono());
+        personaEntidad.setEsDiscapacitado(personaDTO.isEsDiscapacitado());
+        return personaEntidad;
+    }
+/**
+ * Convierte una lista de DTO de Vehiculo a una lista de entidades de Vehiculo.
+ * 
+ * @param vehiculosDTO La lista de DTO de Vehiculo a convertir.
+ * @return La lista de entidades de Vehiculo generada.
+ */
+    private List<Vehiculo> convertirVehiculosDTOaEntidad(List<VehiculoDTO> vehiculosDTO) {
+        List<Vehiculo> vehiculos = new ArrayList<>();
+        for (VehiculoDTO vehiculoDTO : vehiculosDTO) {
+            Vehiculo vehiculo = new Vehiculo();
+            vehiculo.setMarca(vehiculoDTO.getMarca());
+            vehiculo.setModelo(vehiculoDTO.getModelo());
+            vehiculo.setLinea(vehiculoDTO.getLinea());
+            vehiculo.setNumeroSerie(vehiculoDTO.getNumeroSerie());
+            vehiculo.setEstado(vehiculoDTO.getEstado());
+            vehiculo.setColor(vehiculoDTO.getColor());
+            vehiculo.setTipoVehiculo(vehiculoDTO.getTipoVehiculo());
+            vehiculos.add(vehiculo);
+        }
+        return vehiculos;
 
+    }
+/**
+ * Busca una persona por su RFC y la devuelve como un DTO de Persona.
+ * 
+ * @param rfc El RFC de la persona a buscar.
+ * @return El DTO de Persona que corresponde al RFC especificado, si se encuentra; de lo contrario, devuelve null.
+ */
     @Override
     public PersonaDTO buscarRFC(String rfc) {
         PersonaDTO personaDto = new PersonaDTO();
