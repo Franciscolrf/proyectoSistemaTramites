@@ -21,28 +21,40 @@ import otros.GeneradorPersonas;
  * @author abelc
  */
 public class RegistrarPersona implements IregistrarPersona {
-/** Unidad de persistencia para la conexión JPA. */
+
+    /**
+     * Unidad de persistencia para la conexión JPA.
+     */
     String unidadPersistencia = "bda.itson_SistemaTramitesPersistencia_jar_1.0-SNAPSHOTPU";
 
-    /** Objeto para la conexión JPA. */
+    /**
+     * Objeto para la conexión JPA.
+     */
     IConexion conexionJPA;
 
-    /** Objeto para el acceso a datos de Persona. */
+    /**
+     * Objeto para el acceso a datos de Persona.
+     */
     IPersona Personadao;
 
-    /** Objeto para la generación de datos aleatorios. */
+    /**
+     * Objeto para la generación de datos aleatorios.
+     */
     GeneradorPersonas g;
- /**
-     * Constructor de la clase.
-     * Inicializa los objetos de conexión JPA, acceso a datos de Persona y generación de datos aleatorios.
+
+    /**
+     * Constructor de la clase. Inicializa los objetos de conexión JPA, acceso a
+     * datos de Persona y generación de datos aleatorios.
      */
     public RegistrarPersona() {
         this.conexionJPA = new ConexionJPA(unidadPersistencia);
-        this.Personadao = new PersonaDAO(conexionJPA);
+        this.Personadao = new PersonaDAO();
         this.g = new GeneradorPersonas();
     }
- /**
+
+    /**
      * Método para realizar un registro masivo de personas en el sistema.
+     *
      * @param personas Lista de objetos PersonaDTO a registrar.
      * @return True si el registro fue exitoso, False si ocurrió algún error.
      */
@@ -68,9 +80,10 @@ public class RegistrarPersona implements IregistrarPersona {
             return false;
         }
     }
-   
+
     /**
      * Método para generar una lista de personas con datos aleatorios.
+     *
      * @param cantidad Cantidad de personas a generar.
      * @return Lista de objetos PersonaDTO generados.
      */
@@ -91,8 +104,10 @@ public class RegistrarPersona implements IregistrarPersona {
         }
         return personas;
     }
-/**
+
+    /**
      * Método para generar un RFC válido para una persona.
+     *
      * @param dto Objeto PersonaDTO para el cual se generará el RFC.
      * @return RFC generado.
      */
@@ -103,8 +118,10 @@ public class RegistrarPersona implements IregistrarPersona {
         }
         return rfc;
     }
- /**
+
+    /**
      * Método para generar un RFC para una persona.
+     *
      * @param dto Objeto PersonaDTO para el cual se generará el RFC.
      * @return RFC generado.
      */
@@ -135,5 +152,25 @@ public class RegistrarPersona implements IregistrarPersona {
         String rfc = primeraLetraApellidoPaterno + primeraVocalApellidoPaterno + primeraLetraApellidoMaterno + anio + mesString + diaString + codigoAleatorio.toString();
 
         return rfc;
+    }
+
+    public PersonaDTO daoAdto(Persona persona) {
+        PersonaDTO personaDto = new PersonaDTO();
+        personaDto.setId(persona.getId());
+        personaDto.setNombres(persona.getNombres());
+        personaDto.setApellidoPaterno(persona.getApellidoPaterno());
+        personaDto.setApellidoMaterno(persona.getApellidoMaterno());
+        personaDto.setFechaNacimiento(persona.getFechaNacimiento());
+        personaDto.setRFC(persona.getRFC());
+        personaDto.setTelefono(persona.getTelefono());
+        personaDto.setEsDiscapacitado(persona.isEsDiscapacitado());
+        return personaDto;
+    }
+
+    @Override
+    public PersonaDTO buscarRFC(String rfc) {
+        PersonaDTO personaDto = new PersonaDTO();
+        personaDto = daoAdto(Personadao.obtenerPersonaRFC(rfc));
+        return personaDto;
     }
 }

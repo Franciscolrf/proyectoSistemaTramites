@@ -27,8 +27,8 @@ public class PersonaDAO implements IPersona {
      *
      * @param conexion Objeto que proporciona la conexión a la base de datos.
      */
-    public PersonaDAO(IConexion conexion) {
-        this.conexion = conexion;
+    public PersonaDAO() {
+         conexion = new ConexionJPA("bda.itson_SistemaTramitesPersistencia_jar_1.0-SNAPSHOTPU");
     }
 
     /**

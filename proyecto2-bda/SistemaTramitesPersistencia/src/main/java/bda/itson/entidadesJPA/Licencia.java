@@ -153,6 +153,14 @@ public class Licencia implements Serializable {
         this.estado = estado;
     }
 
+    public int getVigencia() {
+        return vigencia;
+    }
+
+    public void setVigencia(int vigencia) {
+        this.vigencia = vigencia;
+    }
+
     /**
      * Método que regresa la persona
      *
