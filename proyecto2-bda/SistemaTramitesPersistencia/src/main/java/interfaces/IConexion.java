@@ -4,9 +4,8 @@
  */
 package interfaces;
 
+import javax.persistence.EntityManager;
 
-
-    import javax.persistence.EntityManager;
 /**
  *
  * @author abelc
@@ -25,4 +24,3 @@ public interface IConexion {
      */
     void close();
 }
-
