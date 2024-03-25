@@ -24,6 +24,11 @@ public class VehiculoDAO implements IVehiculoDAO {
         this.conexion = conexion;
     }
 
+    /**
+     * Registra un nuevo Vehiculo en la base de datos.
+     * @param vehiculo Objeto de tipo Vehiculo que se registrará.
+     * @return El objeto Vehiculo registrado.
+     */
     @Override
     public Vehiculo agregar(Vehiculo vehiculo) {
         EntityManager entityManager = conexion.getEntityManager();
@@ -35,6 +40,11 @@ public class VehiculoDAO implements IVehiculoDAO {
         return vehiculo;
     }
 
+    /**
+     * Consulta un Vehiculo en la base de datos por su identificador.
+     * @param id Identificador del Vehiculo a consultar.
+     * @return El objeto Vehiculo consultado.
+     */
     @Override
     public Vehiculo consultar(Long id) {
         EntityManager entityManager = conexion.getEntityManager();
