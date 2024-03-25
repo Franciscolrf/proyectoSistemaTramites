@@ -13,16 +13,18 @@ import bda.itson.entidadesJPA.Placa;
 public interface IPlacaDAO {
     /**
      * Método que agrega una placa
-     * @param placa
-     * @return
+     * 
+     * @param placa Placa a agregar
+     * @return Placa agregada
      */
-    public Placa agregar (Placa placa);
+    public Placa agregar(Placa placa);
 
     /**
      * Método para consultar una placa por su id.
-     * @param idPlaca
-     * @return
+     * 
+     * @param idPlaca Identificador de la placa a consultar.
+     * @return Placa consultada.
      */
     public Placa consultar(Long idPlaca);
-    
+
 }

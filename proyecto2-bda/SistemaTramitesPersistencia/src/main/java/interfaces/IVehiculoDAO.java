@@ -11,23 +11,26 @@ import excepciones.PersistenciaException;
 
 /**
  * Interfaz de la clase VehiculoDAO
+ * 
  * @author ID145
  */
 public interface IVehiculoDAO {
-    
+
     /**
      * Método que agrega un Vehiculo
+     * 
      * @param vehiculo
      * @return
      */
-    public Vehiculo agregar (Vehiculo vehiculo);
+    public Vehiculo agregar(Vehiculo vehiculo);
 
     /**
      * Método para consultar un Vehiculo por su id.
+     * 
      * @param id
      * @return
      */
     public Vehiculo consultar(Long id);
 
-    public List<Vehiculo> insercionMasivaVehiculo(List <Vehiculo> vehiculos) throws PersistenciaException;
+    public List<Vehiculo> insercionMasivaVehiculo(List<Vehiculo> vehiculos) throws PersistenciaException;
 }
