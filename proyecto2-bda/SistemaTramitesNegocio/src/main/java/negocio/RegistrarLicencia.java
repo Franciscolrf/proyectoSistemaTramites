@@ -11,6 +11,7 @@ import dao.PersonaDAO;
 import dtos.LicenciaDTO;
 import dtos.PersonaDTO;
 import excepciones.PersistenciaException;
+import interfaces.ILicencia;
 import interfaces.IRegistrarLicenciaBO;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class RegistrarLicencia implements IRegistrarLicenciaBO {
     
-    private final LicenciaDAO licenciaDAO;
+    private final ILicencia licenciaDAO;
     PersonaDAO personaDAO;
 
     public RegistrarLicencia() {
@@ -32,7 +33,12 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
         this.personaDAO = new PersonaDAO();
        
     }
-    
+     /**
+     * Registra una licencia a partir de un objeto LicenciaDTO.
+     * Convierte el objeto DTO a un objeto Licencia y lo pasa al LicenciaDAO para su registro.
+     * 
+     * @param licenciaDTO Objeto LicenciaDTO que contiene la información de la licencia a registrar.
+     */
     @Override
     public void registrarLicencia(LicenciaDTO licenciaDTO) {
         
@@ -56,6 +62,13 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
 //        licenciaDTO.setPersona(licencia.getPersona());
 //        return licenciaDTO;
 //    }
+    
+     /**
+     * Busca personas según un parámetro de búsqueda y devuelve una lista de objetos PersonaDTO.
+     * 
+     * @param buscarParametro Parámetro de búsqueda para encontrar personas.
+     * @return Lista de objetos PersonaDTO que satisfacen el criterio de búsqueda.
+     */
     private Licencia convertirALicencia(LicenciaDTO licenciaDTO) {
         Licencia licencia = new Licencia();
         licencia.setCosto(licenciaDTO.getCosto());
@@ -65,7 +78,12 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
         licencia.setVigencia(licenciaDTO.getVigencia());
         return licencia;
     }
-    
+    /**
+     * Busca personas según un parámetro de búsqueda y devuelve una lista de objetos PersonaDTO.
+     * 
+     * @param buscarParametro Parámetro de búsqueda para encontrar personas.
+     * @return Lista de objetos PersonaDTO que satisfacen el criterio de búsqueda.
+     */
     @Override
     public List<PersonaDTO> buscarPersonas(String buscarParametro) {
         List<PersonaDTO> personasRegistradasDTO = new ArrayList<>();
@@ -87,6 +105,12 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
         return personasRegistradasDTO;
     }
     
+     /**
+     * Convierte un objeto PersonaDTO a un objeto Persona.
+     * 
+     * @param personaDTO Objeto PersonaDTO a convertir.
+     * @return Objeto Persona convertido.
+     */
     private Persona convertirAPersona(PersonaDTO personaDTO) {
         Persona persona = new Persona();
         persona.setId(personaDTO.getId());
@@ -99,7 +123,12 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
         persona.setEsDiscapacitado(personaDTO.isEsDiscapacitado());
         return persona;
     }
-    
+     /**
+     * Convierte un objeto Persona a un objeto PersonaDTO.
+     * 
+     * @param persona Objeto Persona a convertir.
+     * @return Objeto PersonaDTO convertido.
+     */
     private PersonaDTO convertirAPersonaDTO(Persona persona) {
         PersonaDTO personaDTO = new PersonaDTO();
         personaDTO.setId(persona.getId());
@@ -112,6 +141,11 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
         personaDTO.setEsDiscapacitado(persona.isEsDiscapacitado());
         return personaDTO;
     }
+    /**
+     * Asigna valores a una licencia según su vigencia y la condición de discapacidad de la persona.
+     * 
+     * @param licenciaDTO Objeto LicenciaDTO al que se le asignarán los valores.
+     */
     @Override
     public void asignarValoresLicencia(LicenciaDTO licenciaDTO) {
         Calendar fechaActual = Calendar.getInstance();
