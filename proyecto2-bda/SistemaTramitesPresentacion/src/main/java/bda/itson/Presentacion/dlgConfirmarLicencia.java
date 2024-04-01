@@ -7,6 +7,7 @@ package bda.itson.Presentacion;
 import dtos.LicenciaDTO;
 import interfaces.IRegistrarLicenciaBO;
 import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
 import negocio.RegistrarLicencia;
 
 /**
@@ -259,6 +260,7 @@ IRegistrarLicenciaBO licencia;
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
 
         licencia.registrarLicencia(licenciaDatos);
+         JOptionPane.showMessageDialog(this, "La licencia se ha registrado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
         dispose();
     }//GEN-LAST:event_confirmarBtnActionPerformed
 

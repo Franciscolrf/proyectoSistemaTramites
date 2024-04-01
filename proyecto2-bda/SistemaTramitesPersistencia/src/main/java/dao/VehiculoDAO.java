@@ -4,6 +4,8 @@
  */
 package dao;
 
+import bda.itson.entidadesJPA.Licencia;
+import bda.itson.entidadesJPA.Persona;
 import java.util.List;
 
 import javax.persistence.*;
@@ -20,8 +22,8 @@ import interfaces.IVehiculoDAO;
 public class VehiculoDAO implements IVehiculoDAO {
     private IConexion conexion;
 
-    public VehiculoDAO (IConexion conexion) {
-        this.conexion = conexion;
+    public VehiculoDAO () {
+        conexion = new ConexionJPA("bda.itson_SistemaTramitesPersistencia_jar_1.0-SNAPSHOTPU");
     }
 
     /**
@@ -81,5 +83,23 @@ public class VehiculoDAO implements IVehiculoDAO {
         }
         return vehiculos;
     }
+    
+    @Override
+    public List<Vehiculo> consultarVehiculosPersona(Persona persona) throws PersistenciaException{
+    EntityManager entityManager = null;
+    try {
+            entityManager = conexion.getEntityManager();
+            TypedQuery<Vehiculo> query = entityManager.createQuery(
+            "SELECT v FROM Vehiculo v WHERE v.propietario.id=:personaId",
+                    Vehiculo.class);
+            query.setParameter("personaId", persona.getId());
+            return query.getResultList();
+    } catch (Exception ex) {
+            throw new PersistenciaException("Error al realizar la solicitud de consulta de licencias", ex);
+        } finally {
+            conexion.close();
+        }
+
+}
 
 }
