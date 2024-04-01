@@ -18,25 +18,25 @@ public class Conversiones {
     public Conversiones() {
     }
 
-  public DefaultTableModel personasTableModel(List<PersonaDTO> listaPersonas) {
-    String[] columnas = {"Nombres", "Apellido Paterno", "Apellido Materno", "Teléfono", "RFC", "Discapacidad","Fecha de Nacimiento"};
-    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+    public DefaultTableModel personasTableModel(List<PersonaDTO> listaPersonas) {
+        String[] columnas = {"Nombres", "Apellido Paterno", "Apellido Materno", "Teléfono", "RFC", "Discapacidad", "Fecha de Nacimiento"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String discapacitado;
+        for (PersonaDTO persona : listaPersonas) {
+            Object[] fila = {
+                persona.getNombres(),
+                persona.getApellidoPaterno(),
+                persona.getApellidoMaterno(),
+                persona.getTelefono(),
+                persona.getRFC(),
+                discapacitado = (persona.isEsDiscapacitado()) ? "Si" : "No",
+                dateFormat.format(persona.getFechaNacimiento().getTime()), // Convertir Calendar a String en formato "dd-MM-yyyy"
+            };
+            modelo.addRow(fila);
+        }
 
-    for (PersonaDTO persona : listaPersonas) {
-        Object[] fila = {
-            persona.getNombres(),
-            persona.getApellidoPaterno(),
-            persona.getApellidoMaterno(),
-            persona.getTelefono(),
-            persona.getRFC(),
-            persona.isEsDiscapacitado(),
-            dateFormat.format(persona.getFechaNacimiento().getTime()), // Convertir Calendar a String en formato "dd-MM-yyyy"
-        };
-        modelo.addRow(fila);
+        return modelo;
     }
-
-    return modelo;
-}
 }

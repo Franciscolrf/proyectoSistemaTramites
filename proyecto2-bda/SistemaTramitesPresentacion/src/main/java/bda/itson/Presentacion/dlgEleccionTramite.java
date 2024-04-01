@@ -39,6 +39,7 @@ public class dlgEleccionTramite extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         tramitarLicenciaBtn = new javax.swing.JButton();
+        tramitarLicenciaBtn1 = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -82,6 +83,16 @@ public class dlgEleccionTramite extends javax.swing.JDialog {
             }
         });
 
+        tramitarLicenciaBtn1.setBackground(new java.awt.Color(107, 27, 56));
+        tramitarLicenciaBtn1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        tramitarLicenciaBtn1.setForeground(new java.awt.Color(255, 255, 255));
+        tramitarLicenciaBtn1.setText("Placas");
+        tramitarLicenciaBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tramitarLicenciaBtn1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -89,7 +100,9 @@ public class dlgEleccionTramite extends javax.swing.JDialog {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(194, Short.MAX_VALUE)
-                .addComponent(tramitarLicenciaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tramitarLicenciaBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tramitarLicenciaBtn1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(189, 189, 189))
         );
         jPanel1Layout.setVerticalGroup(
@@ -98,7 +111,9 @@ public class dlgEleccionTramite extends javax.swing.JDialog {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(tramitarLicenciaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 207, Short.MAX_VALUE))
+                .addGap(36, 36, 36)
+                .addComponent(tramitarLicenciaBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 139, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -117,10 +132,14 @@ public class dlgEleccionTramite extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tramitarLicenciaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tramitarLicenciaBtnActionPerformed
-        licenciaTramite = new buscarPersonas();
+        licenciaTramite = new buscarPersonas(1);
         this.dispose();
         licenciaTramite.setVisible(true);
     }//GEN-LAST:event_tramitarLicenciaBtnActionPerformed
+
+    private void tramitarLicenciaBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tramitarLicenciaBtn1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tramitarLicenciaBtn1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -130,5 +149,6 @@ public class dlgEleccionTramite extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton tramitarLicenciaBtn;
+    private javax.swing.JButton tramitarLicenciaBtn1;
     // End of variables declaration//GEN-END:variables
 }
