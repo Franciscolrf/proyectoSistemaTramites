@@ -26,22 +26,32 @@ import tablas.Conversiones;
  * @author abelc
  */
 public class buscarPersonas extends javax.swing.JFrame {
+
     IRegistrarLicenciaBO licencia;
     IregistrarPersona personas;
     Conversiones tabla;
-      LicenciaDTO licenciaDTO;
-   
+    LicenciaDTO licenciaDTO;
+    private int operacion;
     /**
      * Creates new form buscarPersonas
      */
-    public buscarPersonas() {
-        this.tabla=new Conversiones();
-       this.licencia=new RegistrarLicencia();
-      this.licenciaDTO=new LicenciaDTO();
-      this.personas=new RegistrarPersona();
+    public buscarPersonas(int operacion) {
+        this.tabla = new Conversiones();
+        this.licencia = new RegistrarLicencia();
+        this.licenciaDTO = new LicenciaDTO();
+        this.personas = new RegistrarPersona();
+        this.operacion = operacion;
         initComponents();
-        
+        if (operacion==1) {
+            vigenciaCombobox.setVisible(true);
+            jLabel3.setVisible(true);
+        }else{
+           vigenciaCombobox.setVisible(false);
+            jLabel3.setVisible(false);
+        }
     }
+
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,7 +88,7 @@ public class buscarPersonas extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Sistema de control de trámites");
+        jLabel2.setText("Seleccione una persona");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -88,7 +98,7 @@ public class buscarPersonas extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(31, 31, 31)
                 .addComponent(jLabel2)
-                .addGap(0, 120, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,9 +170,7 @@ public class buscarPersonas extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,19 +180,19 @@ public class buscarPersonas extends javax.swing.JFrame {
                         .addComponent(buscarBtn)
                         .addGap(69, 69, 69))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(regresarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(seleccionarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(26, 26, 26))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(vigenciaCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(181, 181, 181))))
+                        .addGap(181, 181, 181))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(regresarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(250, 250, 250)
+                        .addComponent(seleccionarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 34, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,12 +203,12 @@ public class buscarPersonas extends javax.swing.JFrame {
                     .addComponent(parametroTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buscarBtn))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(vigenciaCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(seleccionarBtn)
                     .addComponent(regresarBtn))
@@ -211,13 +219,13 @@ public class buscarPersonas extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -227,47 +235,61 @@ public class buscarPersonas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
-       DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
-    model.setRowCount(0);
-
-    // Llenar la tabla con la lista generada
-    List<PersonaDTO> listaPersonas = licencia.buscarPersonas(parametroTxtField.getText());
-    DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
-    tablaPersonas.setModel(newModel);
+        if (operacion==1) {
+           DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
+        model.setRowCount(0);
+        List<PersonaDTO> listaPersonas = licencia.buscarPersonas(parametroTxtField.getText());
+        DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
+        tablaPersonas.setModel(newModel);  
+        }
+       
     }//GEN-LAST:event_buscarBtnActionPerformed
 
     private void seleccionarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtnActionPerformed
-       obtenerDatosFilaSeleccionada(licenciaDTO);
-        System.out.println(licenciaDTO.getCosto());
-        dlgConfirmarLicencia dlgConfLicencia=new dlgConfirmarLicencia(this,true,licenciaDTO);
+        if (operacion==1) {
+          obtenerDatosFilaSeleccionada(licenciaDTO);
+        if (licencia.personaTieneLicenciaActiva(licenciaDTO.getPersona())==false) {
+            System.out.println(licenciaDTO.getCosto());
+            dlgConfirmarLicencia dlgConfLicencia = new dlgConfirmarLicencia(this, true, licenciaDTO);
+        } else {
+            JOptionPane.showMessageDialog(null, "La persona ya tiene una licencia activa.", "Licencia activa encontrada", JOptionPane.INFORMATION_MESSAGE);
+        }  
+        }
+        
+
+
     }//GEN-LAST:event_seleccionarBtnActionPerformed
 
     private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
         this.dispose();
     }//GEN-LAST:event_regresarBtnActionPerformed
-private void obtenerDatosFilaSeleccionada(LicenciaDTO licenciaDTO) {
-     int filaSeleccionada = tablaPersonas.getSelectedRow();
-    
-    if (filaSeleccionada != -1) {
-        String rfc = tablaPersonas.getValueAt(filaSeleccionada, 4).toString(); // Obtener RFC de la fila seleccionada
-        
-        PersonaDTO personaDTO = personas.buscarRFC(rfc); 
-        
-        if (personaDTO != null) {
-            licenciaDTO.setPersona(personaDTO); 
-             System.out.println(licenciaDTO.getPersona().getId());
-            try {
-                licenciaDTO.setVigencia(Integer.parseInt((String) vigenciaCombobox.getSelectedItem()));
-            } catch (NumberFormatException e) {
-                System.err.println("El valor seleccionado no es un número válido.");
+    private void obtenerDatosFilaSeleccionada(LicenciaDTO licenciaDTO) {
+        if (operacion==1) {
+           int filaSeleccionada = tablaPersonas.getSelectedRow();
+
+        if (filaSeleccionada != -1) {
+            String rfc = tablaPersonas.getValueAt(filaSeleccionada, 4).toString(); // Obtener RFC de la fila seleccionada
+
+            PersonaDTO personaDTO = personas.buscarRFC(rfc);
+
+            if (personaDTO != null) {
+                licenciaDTO.setPersona(personaDTO);
+                System.out.println(licenciaDTO.getPersona().getId());
+                try {
+                    licenciaDTO.setVigencia(Integer.parseInt((String) vigenciaCombobox.getSelectedItem()));
+                } catch (NumberFormatException e) {
+                    System.err.println("El valor seleccionado no es un número válido.");
+                }
+                licencia.asignarValoresLicencia(licenciaDTO);
+
             }
-          licencia.asignarValoresLicencia(licenciaDTO);
-            
-        } 
-    } else {
-        JOptionPane.showMessageDialog(null, "Por favor, seleccione una persona.");
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione una persona.");
+        }   
+        }
+      
     }
-}
+
     /**
      * @param args the command line arguments
      */
@@ -298,7 +320,7 @@ private void obtenerDatosFilaSeleccionada(LicenciaDTO licenciaDTO) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new buscarPersonas().setVisible(true);
+                new buscarPersonas(1).setVisible(true);
             }
         });
     }
