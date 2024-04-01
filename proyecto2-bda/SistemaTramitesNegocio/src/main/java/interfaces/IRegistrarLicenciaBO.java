@@ -5,6 +5,7 @@
 package interfaces;
 
 import bda.itson.entidadesJPA.Licencia;
+import bda.itson.entidadesJPA.Persona;
 
 import dtos.LicenciaDTO;
 import dtos.PersonaDTO;
@@ -39,4 +40,12 @@ public interface IRegistrarLicenciaBO {
      * @param licenciaDTO La licencia a la cual se le asignarán los valores.
      */
     void asignarValoresLicencia(LicenciaDTO licenciaDTO);
+    /**
+     * Metodo que sirve como validador que una persona tenga una licencia activa o no al momento de ser seleccionada
+     * @param persona
+     * @return dependiendo de lo establecido lanzara un mensaje
+     */
+    boolean personaTieneLicenciaActiva(PersonaDTO persona);
 }
+
+
