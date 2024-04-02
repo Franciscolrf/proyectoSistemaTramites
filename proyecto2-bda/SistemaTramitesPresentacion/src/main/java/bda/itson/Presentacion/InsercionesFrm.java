@@ -5,7 +5,6 @@
 package bda.itson.Presentacion;
 
 import dtos.PersonaDTO;
-import interfaces.IregistrarPersona;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import negocio.RegistrarPersona;
 import tablas.Conversiones;
+import interfaces.IregistrarPersona;
 
 /**
  *
@@ -211,7 +211,7 @@ public class InsercionesFrm extends javax.swing.JFrame {
         model.setRowCount(0);
 
         // Llenar la tabla con la lista generada
-        List<PersonaDTO> listaPersonas = persona.generarlista(1);
+        List<PersonaDTO> listaPersonas = persona.generarlista(20);
         DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
         tablaPersonas.setModel(newModel);
     }//GEN-LAST:event_generarPersonasBtnActionPerformed
