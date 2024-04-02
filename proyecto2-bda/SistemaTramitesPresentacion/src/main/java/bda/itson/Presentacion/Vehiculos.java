@@ -4,17 +4,41 @@
  */
 package bda.itson.Presentacion;
 
+import dtos.PersonaDTO;
+import dtos.PlacaDTO;
+import dtos.VehiculoDTO;
+import interfaces.IRegistrarPlaca;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import negocio.RegistrarPlaca;
+import tablas.Conversiones;
+import tablas.Tabla;
+
 /**
  *
  * @author abelc
  */
 public class Vehiculos extends javax.swing.JFrame {
 
+    PersonaDTO personaDTO;
+    IRegistrarPlaca placa;
+    Conversiones tabla;
+    PlacaDTO placaDTO;
     /**
      * Creates new form Vehiculos
      */
-    public Vehiculos() {
+    public Vehiculos(PersonaDTO persona) {
+        this.personaDTO = persona;
+        tabla=new Conversiones();
+        this.placaDTO=new PlacaDTO();
+       this.placa=new RegistrarPlaca();
         initComponents();
+         DefaultTableModel model = (DefaultTableModel) tablaVehiculos.getModel();
+            model.setRowCount(0);
+            List<VehiculoDTO> vehiculos=placa.obtenerVehiculosDePersona(persona);
+             DefaultTableModel newModel = tabla.vehiculosTableModel(vehiculos);
+            tablaVehiculos.setModel(newModel);
     }
 
     /**
@@ -87,17 +111,10 @@ public class Vehiculos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nombres", "Apellido Paterno", "Apellido Materno", "Telefono", "RFC", "Discapacidad", "Fecha de nacimiento"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
-            };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return false;
             }
-        });
+        ));
+        tablaVehiculos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tablaVehiculos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tablaVehiculos);
 
@@ -114,7 +131,7 @@ public class Vehiculos extends javax.swing.JFrame {
         seleccionarBtn1.setBackground(new java.awt.Color(107, 27, 56));
         seleccionarBtn1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         seleccionarBtn1.setForeground(new java.awt.Color(255, 255, 255));
-        seleccionarBtn1.setText("Seleccionar");
+        seleccionarBtn1.setText("Tramitar placa");
         seleccionarBtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 seleccionarBtn1ActionPerformed(evt);
@@ -179,18 +196,31 @@ public class Vehiculos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
-     
+
     }//GEN-LAST:event_buscarBtnActionPerformed
 
     private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
-       
+this.dispose();
 
     }//GEN-LAST:event_regresarBtnActionPerformed
 
     private void seleccionarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtn1ActionPerformed
-        // TODO add your handling code here:
+     obtenerDatosFilaSeleccionada();
+     System.out.println(placaDTO.getVehiculo().getId());
+        placa.generarPlaca(placaDTO);
+        dlgConfirmaciones confirmacion=new dlgConfirmaciones(this,true,null,placaDTO,2);
     }//GEN-LAST:event_seleccionarBtn1ActionPerformed
-
+public void obtenerDatosFilaSeleccionada(){
+  int filaSeleccionada = tablaVehiculos.getSelectedRow();
+            if (filaSeleccionada != -1) {
+            String numSerie=tablaVehiculos.getValueAt(filaSeleccionada, 0).toString();
+            VehiculoDTO vehiculo=placa.buscarPorNumeroSerie(numSerie);
+                System.out.println(vehiculo.getId());
+              placaDTO.setVehiculo(vehiculo);
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor, seleccione un vehiculo.");
+            } 
+}
     /**
      * @param args the command line arguments
      */
@@ -221,7 +251,9 @@ public class Vehiculos extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Vehiculos().setVisible(true);
+                PersonaDTO persona = new PersonaDTO(); // Creas un objeto PersonaDTO
+                Vehiculos vehiculos = new Vehiculos(persona);
+                vehiculos.setVisible(true);
             }
         });
     }

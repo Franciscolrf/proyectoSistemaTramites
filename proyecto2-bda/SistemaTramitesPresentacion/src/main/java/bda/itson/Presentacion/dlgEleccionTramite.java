@@ -11,7 +11,7 @@ import interfaces.IRegistrarLicenciaBO;
  * @author abelc
  */
 public class dlgEleccionTramite extends javax.swing.JDialog {
-     
+
     /**
      * Creates new form dlgEleccionTramite
      */
@@ -138,7 +138,9 @@ public class dlgEleccionTramite extends javax.swing.JDialog {
     }//GEN-LAST:event_tramitarLicenciaBtnActionPerformed
 
     private void tramitarLicenciaBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tramitarLicenciaBtn1ActionPerformed
-        // TODO add your handling code here:
+        licenciaTramite = new buscarPersonas(2);
+        this.dispose();
+        licenciaTramite.setVisible(true);
     }//GEN-LAST:event_tramitarLicenciaBtn1ActionPerformed
 
 
