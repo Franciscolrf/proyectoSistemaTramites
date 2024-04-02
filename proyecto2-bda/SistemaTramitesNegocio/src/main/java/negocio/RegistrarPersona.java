@@ -1,23 +1,27 @@
 package negocio;
 
 import bda.itson.entidadesJPA.Persona;
+import bda.itson.entidadesJPA.Placa;
 import bda.itson.entidadesJPA.Vehiculo;
 import dao.ConexionJPA;
 import dao.PersonaDAO;
 import dtos.PersonaDTO;
+import dtos.PlacaDTO;
 import dtos.VehiculoDTO;
 import excepciones.PersistenciaException;
 import interfaces.IConexion;
 import interfaces.IPersona;
-import interfaces.IregistrarPersona;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import otros.Conversiones;
 import otros.GeneradorPersonas;
+import otros.GeneradorPlacas;
 import otros.GeneradorVehiculos;
+import interfaces.IregistrarPersona;
 
 /**
  *
@@ -50,6 +54,10 @@ public class RegistrarPersona implements IregistrarPersona {
      */
     GeneradorVehiculos gv;
 
+    private final Conversiones conversiones;
+
+    private final GeneradorPlacas placas;
+
     /**
      * Constructor de la clase. Inicializa los objetos de conexión JPA, acceso a
      * datos de Persona y generación de datos aleatorios.
@@ -59,6 +67,8 @@ public class RegistrarPersona implements IregistrarPersona {
         this.Personadao = new PersonaDAO();
         this.g = new GeneradorPersonas();
         gv = new GeneradorVehiculos();
+        this.conversiones = new Conversiones();
+        this.placas = new GeneradorPlacas();
     }
 
     /**
@@ -69,26 +79,34 @@ public class RegistrarPersona implements IregistrarPersona {
      */
     @Override
     public boolean registroMasivo(List<PersonaDTO> personas) {
-        List<Persona> personasEntidad = new ArrayList<>();
-        for (PersonaDTO persona : personas) {
-            Persona pEntidad = convertirPersonaDTOaEntidad(persona);
-            List<VehiculoDTO> vehiculosDTO = gv.generarVehiculos(5);
-            List<Vehiculo> vehiculos = convertirVehiculosDTOaEntidad(vehiculosDTO);
-            for (Vehiculo vehiculo : vehiculos) {
-                vehiculo.setPropietario(pEntidad);
+       List<Persona> personasEntidad = new ArrayList<>();
+    for (PersonaDTO persona : personas) {
+        Persona pEntidad = conversiones.PersonaDTOAPersona(persona);
+        List<VehiculoDTO> vehiculosDTO = gv.generarVehiculos(5);
+        List<Vehiculo> vehiculos = conversiones.convertirVehiculosDTOaEntidad(vehiculosDTO);
+
+        for (Vehiculo vehiculo : vehiculos) {
+          /*  List<PlacaDTO> placasDTO = placas.generarPlacas();
+            List<Placa> placas = conversiones.PlacasDTOAPlacas(placasDTO);
+            for (Placa placa : placas) {
+                placa.setVehiculo(vehiculo);
             }
-
-            pEntidad.setVehiculos(vehiculos);
-
-            personasEntidad.add(pEntidad);
+            vehiculo.setPlacas(placas);*/
+            vehiculo.setPropietario(pEntidad);
         }
-        try {
-            Personadao.insercionMasivaPersonas(personasEntidad);
-            return true;
-        } catch (PersistenciaException ex) {
-            Logger.getLogger(RegistrarPersona.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
+
+        pEntidad.setVehiculos(vehiculos);
+
+        personasEntidad.add(pEntidad);
+    }
+
+    try {
+        Personadao.insercionMasivaPersonas(personasEntidad);
+        return true;
+    } catch (PersistenciaException ex) {
+        Logger.getLogger(RegistrarPersona.class.getName()).log(Level.SEVERE, null, ex);
+        return false;
+    }
     }
 
     /**
@@ -163,73 +181,19 @@ public class RegistrarPersona implements IregistrarPersona {
 
         return rfc;
     }
-/**
- * Convierte una entidad de Persona a un DTO de Persona.
- * 
- * @param persona La entidad de Persona a convertir.
- * @return El DTO de Persona generado.
- */
-    public PersonaDTO daoAdto(Persona persona) {
-        PersonaDTO personaDto = new PersonaDTO();
-        personaDto.setId(persona.getId());
-        personaDto.setNombres(persona.getNombres());
-        personaDto.setApellidoPaterno(persona.getApellidoPaterno());
-        personaDto.setApellidoMaterno(persona.getApellidoMaterno());
-        personaDto.setFechaNacimiento(persona.getFechaNacimiento());
-        personaDto.setRFC(persona.getRFC());
-        personaDto.setTelefono(persona.getTelefono());
-        personaDto.setEsDiscapacitado(persona.isEsDiscapacitado());
-        return personaDto;
-    }
-/**
- * Convierte un DTO de Persona a una entidad de Persona.
- * 
- * @param personaDTO El DTO de Persona a convertir.
- * @return La entidad de Persona generada.
- */
-    private Persona convertirPersonaDTOaEntidad(PersonaDTO personaDTO) {
-        Persona personaEntidad = new Persona();
-        personaEntidad.setNombres(personaDTO.getNombres());
-        personaEntidad.setApellidoPaterno(personaDTO.getApellidoPaterno());
-        personaEntidad.setApellidoMaterno(personaDTO.getApellidoMaterno());
-        personaEntidad.setFechaNacimiento(personaDTO.getFechaNacimiento());
-        personaEntidad.setRFC(personaDTO.getRFC());
-        personaEntidad.setTelefono(personaDTO.getTelefono());
-        personaEntidad.setEsDiscapacitado(personaDTO.isEsDiscapacitado());
-        return personaEntidad;
-    }
-/**
- * Convierte una lista de DTO de Vehiculo a una lista de entidades de Vehiculo.
- * 
- * @param vehiculosDTO La lista de DTO de Vehiculo a convertir.
- * @return La lista de entidades de Vehiculo generada.
- */
-    private List<Vehiculo> convertirVehiculosDTOaEntidad(List<VehiculoDTO> vehiculosDTO) {
-        List<Vehiculo> vehiculos = new ArrayList<>();
-        for (VehiculoDTO vehiculoDTO : vehiculosDTO) {
-            Vehiculo vehiculo = new Vehiculo();
-            vehiculo.setMarca(vehiculoDTO.getMarca());
-            vehiculo.setModelo(vehiculoDTO.getModelo());
-            vehiculo.setLinea(vehiculoDTO.getLinea());
-            vehiculo.setNumeroSerie(vehiculoDTO.getNumeroSerie());
-            vehiculo.setEstado(vehiculoDTO.getEstado());
-            vehiculo.setColor(vehiculoDTO.getColor());
-            vehiculo.setTipoVehiculo(vehiculoDTO.getTipoVehiculo());
-            vehiculos.add(vehiculo);
-        }
-        return vehiculos;
 
-    }
-/**
- * Busca una persona por su RFC y la devuelve como un DTO de Persona.
- * 
- * @param rfc El RFC de la persona a buscar.
- * @return El DTO de Persona que corresponde al RFC especificado, si se encuentra; de lo contrario, devuelve null.
- */
+    /**
+     * Busca una persona por su RFC y la devuelve como un DTO de Persona.
+     *
+     * @param rfc El RFC de la persona a buscar.
+     * @return El DTO de Persona que corresponde al RFC especificado, si se
+     * encuentra; de lo contrario, devuelve null.
+     */
     @Override
     public PersonaDTO buscarRFC(String rfc) {
         PersonaDTO personaDto = new PersonaDTO();
-        personaDto = daoAdto(Personadao.obtenerPersonaRFC(rfc));
+        personaDto = conversiones.convertirAPersonaDTO(Personadao.obtenerPersonaRFC(rfc));
         return personaDto;
     }
+
 }

@@ -44,4 +44,6 @@ public interface ILicencia {
      * 
      */
     public List<Licencia> obtenerLicenciasPorPeriodo(String fechaInicio, String fechaFin) throws PersistenciaException;
+    
+    public Licencia obtenerLicenciaActiva(Persona persona) throws PersistenciaException;
 }

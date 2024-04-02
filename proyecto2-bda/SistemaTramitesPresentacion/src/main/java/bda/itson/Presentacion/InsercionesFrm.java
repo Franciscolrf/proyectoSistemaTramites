@@ -5,7 +5,6 @@
 package bda.itson.Presentacion;
 
 import dtos.PersonaDTO;
-import interfaces.IregistrarPersona;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,20 +15,23 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import negocio.RegistrarPersona;
 import tablas.Conversiones;
+import interfaces.IregistrarPersona;
 
 /**
  *
  * @author abelc
  */
 public class InsercionesFrm extends javax.swing.JFrame {
-IregistrarPersona persona;
-Conversiones tabla;
+
+    IregistrarPersona persona;
+    Conversiones tabla;
+
     /**
      * Creates new form InsercionesFrm
      */
     public InsercionesFrm() {
-        this.persona= new RegistrarPersona();
-        this.tabla=new Conversiones();
+        this.persona = new RegistrarPersona();
+        this.tabla = new Conversiones();
         initComponents();
     }
 
@@ -206,53 +208,59 @@ Conversiones tabla;
 
     private void generarPersonasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarPersonasBtnActionPerformed
         DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
-    model.setRowCount(0);
+        model.setRowCount(0);
 
-    // Llenar la tabla con la lista generada
-    List<PersonaDTO> listaPersonas = persona.generarlista(20); 
-    DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
-    tablaPersonas.setModel(newModel);
+        // Llenar la tabla con la lista generada
+        List<PersonaDTO> listaPersonas = persona.generarlista(20);
+        DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
+        tablaPersonas.setModel(newModel);
     }//GEN-LAST:event_generarPersonasBtnActionPerformed
-/*
+    /*
     Metodo que recupera todo lo que hay en la tabla y lo mete en una lista para despues meterla
     en la base de datos
-    */
+     */
     private void registrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarBtnActionPerformed
-     List<PersonaDTO> listaPersonas = new ArrayList<>();
-    DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
-    int rowCount = model.getRowCount();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        List<PersonaDTO> listaPersonas = new ArrayList<>();
+        DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
+        int rowCount = model.getRowCount();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        boolean esDiscapacitado;
 
-    for (int i = 0; i < rowCount; i++) {
-        String nombre = (String) model.getValueAt(i, 0);
-        String apellidoPaterno = (String) model.getValueAt(i, 1);
-        String apellidoMaterno = (String) model.getValueAt(i, 2);
-        String telefono = (String) model.getValueAt(i, 3);
-        String rfc = (String) model.getValueAt(i, 4);
-        boolean esDiscapacitado = (boolean) model.getValueAt(i, 5);
-        String fechaNacimientoString = (String) model.getValueAt(i, 6);
+        for (int i = 0; i < rowCount; i++) {
+            String nombre = (String) model.getValueAt(i, 0);
+            String apellidoPaterno = (String) model.getValueAt(i, 1);
+            String apellidoMaterno = (String) model.getValueAt(i, 2);
+            String telefono = (String) model.getValueAt(i, 3);
+            String rfc = (String) model.getValueAt(i, 4);
+            if ("Si".equals((String) model.getValueAt(i, 5))) {
+                esDiscapacitado = true;
+            } else {
+                esDiscapacitado = false;
+            }
 
-        Calendar fechaNacimiento = Calendar.getInstance();
-        try {
-            fechaNacimiento.setTime(dateFormat.parse(fechaNacimientoString));
-        } catch (ParseException ex) {
-            ex.printStackTrace();
+            String fechaNacimientoString = (String) model.getValueAt(i, 6);
+
+            Calendar fechaNacimiento = Calendar.getInstance();
+            try {
+                fechaNacimiento.setTime(dateFormat.parse(fechaNacimientoString));
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+
+            PersonaDTO persona = new PersonaDTO();
+            persona.setNombres(nombre);
+            persona.setApellidoPaterno(apellidoPaterno);
+            persona.setApellidoMaterno(apellidoMaterno);
+            persona.setTelefono(telefono);
+            persona.setRFC(rfc);
+            persona.setEsDiscapacitado(esDiscapacitado);
+            persona.setFechaNacimiento(fechaNacimiento);
+
+            listaPersonas.add(persona);
         }
-
-        PersonaDTO persona = new PersonaDTO();
-        persona.setNombres(nombre);
-        persona.setApellidoPaterno(apellidoPaterno);
-        persona.setApellidoMaterno(apellidoMaterno);
-        persona.setTelefono(telefono);
-        persona.setRFC(rfc);
-        persona.setEsDiscapacitado(esDiscapacitado);
-        persona.setFechaNacimiento(fechaNacimiento);
-
-        listaPersonas.add(persona);
-    }
-    persona.registroMasivo(listaPersonas);
-   model.setRowCount(0);
-   JOptionPane.showMessageDialog(this, "El registro se ha realizado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+        persona.registroMasivo(listaPersonas);
+        model.setRowCount(0);
+        JOptionPane.showMessageDialog(this, "El registro se ha realizado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_registrarBtnActionPerformed
 
     private void regresarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtn1ActionPerformed

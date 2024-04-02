@@ -5,34 +5,60 @@
 package bda.itson.Presentacion;
 
 import dtos.LicenciaDTO;
+import dtos.PlacaDTO;
 import interfaces.IRegistrarLicenciaBO;
+import interfaces.IRegistrarPlaca;
 import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
 import negocio.RegistrarLicencia;
+import negocio.RegistrarPlaca;
 
 /**
  *
  * @author abelc
  */
-public class dlgConfirmarLicencia extends javax.swing.JDialog {
+public class dlgConfirmaciones extends javax.swing.JDialog {
 LicenciaDTO licenciaDatos;
 IRegistrarLicenciaBO licencia;
+PlacaDTO placaDTO;
+int operacion;
+IRegistrarPlaca placa;
     /**
      * Creates new form dlgConfirmarLicencia
      */
-    public dlgConfirmarLicencia(java.awt.Frame parent, boolean modal,LicenciaDTO licenciaDatos) {
+    public dlgConfirmaciones(java.awt.Frame parent, boolean modal,LicenciaDTO licenciaDatos,PlacaDTO placaDTO,int operacion) {
         super(parent, modal);
+        placa=new RegistrarPlaca();
          this.licencia=new RegistrarLicencia();
+         this.operacion=operacion;
          this.licenciaDatos = licenciaDatos; 
-         System.out.println(licenciaDatos.getPersona().getId());
+         this.placaDTO=placaDTO;
         initComponents();
-         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+          System.out.println(placaDTO.getVehiculo().getId());
+        if (operacion==1) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         personaTxt.setText(licenciaDatos.getPersona().getNombres()+" "+
-                licenciaDatos.getPersona().getApellidoPaterno()+" "+licenciaDatos.getPersona().getApellidoMaterno());
+        licenciaDatos.getPersona().getApellidoPaterno()+" "+licenciaDatos.getPersona().getApellidoMaterno());
         rfcTxt.setText(licenciaDatos.getPersona().getRFC());
         vigenciaTxt.setText(Integer.toString(licenciaDatos.getVigencia()));
         fechaExTxt.setText(dateFormat.format(licenciaDatos.getFechaExpedicion().getTime()));
         fechaVenTxt.setText(dateFormat.format(licenciaDatos.getFechaVencimiento().getTime()));
       costoTxt.setText(Double.toString(licenciaDatos.getCosto()));
+        }
+        if (operacion==2) {
+            personaTxt.setText(placaDTO.getVehiculo().getPropietario().getNombres()+" "+
+            placaDTO.getVehiculo().getPropietario().getApellidoPaterno()+" "
+           +placaDTO.getVehiculo().getPropietario().getApellidoMaterno());
+            Txt1.setText("Numero de serie:");
+            rfcTxt.setText(placaDTO.getVehiculo().getNumeroSerie());
+            Txt2.setText("Marca de carro:");
+            vigenciaTxt.setText(placaDTO.getVehiculo().getMarca());
+            Txt3.setText("Modelo de carro: ");
+            fechaExTxt.setText(placaDTO.getVehiculo().getModelo());
+            Txt6.setText("Código de placa:");
+            fechaVenTxt.setText(placaDTO.getCodigo());
+            costoTxt.setText(Double.toString(placaDTO.getCosto()));
+        }
         setVisible(true);
      
     }
@@ -82,7 +108,7 @@ IRegistrarLicenciaBO licencia;
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Sistema de control de trámites");
+        jLabel2.setText("Confirmación de trámite");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -92,7 +118,7 @@ IRegistrarLicenciaBO licencia;
                 .addComponent(jLabel1)
                 .addGap(31, 31, 31)
                 .addComponent(jLabel2)
-                .addGap(0, 20, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,9 +190,6 @@ IRegistrarLicenciaBO licencia;
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -195,12 +218,13 @@ IRegistrarLicenciaBO licencia;
                                 .addComponent(Txt6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(fechaVenTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(72, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(regresarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(confirmarBtn)
                         .addGap(31, 31, 31))))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,9 +281,16 @@ IRegistrarLicenciaBO licencia;
     }//GEN-LAST:event_regresarBtnActionPerformed
 
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
-
-        licencia.registrarLicencia(licenciaDatos);
+        if (operacion==1) {
+              licencia.registrarLicencia(licenciaDatos);
+         JOptionPane.showMessageDialog(this, "La licencia se ha registrado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
         dispose();
+        }
+        if (operacion==2) {
+            placa.registrarPLaca(placaDTO);
+            JOptionPane.showMessageDialog(this, "La placa se ha registrado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+        dispose();
+        }
     }//GEN-LAST:event_confirmarBtnActionPerformed
 
 
