@@ -281,16 +281,5 @@ public class VehiculoDTO {
         this.propietario = propietario;
     }
 
-    /**
-     * Retorna una representación en formato de cadena de este objeto
-     * VehiculoDTO. La representación incluye todos los campos de la clase.
-     *
-     * @return Representación en formato de cadena de este objeto.
-     */
-    @Override
-    public String toString() {
-        return "VehiculoDTO [id=" + id + ", numeroSerie=" + numeroSerie + ", estado=" + estado + ", color=" + color
-                + ", modelo=" + modelo + ", marca=" + marca + ", linea=" + linea + ", tipoVehiculo=" + tipoVehiculo
-                + ", propietario=" + propietario + "]";
-    }
+    
 }

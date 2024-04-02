@@ -15,9 +15,10 @@ import bda.itson.entidadesJPA.Placa;
  * @author ID145
  */
 public interface IPlacaDAO {
+
     /**
      * Método que agrega una placa
-     * 
+     *
      * @param placa Placa a agregar
      * @return Placa agregada
      * @throws PersistenciaException Si ocurre un error al agregar la placa
@@ -26,7 +27,7 @@ public interface IPlacaDAO {
 
     /**
      * Método para consultar una placa por su id.
-     * 
+     *
      * @param idPlaca Identificador de la placa a consultar.
      * @return Placa consultada.
      * @throws PersistenciaException Si ocurre un error al consultar la placa.
@@ -35,13 +36,14 @@ public interface IPlacaDAO {
 
     /**
      * Método para consultar las placas tramitadas entre dos fechas.
-     * 
+     *
      * @param fechaInicio Fecha de inicio del rango de búsqueda.
-     * @param fechaFin    Fecha de fin del rango de búsqueda.
+     * @param fechaFin Fecha de fin del rango de búsqueda.
      * @return Lista de placas tramitadas entre las fechas especificadas.
      * @throws PersistenciaException Si ocurre un error al consultar las placas.
      */
-
     public List<Placa> consultarPlacasTramitadasPorPeriodo(Calendar fechaInicio, Calendar fechaFin)
             throws PersistenciaException;
+
+    public Placa buscarPlacaCodigo(String codigo) throws PersistenciaException;
 }

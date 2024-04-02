@@ -106,6 +106,7 @@ public class Conversiones {
 
     public Vehiculo VehiculoDTOAVehiculo(VehiculoDTO vehiculoDTO) {
         Vehiculo vehiculo = new Vehiculo();
+        vehiculo.setId(vehiculoDTO.getId());
         vehiculo.setNumeroSerie(vehiculoDTO.getNumeroSerie());
         vehiculo.setEstado(vehiculoDTO.getEstado());
         vehiculo.setColor(vehiculoDTO.getColor());
@@ -117,6 +118,20 @@ public class Conversiones {
         return vehiculo;
     }
 
+    public VehiculoDTO VehiculoAVehiculoDTO(Vehiculo vehiculo) {
+        VehiculoDTO vehiculoDTO = new VehiculoDTO();
+        vehiculoDTO.setId(vehiculo.getId());
+        vehiculoDTO.setNumeroSerie(vehiculo.getNumeroSerie());
+        vehiculoDTO.setEstado(vehiculo.getEstado());
+        vehiculoDTO.setColor(vehiculo.getColor());
+        vehiculoDTO.setModelo(vehiculo.getModelo());
+        vehiculoDTO.setMarca(vehiculo.getMarca());
+        vehiculoDTO.setLinea(vehiculo.getLinea());
+        vehiculoDTO.setTipoVehiculo(vehiculo.getTipoVehiculo());
+        vehiculoDTO.setPropietario(convertirAPersonaDTO(vehiculo.getPropietario()));
+        return vehiculoDTO;
+    }
+
     public Placa PlacaDTOAPlaca(PlacaDTO placaDTO) {
         Placa placa = new Placa();
         placa.setCodigo(placaDTO.getCodigo());
@@ -124,6 +139,7 @@ public class Conversiones {
         placa.setEstado(placaDTO.getEstado());
         placa.setFechaExpedicion(placaDTO.getFechaExpedicion());
         placa.setFechaRecepcion(placaDTO.getFechaRecepcion());
+        placa.setVehiculo(VehiculoDTOAVehiculo(placaDTO.getVehiculo()));
         return placa;
     }
 

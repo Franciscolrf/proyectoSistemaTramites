@@ -25,7 +25,7 @@ public class Vehiculo implements Serializable {
     @JoinColumn(name = "idPersona")
     private Persona propietario;
 
-    @OneToMany(mappedBy = "vehiculo")
+   @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.ALL)
     private List<Placa> placas;
 
     /**

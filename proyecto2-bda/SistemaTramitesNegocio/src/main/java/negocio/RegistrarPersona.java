@@ -11,7 +11,6 @@ import dtos.VehiculoDTO;
 import excepciones.PersistenciaException;
 import interfaces.IConexion;
 import interfaces.IPersona;
-import interfaces.IregistrarPersona;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -22,6 +21,7 @@ import otros.Conversiones;
 import otros.GeneradorPersonas;
 import otros.GeneradorPlacas;
 import otros.GeneradorVehiculos;
+import interfaces.IregistrarPersona;
 
 /**
  *

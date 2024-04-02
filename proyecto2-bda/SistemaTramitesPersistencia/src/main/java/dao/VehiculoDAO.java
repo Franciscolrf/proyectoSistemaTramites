@@ -20,14 +20,16 @@ import interfaces.IVehiculoDAO;
  * @author ID145
  */
 public class VehiculoDAO implements IVehiculoDAO {
+
     private IConexion conexion;
 
-    public VehiculoDAO () {
+    public VehiculoDAO() {
         conexion = new ConexionJPA("bda.itson_SistemaTramitesPersistencia_jar_1.0-SNAPSHOTPU");
     }
 
     /**
      * Registra un nuevo Vehiculo en la base de datos.
+     *
      * @param vehiculo Objeto de tipo Vehiculo que se registrará.
      * @return El objeto Vehiculo registrado.
      */
@@ -44,6 +46,7 @@ public class VehiculoDAO implements IVehiculoDAO {
 
     /**
      * Consulta un Vehiculo en la base de datos por su identificador.
+     *
      * @param id Identificador del Vehiculo a consultar.
      * @return El objeto Vehiculo consultado.
      */
@@ -58,9 +61,9 @@ public class VehiculoDAO implements IVehiculoDAO {
     /**
      * Realiza una inserción masiva de Vehiculos en la base de datos.
      *
-     * @param Vehiculos Lista de objetos Vehiculo que se insertarán.
      * @return La lista de Vehiculos insertados.
-     * @throws PersistenciaException Si ocurre un error durante la inserción masiva.
+     * @throws PersistenciaException Si ocurre un error durante la inserción
+     * masiva.
      */
     public List<Vehiculo> insercionMasivaVehiculo(List<Vehiculo> vehiculos) throws PersistenciaException {
         EntityManager entityManager = null;
@@ -83,23 +86,40 @@ public class VehiculoDAO implements IVehiculoDAO {
         }
         return vehiculos;
     }
-    
+
     @Override
-    public List<Vehiculo> consultarVehiculosPersona(Persona persona) throws PersistenciaException{
-    EntityManager entityManager = null;
-    try {
+    public List<Vehiculo> consultarVehiculosPersona(Persona persona) throws PersistenciaException {
+        EntityManager entityManager = null;
+        try {
             entityManager = conexion.getEntityManager();
             TypedQuery<Vehiculo> query = entityManager.createQuery(
-            "SELECT v FROM Vehiculo v WHERE v.propietario.id=:personaId",
+                    "SELECT v FROM Vehiculo v WHERE v.propietario.id=:personaId",
                     Vehiculo.class);
             query.setParameter("personaId", persona.getId());
             return query.getResultList();
-    } catch (Exception ex) {
+        } catch (Exception ex) {
             throw new PersistenciaException("Error al realizar la solicitud de consulta de licencias", ex);
         } finally {
             conexion.close();
         }
 
-}
+    }
 
+    @Override
+    public Vehiculo consultarNumeroSeria(String numeroSerie) throws PersistenciaException {
+        EntityManager entityManager = null;
+        Vehiculo vehiculo = null;
+        try {
+            entityManager = conexion.getEntityManager();
+            TypedQuery<Vehiculo> query = entityManager.createQuery(
+                    "SELECT v FROM Vehiculo v WHERE v.numeroSerie=:numeroSerie", Vehiculo.class
+            );
+            query.setParameter("numeroSerie", numeroSerie);
+            return query.getSingleResult();
+        } catch (Exception ex) {
+            throw new PersistenciaException("Error al realizar la solicitud de consulta de licencias", ex);
+        } finally {
+            conexion.close();
+        }
+    }
 }

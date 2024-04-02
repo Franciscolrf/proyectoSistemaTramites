@@ -42,4 +42,6 @@ public interface IVehiculoDAO {
     public List<Vehiculo> insercionMasivaVehiculo(List<Vehiculo> vehiculos) throws PersistenciaException;
     
     public List<Vehiculo> consultarVehiculosPersona(Persona persona) throws PersistenciaException;
+    
+    Vehiculo consultarNumeroSeria(String numeroSerie) throws PersistenciaException;
 }

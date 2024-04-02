@@ -4,11 +4,16 @@
  */
 package otros;
 
+import dao.PlacaDAO;
 import dtos.PlacaDTO;
+import excepciones.PersistenciaException;
+import interfaces.IPlacaDAO;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,16 +25,33 @@ public class GeneradorPlacas {
         "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     public static final String[] digitos = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
     private Random random;
+    private final IPlacaDAO placaDAO;
 
     public GeneradorPlacas() {
         this.random = new Random();
+        placaDAO = new PlacaDAO();
     }
 
     public String generarCodigoPlaca() {
+        String codigo;
+        boolean codigoExistente = false;
+
+        do {
+            codigo = crearCodigoAleatorio();
+            try {
+                codigoExistente = placaDAO.buscarPlacaCodigo(codigo) != null;
+            } catch (PersistenciaException ex) {
+                Logger.getLogger(GeneradorPlacas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } while (codigoExistente);
+
+        return codigo;
+    }
+
+    private String crearCodigoAleatorio() {
         String car = caracteres[random.nextInt(caracteres.length)] + caracteres[random.nextInt(caracteres.length)] + caracteres[random.nextInt(caracteres.length)];
         String dig = digitos[random.nextInt(digitos.length)] + digitos[random.nextInt(digitos.length)] + digitos[random.nextInt(digitos.length)];
-        String codigo = car + "-" + dig;
-        return codigo;
+        return car + "-" + dig;
     }
 
     /**
@@ -80,12 +102,15 @@ public class GeneradorPlacas {
 
         return placa;
     }
-/**
- * Genera una nueva placa basada en la información proporcionada en el objeto PlacaDTO dado.
- * 
- * @param placa El objeto PlacaDTO con la información del vehiculo para determinar el precio.
- * @return Un nuevo objeto PlacaDTO generado.
- */
+
+    /**
+     * Genera una nueva placa basada en la información proporcionada en el
+     * objeto PlacaDTO dado.
+     *
+     * @param placa El objeto PlacaDTO con la información del vehiculo para
+     * determinar el precio.
+     * @return Un nuevo objeto PlacaDTO generado.
+     */
     public PlacaDTO generarPlaca(PlacaDTO placa) {
         placa.setCodigo(generarCodigoPlaca());
         placa.setEstado("activa");
@@ -98,30 +123,30 @@ public class GeneradorPlacas {
         }
         return placa;
     }
-    
+
     public List<PlacaDTO> generarPlacas() {
-    List<PlacaDTO> placasGeneradas = new ArrayList<>();
+        List<PlacaDTO> placasGeneradas = new ArrayList<>();
 
-    PlacaDTO placa1 = generarPlacaPrecioNuevo();
-    PlacaDTO placa2 = generarPlacaPrecioNuevo();
-    PlacaDTO placa3 = generarPlacaPrecioUsado();
-    PlacaDTO placa4 = generarPlacaPrecioUsado();
+        PlacaDTO placa1 = generarPlacaPrecioNuevo();
+        PlacaDTO placa2 = generarPlacaPrecioNuevo();
+        PlacaDTO placa3 = generarPlacaPrecioUsado();
+        PlacaDTO placa4 = generarPlacaPrecioUsado();
 
-    placa2.setFechaExpedicion(placa1.getFechaRecepcion());
-    placa2.setFechaRecepcion(placa3.getFechaExpedicion());
-    
-    Calendar fechaExpedicionPlaca3 = placa3.getFechaExpedicion();
-    Calendar fechaRecepcionPlaca4 = (Calendar) fechaExpedicionPlaca3.clone();
-    fechaRecepcionPlaca4.add(Calendar.YEAR, 1);
-    
-    placa4.setFechaExpedicion(fechaExpedicionPlaca3);
-    placa4.setFechaRecepcion(fechaRecepcionPlaca4);
+        placa2.setFechaExpedicion(placa1.getFechaRecepcion());
+        placa2.setFechaRecepcion(placa3.getFechaExpedicion());
 
-    placasGeneradas.add(placa1);
-    placasGeneradas.add(placa2);
-    placasGeneradas.add(placa3);
-    placasGeneradas.add(placa4);
+        Calendar fechaExpedicionPlaca3 = placa3.getFechaExpedicion();
+        Calendar fechaRecepcionPlaca4 = (Calendar) fechaExpedicionPlaca3.clone();
+        fechaRecepcionPlaca4.add(Calendar.YEAR, 1);
 
-    return placasGeneradas;
-}
+        placa4.setFechaExpedicion(fechaExpedicionPlaca3);
+        placa4.setFechaRecepcion(fechaRecepcionPlaca4);
+
+        placasGeneradas.add(placa1);
+        placasGeneradas.add(placa2);
+        placasGeneradas.add(placa3);
+        placasGeneradas.add(placa4);
+
+        return placasGeneradas;
+    }
 }
