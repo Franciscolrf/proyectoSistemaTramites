@@ -5,6 +5,7 @@ import bda.itson.entidadesJPA.Persona;
 import excepciones.PersistenciaException;
 import interfaces.IConexion;
 import interfaces.ILicencia;
+import java.util.Calendar;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -79,14 +80,16 @@ public class LicenciaDAO implements ILicencia {
      * @throws PersistenciaException
      *
      */
-    public List<Licencia> obtenerLicenciasPorPeriodo(String fechaInicio, String fechaFin) throws PersistenciaException {
+    @Override
+    public List<Licencia> obtenerLicenciasPorPeriodo(Persona persona, Calendar fechaInicio, Calendar fechaFin) throws PersistenciaException {
 
         EntityManager entityManager = null;
         try {
             entityManager = conexion.getEntityManager();
             TypedQuery<Licencia> query = entityManager.createQuery(
-                    "SELECT l FROM Licencia l WHERE l.fechaTramite BETWEEN :fechaInicio AND :fechaFin",
+                    "SELECT l FROM Licencia l JOIN l.persona per WHERE per.id= :personaId AND l.fechaExpedicion BETWEEN :fechaInicio AND :fechaFin",
                     Licencia.class);
+            query.setParameter("personaId", persona.getId());
             query.setParameter("fechaInicio", fechaInicio);
             query.setParameter("fechaFin", fechaFin);
             return query.getResultList();
@@ -96,7 +99,8 @@ public class LicenciaDAO implements ILicencia {
             conexion.close();
         }
     }
- @Override
+
+    @Override
     public Licencia obtenerLicenciaActiva(Persona persona) throws PersistenciaException {
         EntityManager entityManager = null;
         Licencia licencia = null;
@@ -116,6 +120,23 @@ public class LicenciaDAO implements ILicencia {
             conexion.close();
         }
         return licencia;
+    }
+
+    @Override
+    public List<Licencia> obtenerLicenciasPorPersona(Persona persona) throws PersistenciaException {
+
+        EntityManager entityManager = null;
+        try {
+            entityManager = conexion.getEntityManager();
+            TypedQuery<Licencia> query = entityManager.createQuery(
+                    "SELECT l FROM Licencia l JOIN l.persona per WHERE per.id= :personaId", Licencia.class);
+            query.setParameter("personaId", persona.getId());
+            return query.getResultList();
+        } catch (Exception ex) {
+            throw new PersistenciaException("Error al realizar la solicitud de consulta de licencias", ex);
+        } finally {
+            conexion.close();
+        }
     }
 
 }

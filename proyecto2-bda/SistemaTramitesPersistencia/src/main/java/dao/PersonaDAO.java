@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -114,4 +115,22 @@ public class PersonaDAO implements IPersona {
     }
     return persona;
 }
+  
+    /**
+     * Método para obtener una licencia a partir de un parametro de busqueda
+     *
+     * @param buscarParametro Parámetro de busqueda
+     * @return Licencia con el parametro de busqueda especificado
+     * @throws PersistenciaException
+     */
+    @Override
+    public List<Persona> buscarPersonas(String buscarParametro) throws PersistenciaException {
+        EntityManager entityManager = null;
+        entityManager = conexion.getEntityManager();
+        TypedQuery<Persona> query = entityManager.createQuery(
+                "SELECT p FROM Persona p WHERE p.RFC LIKE :parametro OR p.nombres LIKE :parametro OR p.apellidoPaterno LIKE :parametro OR p.apellidoMaterno LIKE :parametro",
+                Persona.class);
+        query.setParameter("parametro", "%" + buscarParametro + "%");
+        return query.getResultList();
+    }
 }
