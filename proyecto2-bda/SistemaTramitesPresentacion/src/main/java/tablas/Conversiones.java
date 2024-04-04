@@ -4,7 +4,9 @@
  */
 package tablas;
 
+import dtos.LicenciaDTO;
 import dtos.PersonaDTO;
+import dtos.PlacaDTO;
 import dtos.VehiculoDTO;
 import interfaces.IRegistrarLicenciaBO;
 import java.text.SimpleDateFormat;
@@ -85,5 +87,26 @@ public class Conversiones {
             modelo.addRow(fila);
         }
         return modelo;
+    }
+    
+    public DefaultTableModel placasTableModel(List<PlacaDTO> listaPlacas){
+       String[] columnas = {"Código", "Costo", "Fecha Expedición", "Fecha Recepción", "Estado"};
+       DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+       for(PlacaDTO placa:listaPlacas){
+       Object[] fila={
+       placa.getCodigo(),
+       placa.getCosto(),
+       placa.getFechaExpedicion(),
+       placa.getFechaRecepcion(),
+       placa.getEstado()
+       };
+         modelo.addRow(fila);
+       }
+       return modelo;
+    }
+    
+    public DefaultTableModel licenciasTableModel(List<LicenciaDTO> listaLicencias){
+     String[] columnas = {"Código", "Costo", "Fecha Expedición", "Fecha Recepción", "Estado"};
+       DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
     }
 }

@@ -4,6 +4,7 @@
  */
 package interfaces;
 
+import bda.itson.entidadesJPA.Persona;
 import java.util.Calendar;
 import java.util.List;
 import excepciones.PersistenciaException;
@@ -42,8 +43,10 @@ public interface IPlacaDAO {
      * @return Lista de placas tramitadas entre las fechas especificadas.
      * @throws PersistenciaException Si ocurre un error al consultar las placas.
      */
-    public List<Placa> consultarPlacasTramitadasPorPeriodo(Calendar fechaInicio, Calendar fechaFin)
+    public List<Placa> consultarPlacasTramitadasPorPeriodo(Persona persona, Calendar fechaInicio, Calendar fechaFin)
             throws PersistenciaException;
+
+    public List<Placa> consultarPlacasTramitadasPorPersona(Persona persona) throws PersistenciaException;
 
     public Placa buscarPlacaCodigo(String codigo) throws PersistenciaException;
 }

@@ -37,4 +37,14 @@ public interface IPersona {
    * @return Persona con el RFC especificado
    */
   Persona obtenerPersonaRFC(String rfc);
+  
+  
+    /**
+     * Método para obtener una licencia a partir de un parametro de busqueda
+     *
+     * @param buscarParametro Parámetro de busqueda
+     * @return Licencia con el parametro de busqueda especificado
+     * @throws PersistenciaException
+     */
+    public List<Persona> buscarPersonas(String buscarParametro) throws PersistenciaException;
 }
