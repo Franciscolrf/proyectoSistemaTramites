@@ -34,7 +34,6 @@ IRegistrarPlaca placa;
          this.licenciaDatos = licenciaDatos; 
          this.placaDTO=placaDTO;
         initComponents();
-          System.out.println(placaDTO.getVehiculo().getId());
         if (operacion==1) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         personaTxt.setText(licenciaDatos.getPersona().getNombres()+" "+
@@ -43,7 +42,7 @@ IRegistrarPlaca placa;
         vigenciaTxt.setText(Integer.toString(licenciaDatos.getVigencia()));
         fechaExTxt.setText(dateFormat.format(licenciaDatos.getFechaExpedicion().getTime()));
         fechaVenTxt.setText(dateFormat.format(licenciaDatos.getFechaVencimiento().getTime()));
-      costoTxt.setText(Double.toString(licenciaDatos.getCosto()));
+      costoTxt.setText("$"+Double.toString(licenciaDatos.getCosto()));
         }
         if (operacion==2) {
             personaTxt.setText(placaDTO.getVehiculo().getPropietario().getNombres()+" "+
@@ -57,7 +56,7 @@ IRegistrarPlaca placa;
             fechaExTxt.setText(placaDTO.getVehiculo().getModelo());
             Txt6.setText("Código de placa:");
             fechaVenTxt.setText(placaDTO.getCodigo());
-            costoTxt.setText(Double.toString(placaDTO.getCosto()));
+            costoTxt.setText("$"+Double.toString(placaDTO.getCosto()));
         }
         setVisible(true);
      

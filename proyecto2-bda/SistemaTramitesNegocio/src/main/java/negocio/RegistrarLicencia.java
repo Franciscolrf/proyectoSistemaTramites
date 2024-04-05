@@ -29,10 +29,11 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
 
     private final ILicencia licenciaDAO;
     private final Conversiones conversiones;
-
+    private final PersonaDAO personaDAO;
     public RegistrarLicencia() {
         this.licenciaDAO = new LicenciaDAO();
         this.conversiones = new Conversiones();
+        this.personaDAO=new PersonaDAO();
 
     }
 
@@ -83,7 +84,7 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
         // Obtener la lista de personas del DAO
         List<Persona> personasRegistradas = null;
         try {
-            personasRegistradas = licenciaDAO.buscarPersonas(buscarParametro);
+            personasRegistradas = personaDAO.buscarPersonas(buscarParametro);
         } catch (PersistenciaException ex) {
             Logger.getLogger(RegistrarLicencia.class.getName()).log(Level.SEVERE, null, ex);
         }

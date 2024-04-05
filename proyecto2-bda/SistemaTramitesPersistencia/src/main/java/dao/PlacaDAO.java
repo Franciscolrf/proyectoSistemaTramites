@@ -4,6 +4,7 @@
  */
 package dao;
 
+import bda.itson.entidadesJPA.Persona;
 import java.util.Calendar;
 import java.util.List;
 
@@ -93,12 +94,14 @@ public class PlacaDAO implements IPlacaDAO {
      * @throws PersistenciaException Si ocurre un error al consultar las placas.
      */
     @Override
-    public List<Placa> consultarPlacasTramitadasPorPeriodo(Calendar fechaInicio, Calendar fechaFin) throws PersistenciaException {
+    public List<Placa> consultarPlacasTramitadasPorPeriodo(Persona persona, Calendar fechaInicio, Calendar fechaFin) throws PersistenciaException {
         EntityManager entityManager = null;
         try {
             entityManager = conexion.getEntityManager();
             TypedQuery<Placa> query = entityManager.createQuery(
-                    "SELECT p FROM Placa p WHERE p.fechaExpedicion BETWEEN :fechaInicio AND :fechaFin", Placa.class);
+                    "SELECT p FROM Placa p JOIN p.vehiculo v JOIN v.propietario per WHERE per.id= :personaId"
+                    + " AND p.fechaExpedicion BETWEEN :fechaInicio AND :fechaFin", Placa.class);
+            query.setParameter("personaId", persona.getId());
             query.setParameter("fechaInicio", fechaInicio);
             query.setParameter("fechaFin", fechaFin);
             return query.getResultList();
@@ -113,20 +116,36 @@ public class PlacaDAO implements IPlacaDAO {
     public Placa buscarPlacaCodigo(String codigo) throws PersistenciaException {
         EntityManager entityManager = null;
         Placa placa = null;
-    try {
-        entityManager = conexion.getEntityManager();
-        TypedQuery<Placa> query = entityManager.createQuery(
-                "SELECT p FROM Placa p WHERE p.codigo=:codigo", Placa.class
-        );
-        query.setParameter("codigo", codigo);
-        return query.getSingleResult();
-    } catch (NoResultException ex) {
-        return null;
-    } catch (Exception ex) {
-        throw new PersistenciaException("Error al consultar placas", ex);
-    } finally {
-        conexion.close();
+        try {
+            entityManager = conexion.getEntityManager();
+            TypedQuery<Placa> query = entityManager.createQuery(
+                    "SELECT p FROM Placa p WHERE p.codigo=:codigo", Placa.class
+            );
+            query.setParameter("codigo", codigo);
+            return query.getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        } catch (Exception ex) {
+            throw new PersistenciaException("Error al consultar placas", ex);
+        } finally {
+            conexion.close();
+        }
     }
+
+    @Override
+    public List<Placa> consultarPlacasTramitadasPorPersona(Persona persona) throws PersistenciaException {
+        EntityManager entityManager = null;
+        try {
+            entityManager = conexion.getEntityManager();
+            TypedQuery<Placa> query = entityManager.createQuery(
+                    "SELECT p FROM Placa p JOIN p.vehiculo v JOIN v.propietario per WHERE per.id= :personaId", Placa.class);
+            query.setParameter("personaId", persona.getId());
+            return query.getResultList();
+        } catch (Exception ex) {
+            throw new PersistenciaException("Error al consultar placas", ex);
+        } finally {
+            conexion.close();
+        }
     }
 
 }

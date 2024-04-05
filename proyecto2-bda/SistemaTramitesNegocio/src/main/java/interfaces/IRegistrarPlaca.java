@@ -14,8 +14,12 @@ import java.util.List;
  * @author abelc
  */
 public interface IRegistrarPlaca {
-   void registrarPLaca(PlacaDTO placaDTO); 
-   List<VehiculoDTO> obtenerVehiculosDePersona(PersonaDTO persona);
-   void generarPlaca(PlacaDTO placaDTO);
-   VehiculoDTO buscarPorNumeroSerie(String numeroSerie);
+
+    void registrarPLaca(PlacaDTO placaDTO);
+
+    List<VehiculoDTO> obtenerVehiculosDePersona(PersonaDTO persona);
+
+    void generarPlaca(PlacaDTO placaDTO);
+
+    VehiculoDTO buscarPorNumeroSerie(String numeroSerie);
 }

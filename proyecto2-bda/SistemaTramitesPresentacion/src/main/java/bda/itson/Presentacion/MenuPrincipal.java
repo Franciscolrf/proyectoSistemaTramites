@@ -9,7 +9,7 @@ package bda.itson.Presentacion;
  * @author abelc
  */
 public class MenuPrincipal extends javax.swing.JFrame {
-
+   buscarPersonas seleccionarPersona;
     /**
      * Creates new form MenuPrincipal
      */
@@ -154,7 +154,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_realizarTramiteBtnActionPerformed
 
     private void consultasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultasBtnActionPerformed
-        // TODO add your handling code here:
+        seleccionarPersona = new buscarPersonas(3);
+        seleccionarPersona.setVisible(true);
     }//GEN-LAST:event_consultasBtnActionPerformed
 
     private void generarClientesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarClientesBtnActionPerformed

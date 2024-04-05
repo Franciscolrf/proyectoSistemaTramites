@@ -43,6 +43,23 @@ public class Conversiones {
     }
 
     /**
+     * Método que se encarga de convertir una entidad Licencia a un LicenciaDTO
+     *
+     * @param licencia La entidad Licencia a convertir
+     * @return Objeto LicenciaDTO
+     */
+    public LicenciaDTO licenciaALicenciaDTO(Licencia licencia) {
+        LicenciaDTO licenciaDTO = new LicenciaDTO();
+        licenciaDTO.setIdLicencia(licencia.getIdLicencia().longValue());
+        licenciaDTO.setCosto(licencia.getCosto());
+        licenciaDTO.setFechaExpedicion(licencia.getFechaExpedicion());
+        licenciaDTO.setFechaVencimiento(licencia.getFechaVencimiento());
+        licenciaDTO.setPersona(convertirAPersonaDTO(licencia.getPersona()));
+        licenciaDTO.setVigencia(licencia.getVigencia());
+        return licenciaDTO;
+    }
+
+    /**
      * Convierte un objeto PersonaDTO a un objeto Persona.
      *
      * @param personaDTO Objeto PersonaDTO a convertir.
@@ -151,5 +168,22 @@ public class Conversiones {
             placas.add(placa);
         }
         return placas;
+    }
+
+    /**
+     * Método que se encarga de convertir una entidad Placa a un PlacaDTO
+     *
+     * @param placa La entidad Placa a convertir
+     * @return Objeto PlacaDTO
+     */
+    public PlacaDTO placaAPlacaDTO(Placa placa) {
+        PlacaDTO placaDTO = new PlacaDTO();
+        placaDTO.setCodigo(placa.getCodigo());
+        placaDTO.setCosto(placa.getCosto());
+        placaDTO.setEstado(placa.getEstado());
+        placaDTO.setFechaExpedicion(placa.getFechaExpedicion());
+        placaDTO.setFechaRecepcion(placa.getFechaRecepcion());
+        placaDTO.setVehiculo(VehiculoAVehiculoDTO(placa.getVehiculo()));
+        return placaDTO;
     }
 }
