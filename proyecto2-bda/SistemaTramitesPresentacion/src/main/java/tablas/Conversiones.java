@@ -20,6 +20,8 @@ import negocio.RegistrarLicencia;
  */
 public class Conversiones {
 
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
     public Conversiones() {
 
     }
@@ -50,8 +52,6 @@ public class Conversiones {
         IRegistrarLicenciaBO licencia = new RegistrarLicencia();
         String[] columnas = {"Nombres", "Apellido Paterno", "Apellido Materno", "Teléfono", "RFC", "Discapacidad", "Fecha de Nacimiento", "Licencia"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String discapacitado;
         String licenciaActiva;
         for (PersonaDTO persona : listaPersonas) {
@@ -88,25 +88,65 @@ public class Conversiones {
         }
         return modelo;
     }
-    
-    public DefaultTableModel placasTableModel(List<PlacaDTO> listaPlacas){
-       String[] columnas = {"Código", "Costo", "Fecha Expedición", "Fecha Recepción", "Estado"};
-       DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
-       for(PlacaDTO placa:listaPlacas){
-       Object[] fila={
-       placa.getCodigo(),
-       placa.getCosto(),
-       placa.getFechaExpedicion(),
-       placa.getFechaRecepcion(),
-       placa.getEstado()
-       };
-         modelo.addRow(fila);
-       }
-       return modelo;
+
+    public DefaultTableModel placasTableModel(List<PlacaDTO> listaPlacas) {
+        String[] columnas = {"Código", "Costo", "Fecha Expedición", "Fecha Recepción", "Estado"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        for (PlacaDTO placa : listaPlacas) {
+            Object[] fila = {
+                placa.getCodigo(),
+                placa.getCosto(),
+                dateFormat.format(placa.getFechaExpedicion().getTime()),
+                placa.getFechaRecepcion() != null ? dateFormat.format(placa.getFechaRecepcion().getTime()) : "No vencida",
+                placa.getEstado()
+            };
+            modelo.addRow(fila);
+        }
+        return modelo;
     }
-    
-    public DefaultTableModel licenciasTableModel(List<LicenciaDTO> listaLicencias){
-     String[] columnas = {"Código", "Costo", "Fecha Expedición", "Fecha Recepción", "Estado"};
-       DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+    public DefaultTableModel licenciasTableModel(List<LicenciaDTO> listaLicencias) {
+        String[] columnas = {"Costo", "Fecha de Expedición", "Fecha de Vencimiento", "Estado"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        for (LicenciaDTO licencia : listaLicencias) {
+            String estado = licencia.getEstadoActual() == LicenciaDTO.estadoDTO.EXPIRADA ? "Expirada" : "No expirada";
+            Object[] fila = {
+                licencia.getCosto(),
+                dateFormat.format(licencia.getFechaExpedicion().getTime()),
+                licencia.getFechaVencimiento() != null ? dateFormat.format(licencia.getFechaVencimiento().getTime()) : "Licencia vigente",
+                estado
+            };
+            modelo.addRow(fila);
+        }
+        return modelo;
+    }
+
+    public DefaultTableModel tramitesTableModel(List<LicenciaDTO> listaLicencias, List<PlacaDTO> listaPlacas) {
+        String[] columnas = {"Trámite", "Costo", "Fecha de Expedición/Recepción", "Fecha de Vencimiento", "Estado"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy"); // Se define el formato de fecha
+        for (LicenciaDTO licencia : listaLicencias) {
+            String estado = licencia.getEstadoActual() == LicenciaDTO.estadoDTO.EXPIRADA ? "Expirada" : "No expirada";
+            Object[] fila = {
+                "Licencia",
+                licencia.getCosto(),
+                dateFormat.format(licencia.getFechaExpedicion().getTime()),
+                licencia.getFechaVencimiento() != null ? dateFormat.format(licencia.getFechaVencimiento().getTime()) : "Licencia vigente",
+                estado
+            };
+            modelo.addRow(fila);
+        }
+        for (PlacaDTO placa : listaPlacas) {
+            Object[] fila = {
+                "Placa",
+                placa.getCosto(),
+                dateFormat.format(placa.getFechaExpedicion().getTime()),
+                placa.getFechaRecepcion() != null ? dateFormat.format(placa.getFechaRecepcion().getTime()) : "Placa vigente",
+                placa.getEstado()
+            };
+            modelo.addRow(fila);
+        }
+
+        return modelo;
     }
 }

@@ -34,7 +34,6 @@ IRegistrarPlaca placa;
          this.licenciaDatos = licenciaDatos; 
          this.placaDTO=placaDTO;
         initComponents();
-          System.out.println(placaDTO.getVehiculo().getId());
         if (operacion==1) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         personaTxt.setText(licenciaDatos.getPersona().getNombres()+" "+

@@ -4,17 +4,34 @@
  */
 package bda.itson.Presentacion;
 
+import dtos.PersonaDTO;
+import interfaces.IConsultas;
+import java.time.LocalDate;
+import java.util.Calendar;
+import javax.swing.table.DefaultTableModel;
+import negocio.Consultas;
+import tablas.Conversiones;
+
 /**
  *
  * @author abelc
  */
 public class Historial extends javax.swing.JFrame {
 
+    PersonaDTO personaDTO;
+    IConsultas consultas;
+    Conversiones tabla;
+
     /**
      * Creates new form Historial
      */
-    public Historial() {
+    public Historial(PersonaDTO persona) {
+        this.personaDTO = persona;
+        this.consultas = new Consultas();
+        this.tabla = new Conversiones();
         initComponents();
+        jLabel2.setText("Historial de " + persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
+        crearTablaHistorial();
     }
 
     /**
@@ -32,14 +49,14 @@ public class Historial extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         datePicker2 = new com.github.lgooddatepicker.components.DatePicker();
         datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        tramiteComboBox = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        regresarBtn = new javax.swing.JButton();
+        buscarBtn = new javax.swing.JButton();
+        generarReporteBtn = new javax.swing.JButton();
         regresarBtn1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        historialTabla = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,12 +77,12 @@ public class Historial extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 508, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(112, 112, 112)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(296, Short.MAX_VALUE)))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(23, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -82,9 +99,9 @@ public class Historial extends javax.swing.JFrame {
         datePicker2.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         datePicker2.setName(""); // NOI18N
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Licencias", "Placas", " " }));
-        jComboBox1.setBackground(new java.awt.Color(255, 255, 255));
-        jComboBox1.setForeground(new java.awt.Color(0, 0, 0));
+        tramiteComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Licencias", "Placas" }));
+        tramiteComboBox.setBackground(new java.awt.Color(255, 255, 255));
+        tramiteComboBox.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel3.setText("Desde:");
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
@@ -92,18 +109,23 @@ public class Historial extends javax.swing.JFrame {
         jLabel4.setText("Hasta:");
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
 
-        jButton1.setText("Buscar");
-        jButton1.setBackground(new java.awt.Color(107, 27, 56));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-
-        regresarBtn.setText("Generar reporte");
-        regresarBtn.setBackground(new java.awt.Color(107, 27, 56));
-        regresarBtn.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        regresarBtn.setForeground(new java.awt.Color(255, 255, 255));
-        regresarBtn.addActionListener(new java.awt.event.ActionListener() {
+        buscarBtn.setText("Buscar");
+        buscarBtn.setBackground(new java.awt.Color(107, 27, 56));
+        buscarBtn.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        buscarBtn.setForeground(new java.awt.Color(255, 255, 255));
+        buscarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                regresarBtnActionPerformed(evt);
+                buscarBtnActionPerformed(evt);
+            }
+        });
+
+        generarReporteBtn.setText("Generar reporte");
+        generarReporteBtn.setBackground(new java.awt.Color(107, 27, 56));
+        generarReporteBtn.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        generarReporteBtn.setForeground(new java.awt.Color(255, 255, 255));
+        generarReporteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generarReporteBtnActionPerformed(evt);
             }
         });
 
@@ -117,7 +139,7 @@ public class Historial extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        historialTabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -125,11 +147,10 @@ public class Historial extends javax.swing.JFrame {
 
             }
         ));
-        jTable1.setSelectionBackground(new java.awt.Color(255, 255, 255));
-        jTable1.setSelectionForeground(new java.awt.Color(255, 255, 255));
-        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(jTable1);
+        historialTabla.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        historialTabla.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        historialTabla.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(historialTabla);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -141,7 +162,7 @@ public class Historial extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tramiteComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(regresarBtn1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,7 +175,7 @@ public class Historial extends javax.swing.JFrame {
                                     .addComponent(jLabel4)
                                     .addComponent(datePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(regresarBtn)
+                                .addComponent(generarReporteBtn)
                                 .addGap(29, 29, 29))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 73, Short.MAX_VALUE)
@@ -163,7 +184,7 @@ public class Historial extends javax.swing.JFrame {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(76, 76, 76))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(buscarBtn)
                                 .addGap(267, 267, 267))))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -178,9 +199,9 @@ public class Historial extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(datePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tramiteComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
-                .addComponent(jButton1)
+                .addComponent(buscarBtn)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -190,7 +211,7 @@ public class Historial extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(regresarBtn1)
-                            .addComponent(regresarBtn))
+                            .addComponent(generarReporteBtn))
                         .addGap(25, 25, 25))))
         );
 
@@ -209,13 +230,76 @@ public class Historial extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_regresarBtnActionPerformed
+    private void generarReporteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarReporteBtnActionPerformed
+
+    }//GEN-LAST:event_generarReporteBtnActionPerformed
 
     private void regresarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtn1ActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_regresarBtn1ActionPerformed
+
+    private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
+        LocalDate fecha1 = datePicker1.getDate(); // Obtener la fecha del primer datePicker
+        LocalDate fecha2 = datePicker2.getDate();
+        if (tramiteComboBox.getSelectedItem() == "Todos") {
+            crearTablaHistorial();
+        }
+        if (tramiteComboBox.getSelectedItem() == "Licencias") {
+            DefaultTableModel model = (DefaultTableModel) historialTabla.getModel();
+            model.setRowCount(0);
+            DefaultTableModel newModel = tabla.licenciasTableModel(consultas.obtenerLicenciasPorPersona(personaDTO));
+            historialTabla.setModel(newModel);
+        }
+        if (tramiteComboBox.getSelectedItem() == "Placas") {
+            DefaultTableModel model = (DefaultTableModel) historialTabla.getModel();
+            model.setRowCount(0);
+            DefaultTableModel newModel = tabla.placasTableModel(consultas.obtenerPlacasPorPersona(personaDTO));
+            historialTabla.setModel(newModel);
+        }
+        if (tramiteComboBox.getSelectedItem() == "Todos" && fecha1 != null && fecha2 != null) {
+            Calendar desde = Calendar.getInstance();
+            desde.clear();
+            desde.set(fecha1.getYear(), fecha1.getMonthValue() - 1, fecha1.getDayOfMonth());
+            Calendar hasta = Calendar.getInstance();
+            hasta.clear();
+            hasta.set(fecha2.getYear(), fecha2.getMonthValue() - 1, fecha2.getDayOfMonth());
+            DefaultTableModel model = (DefaultTableModel) historialTabla.getModel();
+            model.setRowCount(0);
+            DefaultTableModel newModel = tabla.tramitesTableModel(consultas.obtenerLicenciasPorPeriodo(personaDTO, desde, hasta), consultas.obtenerPlacasPorPeriodo(personaDTO, desde, hasta));
+            historialTabla.setModel(newModel);
+        }
+        if (tramiteComboBox.getSelectedItem() == "Licencia" && fecha1 != null && fecha2 != null) {
+            Calendar desde = Calendar.getInstance();
+            desde.clear();
+            desde.set(fecha1.getYear(), fecha1.getMonthValue() - 1, fecha1.getDayOfMonth());
+            Calendar hasta = Calendar.getInstance();
+            hasta.clear();
+            hasta.set(fecha2.getYear(), fecha2.getMonthValue() - 1, fecha2.getDayOfMonth());
+            DefaultTableModel model = (DefaultTableModel) historialTabla.getModel();
+            model.setRowCount(0);
+            DefaultTableModel newModel = tabla.licenciasTableModel(consultas.obtenerLicenciasPorPeriodo(personaDTO, desde, hasta));
+            historialTabla.setModel(newModel);
+        }
+           if (tramiteComboBox.getSelectedItem() == "Placas" && fecha1 != null && fecha2 != null) {
+            Calendar desde = Calendar.getInstance();
+            desde.clear();
+            desde.set(fecha1.getYear(), fecha1.getMonthValue() - 1, fecha1.getDayOfMonth());
+            Calendar hasta = Calendar.getInstance();
+            hasta.clear();
+            hasta.set(fecha2.getYear(), fecha2.getMonthValue() - 1, fecha2.getDayOfMonth());
+            DefaultTableModel model = (DefaultTableModel) historialTabla.getModel();
+            model.setRowCount(0);
+            DefaultTableModel newModel = tabla.placasTableModel(consultas.obtenerPlacasPorPeriodo(personaDTO, desde, hasta));
+            historialTabla.setModel(newModel);
+        }
+
+    }//GEN-LAST:event_buscarBtnActionPerformed
+    private void crearTablaHistorial() {
+        DefaultTableModel model = (DefaultTableModel) historialTabla.getModel();
+        model.setRowCount(0);
+        DefaultTableModel newModel = tabla.tramitesTableModel(consultas.obtenerLicenciasPorPersona(personaDTO), consultas.obtenerPlacasPorPersona(personaDTO));
+        historialTabla.setModel(newModel);
+    }
 
     /**
      * @param args the command line arguments
@@ -247,16 +331,19 @@ public class Historial extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Historial().setVisible(true);
+                PersonaDTO persona = new PersonaDTO();
+                Historial historial = new Historial(persona);
+                historial.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buscarBtn;
     private com.github.lgooddatepicker.components.DatePicker datePicker1;
     private com.github.lgooddatepicker.components.DatePicker datePicker2;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton generarReporteBtn;
+    private javax.swing.JTable historialTabla;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -264,8 +351,7 @@ public class Historial extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JButton regresarBtn;
     private javax.swing.JButton regresarBtn1;
+    private javax.swing.JComboBox<String> tramiteComboBox;
     // End of variables declaration//GEN-END:variables
 }
