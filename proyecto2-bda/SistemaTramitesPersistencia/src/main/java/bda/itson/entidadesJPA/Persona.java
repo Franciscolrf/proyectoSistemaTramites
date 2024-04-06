@@ -304,6 +304,6 @@ public class Persona implements Serializable {
     public String toString() {
         return "Persona [id=" + id + ", apellidoMaterno=" + apellidoMaterno + ", apellidoPaterno=" + apellidoPaterno
                 + ", esDiscapacitado=" + esDiscapacitado + ", fechaNacimiento=" + fechaNacimiento + ", licencias="
-                + licencias + ", nombres=" + nombres + ", telefono=" + telefono + ", vehiculos=" + vehiculos + "]";
+                + licencias + ", nombres=" + nombres + ", telefono=" + telefono +"]";
     }
 }

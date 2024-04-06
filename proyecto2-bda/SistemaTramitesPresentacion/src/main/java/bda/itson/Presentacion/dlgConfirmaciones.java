@@ -57,6 +57,7 @@ IRegistrarPlaca placa;
             Txt6.setText("Código de placa:");
             fechaVenTxt.setText(placaDTO.getCodigo());
             costoTxt.setText("$"+Double.toString(placaDTO.getCosto()));
+            confirmarBtn.setText("Registrar placa");
         }
         setVisible(true);
      
