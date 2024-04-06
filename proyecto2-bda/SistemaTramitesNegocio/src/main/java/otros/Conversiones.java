@@ -159,12 +159,19 @@ public class Conversiones {
         placa.setVehiculo(VehiculoDTOAVehiculo(placaDTO.getVehiculo()));
         return placa;
     }
-
+ public Placa PlacaDTOAPlacaSinVehiculo(PlacaDTO placaDTO) {
+        Placa placa = new Placa();
+        placa.setCodigo(placaDTO.getCodigo());
+        placa.setCosto(placaDTO.getCosto());
+        placa.setEstado(placaDTO.getEstado());
+        placa.setFechaExpedicion(placaDTO.getFechaExpedicion());
+        placa.setFechaRecepcion(placaDTO.getFechaRecepcion());
+        return placa;
+    }
     public List<Placa> PlacasDTOAPlacas(List<PlacaDTO> placasDTO) {
         List<Placa> placas = new ArrayList<>();
         for (PlacaDTO placaDTO : placasDTO) {
-            Placa placa = new Placa();
-            PlacaDTOAPlaca(placaDTO);
+            Placa placa =PlacaDTOAPlacaSinVehiculo(placaDTO);
             placas.add(placa);
         }
         return placas;

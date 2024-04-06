@@ -79,34 +79,39 @@ public class RegistrarPersona implements IregistrarPersona {
      */
     @Override
     public boolean registroMasivo(List<PersonaDTO> personas) {
-       List<Persona> personasEntidad = new ArrayList<>();
-    for (PersonaDTO persona : personas) {
-        Persona pEntidad = conversiones.PersonaDTOAPersona(persona);
-        List<VehiculoDTO> vehiculosDTO = gv.generarVehiculos(5);
-        List<Vehiculo> vehiculos = conversiones.convertirVehiculosDTOaEntidad(vehiculosDTO);
+        List<Persona> personasEntidad = new ArrayList<>();
+        for (PersonaDTO persona : personas) {
+            Persona pEntidad = conversiones.PersonaDTOAPersona(persona);
+            List<VehiculoDTO> vehiculosDTO = gv.generarVehiculos(5);
+            List<Vehiculo> vehiculos = conversiones.convertirVehiculosDTOaEntidad(vehiculosDTO);
 
-        for (Vehiculo vehiculo : vehiculos) {
-          /*  List<PlacaDTO> placasDTO = placas.generarPlacas();
-            List<Placa> placas = conversiones.PlacasDTOAPlacas(placasDTO);
-            for (Placa placa : placas) {
-                placa.setVehiculo(vehiculo);
+            for (Vehiculo vehiculo : vehiculos) {
+                if (vehiculo.getEstado().equals("Nuevo")) { // Verifica el estado del vehículo
+                    vehiculo.setPropietario(pEntidad); // Asigna el propietario al vehículo nuevo
+                } else {
+                    // Si el vehículo no es nuevo, se generan y asignan las placas
+                    List<PlacaDTO> placasDTO = placas.generarPlacas();
+                    List<Placa> placas = conversiones.PlacasDTOAPlacas(placasDTO);
+                    for (Placa placa : placas) {
+                        placa.setVehiculo(vehiculo);
+                    }
+                    vehiculo.setPlacas(placas);
+                    vehiculo.setPropietario(pEntidad);
+                }
             }
-            vehiculo.setPlacas(placas);*/
-            vehiculo.setPropietario(pEntidad);
+
+            pEntidad.setVehiculos(vehiculos);
+
+            personasEntidad.add(pEntidad);
         }
 
-        pEntidad.setVehiculos(vehiculos);
-
-        personasEntidad.add(pEntidad);
-    }
-
-    try {
-        Personadao.insercionMasivaPersonas(personasEntidad);
-        return true;
-    } catch (PersistenciaException ex) {
-        Logger.getLogger(RegistrarPersona.class.getName()).log(Level.SEVERE, null, ex);
-        return false;
-    }
+        try {
+            Personadao.insercionMasivaPersonas(personasEntidad);
+            return true;
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(RegistrarPersona.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 
     /**
