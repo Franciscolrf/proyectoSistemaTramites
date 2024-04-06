@@ -135,11 +135,11 @@ public class GeneradorPlacas {
         placa2.setFechaExpedicion(placa1.getFechaRecepcion());
         placa2.setFechaRecepcion(placa3.getFechaExpedicion());
 
-        Calendar fechaExpedicionPlaca3 = placa3.getFechaExpedicion();
-        Calendar fechaRecepcionPlaca4 = (Calendar) fechaExpedicionPlaca3.clone();
+        Calendar fechaRecepcionPlaca3 = placa3.getFechaRecepcion();
+        Calendar fechaRecepcionPlaca4 = (Calendar) fechaRecepcionPlaca3.clone();
         fechaRecepcionPlaca4.add(Calendar.YEAR, 1);
 
-        placa4.setFechaExpedicion(fechaExpedicionPlaca3);
+        placa4.setFechaExpedicion( fechaRecepcionPlaca3);
         placa4.setFechaRecepcion(fechaRecepcionPlaca4);
 
         placasGeneradas.add(placa1);
