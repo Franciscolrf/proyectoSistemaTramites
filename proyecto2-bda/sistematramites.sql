@@ -80,19 +80,6 @@ END;
 //
 DELIMITER ;
 
--- Trigger para asegurar que no se pueda solicitar una placa sin una licencia activa
-DELIMITER //
-CREATE TRIGGER asegurar_licencia_activa BEFORE INSERT ON Placa
-FOR EACH ROW
-BEGIN
-    DECLARE count_active_licenses INT;
-    SELECT COUNT(*) INTO count_active_licenses FROM Licencia WHERE idPersona = (SELECT idPersona FROM Vehiculo WHERE idVehiculo = NEW.idVehiculo) AND estado = 'no expirada';
-    IF count_active_licenses = 0 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se puede solicitar una placa sin una licencia activa';
-    END IF;
-END;
-//
-DELIMITER ;
 
 -- Trigger para actualizar automáticamente el estado de la placa
 DELIMITER //
