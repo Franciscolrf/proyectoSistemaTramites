@@ -11,6 +11,20 @@ import java.util.Calendar;
 import javax.swing.table.DefaultTableModel;
 import negocio.Consultas;
 import tablas.Conversiones;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import dtos.LicenciaDTO;
+import dtos.PlacaDTO;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -230,7 +244,146 @@ public class Historial extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodo para generar el reporte integrando la biblioteca IText
+     *
+     * @param evt
+     */
     private void generarReporteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarReporteBtnActionPerformed
+        LocalDate fecha1 = datePicker1.getDate(); // Obtener la fecha del primer datePicker
+        LocalDate fecha2 = datePicker2.getDate();
+        Document documento = new Document();
+        List<LicenciaDTO> licencias;
+        List<PlacaDTO> placas;
+        try {
+            String ruta = System.getProperty("user.home");
+
+            // CAMBIAR A CUALQUIER RUTA
+            String rutaAbs = "/Documents/Reporte.pdf";
+            PdfWriter.getInstance(documento, new FileOutputStream(ruta + rutaAbs));
+            documento.open();
+            PdfPTable tablaPdf;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            if (tramiteComboBox.getSelectedItem().equals("Licencias")) {
+
+                tablaPdf = new PdfPTable(4);
+                tablaPdf.addCell("Costo");
+                tablaPdf.addCell("Fecha de Expedicion");
+                tablaPdf.addCell("Fecha de Vencimiento");
+                tablaPdf.addCell("Estado");
+//                tablaPdf.addCell("Vigencia");
+
+                if (fecha1 != null && fecha2 != null) {
+                    Calendar desde = Calendar.getInstance();
+                    desde.clear();
+                    desde.set(fecha1.getYear(), fecha1.getMonthValue() - 1, fecha1.getDayOfMonth());
+                    Calendar hasta = Calendar.getInstance();
+                    hasta.clear();
+                    hasta.set(fecha2.getYear(), fecha2.getMonthValue() - 1, fecha2.getDayOfMonth());
+
+                    licencias = consultas.obtenerLicenciasPorPeriodo(personaDTO, desde, hasta);
+                } else {
+                    licencias = consultas.obtenerLicenciasPorPersona(personaDTO);
+
+                }
+                for (LicenciaDTO licencia : licencias) {
+                    String estado = licencia.getEstadoActual() == LicenciaDTO.estadoDTO.EXPIRADA ? "Expirada" : "No expirada";
+                    // OPCIONAL REEMPLAZAR POR LOCALDATE ENVEZ DE DATE
+                    tablaPdf.addCell("$" + licencia.getCosto());
+                    tablaPdf.addCell("Dia " + licencia.getFechaExpedicion().getTime().getDate() + " del mes " + (licencia.getFechaExpedicion().getTime().getMonth() + 1) + " de " + (licencia.getFechaExpedicion().getTime().getYear() + 1900));
+                    tablaPdf.addCell("Dia " + licencia.getFechaVencimiento().getTime().getDate() + " del mes " + (licencia.getFechaVencimiento().getTime().getMonth() + 1) + " de " + (licencia.getFechaVencimiento().getTime().getYear() + 1900));
+                    tablaPdf.addCell(estado);
+//                    tablaPdf.addCell(licencia.getVigencia() + " Años");
+                }
+                documento.add(tablaPdf);
+                documento.close();
+
+            } else if (tramiteComboBox.getSelectedItem().equals("Placas")) {
+                tablaPdf = new PdfPTable(5);
+                tablaPdf.addCell("Codigo");
+                tablaPdf.addCell("Costo");
+                tablaPdf.addCell("Fecha de Recepcion");
+                tablaPdf.addCell("Fecha de Expedicion");
+                tablaPdf.addCell("Estado");
+
+                if (fecha1 != null && fecha2 != null) {
+                    Calendar desde = Calendar.getInstance();
+                    desde.clear();
+                    desde.set(fecha1.getYear(), fecha1.getMonthValue() - 1, fecha1.getDayOfMonth());
+                    Calendar hasta = Calendar.getInstance();
+                    hasta.clear();
+                    hasta.set(fecha2.getYear(), fecha2.getMonthValue() - 1, fecha2.getDayOfMonth());
+
+                    placas = consultas.obtenerPlacasPorPeriodo(personaDTO, desde, hasta);
+                } else {
+                    placas = consultas.obtenerPlacasPorPersona(personaDTO);
+
+                }
+
+                for (PlacaDTO placa : placas) {
+
+                    tablaPdf.addCell(placa.getCodigo());
+                    tablaPdf.addCell(String.valueOf(placa.getCosto()));
+                    tablaPdf.addCell(placa.getFechaRecepcion() != null ? dateFormat.format(placa.getFechaRecepcion().getTime()) : "Placa vigente");
+                    tablaPdf.addCell("Dia " + placa.getFechaExpedicion().getTime().getDate() + " del mes " + (placa.getFechaExpedicion().getTime().getMonth() + 1) + " de " + (placa.getFechaExpedicion().getTime().getYear() + 1900));
+                    tablaPdf.addCell(placa.getEstado());
+
+                }
+                documento.add(tablaPdf);
+                documento.close();
+
+            } else if (tramiteComboBox.getSelectedItem().equals("Todos")) {
+                tablaPdf = new PdfPTable(5);
+                tablaPdf.addCell("Tramite");
+                tablaPdf.addCell("Costo");
+                tablaPdf.addCell("Fecha de Expedicion");
+                tablaPdf.addCell("Fecha de Vencimiento");
+                tablaPdf.addCell("Estado");
+
+                if (fecha1 != null && fecha2 != null) {
+                    Calendar desde = Calendar.getInstance();
+                    desde.clear();
+                    desde.set(fecha1.getYear(), fecha1.getMonthValue() - 1, fecha1.getDayOfMonth());
+                    Calendar hasta = Calendar.getInstance();
+                    hasta.clear();
+                    hasta.set(fecha2.getYear(), fecha2.getMonthValue() - 1, fecha2.getDayOfMonth());
+                    placas = consultas.obtenerPlacasPorPeriodo(personaDTO, desde, hasta);
+                    licencias = consultas.obtenerLicenciasPorPeriodo(personaDTO, desde, hasta);
+                } else {
+                    licencias = consultas.obtenerLicenciasPorPersona(personaDTO);
+                    placas = consultas.obtenerPlacasPorPersona(personaDTO);
+
+                }
+
+                for (LicenciaDTO licencia : licencias) {
+                    String estado = licencia.getEstadoActual() == LicenciaDTO.estadoDTO.EXPIRADA ? "Expirada" : "No expirada";
+                    tablaPdf.addCell("Licencia");
+                    tablaPdf.addCell("$" + licencia.getCosto());
+                    tablaPdf.addCell(dateFormat.format(licencia.getFechaExpedicion().getTime()));
+                    tablaPdf.addCell(licencia.getFechaVencimiento() != null ? dateFormat.format(licencia.getFechaVencimiento().getTime()) : "Licencia vigente");
+                    tablaPdf.addCell(estado);
+
+                }
+                for (PlacaDTO placa : placas) {
+                    tablaPdf.addCell("Placa");
+                    tablaPdf.addCell("$" + placa.getCosto());
+                    tablaPdf.addCell(dateFormat.format(placa.getFechaExpedicion().getTime()));
+                    tablaPdf.addCell(placa.getFechaRecepcion() != null ? dateFormat.format(placa.getFechaRecepcion().getTime()) : "Placa vigente");
+                    tablaPdf.addCell(placa.getEstado());
+
+                }
+                documento.add(tablaPdf);
+                documento.close();
+            }
+
+            JOptionPane.showMessageDialog(null, "Reporte Creado en: " + ruta + rutaAbs);
+
+        } catch (DocumentException e) {
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Historial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
 
     }//GEN-LAST:event_generarReporteBtnActionPerformed
 
@@ -280,7 +433,7 @@ public class Historial extends javax.swing.JFrame {
             DefaultTableModel newModel = tabla.licenciasTableModel(consultas.obtenerLicenciasPorPeriodo(personaDTO, desde, hasta));
             historialTabla.setModel(newModel);
         }
-           if (tramiteComboBox.getSelectedItem() == "Placas" && fecha1 != null && fecha2 != null) {
+        if (tramiteComboBox.getSelectedItem() == "Placas" && fecha1 != null && fecha2 != null) {
             Calendar desde = Calendar.getInstance();
             desde.clear();
             desde.set(fecha1.getYear(), fecha1.getMonthValue() - 1, fecha1.getDayOfMonth());
@@ -331,9 +484,12 @@ public class Historial extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+
                 PersonaDTO persona = new PersonaDTO();
+
                 Historial historial = new Historial(persona);
                 historial.setVisible(true);
+
             }
         });
     }
