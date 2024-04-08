@@ -13,6 +13,9 @@ import negocio.Consultas;
 import tablas.Conversiones;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import dtos.LicenciaDTO;
@@ -254,7 +257,8 @@ public class Historial extends javax.swing.JFrame {
         LocalDate fecha2 = datePicker2.getDate();
         Document documento = new Document();
         List<LicenciaDTO> licencias;
-        List<PlacaDTO> placas;
+        List<PlacaDTO> placas; 
+        
         try {
             String ruta = System.getProperty("user.home");
 
@@ -265,7 +269,10 @@ public class Historial extends javax.swing.JFrame {
             PdfPTable tablaPdf;
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             if (tramiteComboBox.getSelectedItem().equals("Licencias")) {
-
+               
+                Paragraph titulo = new Paragraph("Reporte de Licencias de "+personaDTO.getNombres()+" "+personaDTO.getApellidoPaterno()+" "+personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
+                titulo.setAlignment(Element.ALIGN_CENTER);
+                documento.add(titulo);
                 tablaPdf = new PdfPTable(4);
                 tablaPdf.addCell("Costo");
                 tablaPdf.addCell("Fecha de Expedicion");
@@ -295,10 +302,14 @@ public class Historial extends javax.swing.JFrame {
                     tablaPdf.addCell(estado);
 //                    tablaPdf.addCell(licencia.getVigencia() + " Años");
                 }
+                
                 documento.add(tablaPdf);
                 documento.close();
 
             } else if (tramiteComboBox.getSelectedItem().equals("Placas")) {
+                Paragraph titulo = new Paragraph("Reporte de placas de "+personaDTO.getNombres()+" "+personaDTO.getApellidoPaterno()+" "+personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
+                titulo.setAlignment(Element.ALIGN_CENTER);
+                documento.add(titulo);
                 tablaPdf = new PdfPTable(5);
                 tablaPdf.addCell("Codigo");
                 tablaPdf.addCell("Costo");
@@ -329,10 +340,14 @@ public class Historial extends javax.swing.JFrame {
                     tablaPdf.addCell(placa.getEstado());
 
                 }
+                
                 documento.add(tablaPdf);
                 documento.close();
 
             } else if (tramiteComboBox.getSelectedItem().equals("Todos")) {
+                Paragraph titulo = new Paragraph("Reporte de licencias y placas de "+personaDTO.getNombres()+" "+personaDTO.getApellidoPaterno()+" "+personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
+                titulo.setAlignment(Element.ALIGN_CENTER);
+                documento.add(titulo);
                 tablaPdf = new PdfPTable(5);
                 tablaPdf.addCell("Tramite");
                 tablaPdf.addCell("Costo");
@@ -372,6 +387,7 @@ public class Historial extends javax.swing.JFrame {
                     tablaPdf.addCell(placa.getEstado());
 
                 }
+                documento.add(new Paragraph("\n"));
                 documento.add(tablaPdf);
                 documento.close();
             }
