@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import otros.Conversiones;
+import otros.Encriptacion;
 
 /**
  *
@@ -82,6 +83,11 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
 
         // Convertir cada persona a DTO y agregarla a la lista de DTOs
         for (Persona persona : personasRegistradas) {
+            try {
+                persona.setTelefono(Encriptacion.desencriptarTelefono(persona.getTelefono()));
+            } catch (Exception ex) {
+                Logger.getLogger(RegistrarLicencia.class.getName()).log(Level.SEVERE, null, ex);
+            }
             PersonaDTO personaDTO = conversiones.convertirAPersonaDTO(persona);
             personasRegistradasDTO.add(personaDTO);
         }
@@ -199,6 +205,11 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
 
         // Convertir cada persona a DTO y agregarla a la lista de DTOs
         for (Persona persona : personasRegistradas) {
+            try {
+                persona.setTelefono(Encriptacion.desencriptarTelefono(persona.getTelefono()));
+            } catch (Exception ex) {
+                Logger.getLogger(RegistrarLicencia.class.getName()).log(Level.SEVERE, null, ex);
+            }
             PersonaDTO personaDTO = conversiones.convertirAPersonaDTO(persona);
             personasRegistradasDTO.add(personaDTO);
         }

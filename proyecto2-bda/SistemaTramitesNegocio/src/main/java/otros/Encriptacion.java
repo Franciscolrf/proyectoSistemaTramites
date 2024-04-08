@@ -11,7 +11,7 @@ import java.util.Base64;
  */
 public class Encriptacion {
     private static final String ALGORITMO = "AES";
-    private static final String CLAVE_SECRETA = "clave_secreta_para_encriptacion"; // Clave secreta para AES
+    private static final String CLAVE_SECRETA = "k#sJD2&hG9@L$pT4"; // Clave secreta para AES
 
     /**
      * Método para encriptar un número de teléfono.
