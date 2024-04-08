@@ -168,6 +168,14 @@ public class PlacaDAO implements IPlacaDAO {
         }
     }
 
+    /**
+     * Busca una placa por su código.
+     *
+     * @param codigo El código de la placa a buscar.
+     * @return La placa correspondiente al código proporcionado, o null si no se
+     * encuentra ninguna placa con ese código.
+     * @throws PersistenciaException Si hay un error durante la consulta.
+     */
     @Override
     public Placa buscarPlacaCodigo(String codigo) throws PersistenciaException {
         EntityManager entityManager = null;
@@ -180,14 +188,24 @@ public class PlacaDAO implements IPlacaDAO {
             query.setParameter("codigo", codigo);
             return query.getSingleResult();
         } catch (NoResultException ex) {
-            return null;
+            return null; // No se encontraron resultados, devuelve null.
         } catch (Exception ex) {
             throw new PersistenciaException("Error al consultar placas", ex);
         } finally {
-            conexion.close();
+            conexion.close(); // Cerrar la conexión una vez finalizada la operación.
         }
     }
 
+    /**
+     * Consulta las placas tramitadas por una persona, ordenadas por fecha de
+     * expedición en orden descendente.
+     *
+     * @param persona La persona para la cual se desean consultar las placas
+     * tramitadas.
+     * @return Lista de placas tramitadas por la persona, ordenadas por fecha de
+     * expedición en orden descendente.
+     * @throws PersistenciaException Si hay un error durante la consulta.
+     */
     @Override
     public List<Placa> consultarPlacasTramitadasPorPersona(Persona persona) throws PersistenciaException {
         EntityManager entityManager = null;
@@ -200,7 +218,7 @@ public class PlacaDAO implements IPlacaDAO {
         } catch (Exception ex) {
             throw new PersistenciaException("Error al consultar placas", ex);
         } finally {
-            conexion.close();
+            conexion.close(); // Cerrar la conexión una vez finalizada la operación.
         }
     }
 

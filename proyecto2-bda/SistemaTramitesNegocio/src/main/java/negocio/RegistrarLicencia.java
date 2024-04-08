@@ -15,6 +15,7 @@ import interfaces.ILicencia;
 import interfaces.IRegistrarLicenciaBO;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,10 +31,11 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
     private final ILicencia licenciaDAO;
     private final Conversiones conversiones;
     private final PersonaDAO personaDAO;
+
     public RegistrarLicencia() {
         this.licenciaDAO = new LicenciaDAO();
         this.conversiones = new Conversiones();
-        this.personaDAO=new PersonaDAO();
+        this.personaDAO = new PersonaDAO();
 
     }
 
@@ -49,8 +51,8 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
     public void registrarLicencia(LicenciaDTO licenciaDTO) {
 
         try {
-            Licencia licencia=conversiones.LicenciaDTOALicencia(licenciaDTO);
-
+            Licencia licencia = conversiones.LicenciaDTOALicencia(licenciaDTO);
+            licencia.setEstado("No expirada");
             licenciaDAO.registrarLicencia(licencia);
         } catch (PersistenciaException ex) {
             Logger.getLogger(RegistrarLicencia.class.getName()).log(Level.SEVERE, null, ex);
@@ -58,17 +60,6 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
 
     }
 
-//    private LicenciaDTO convertirALicenciaDTO(Licencia licencia) {
-//        LicenciaDTO licenciaDTO = new LicenciaDTO();
-//        licenciaDTO.setIdLicencia(licencia.getIdLicencia());
-//        licenciaDTO.setCosto(licencia.getCosto());
-//        licenciaDTO.setEstadoActual(convertirEstadoLicencia(licencia.getEstadoActual()));
-//        licenciaDTO.setFechaExpedicion(licencia.getFechaExpedicion());
-//        licenciaDTO.setFechaVencimiento(licencia.getFechaVencimiento());
-//        licenciaDTO.setPersona(licencia.getPersona());
-//        return licenciaDTO;
-//    }
- 
     /**
      * Busca personas según un parámetro de búsqueda y devuelve una lista de
      * objetos PersonaDTO.
@@ -133,13 +124,85 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
         }
     }
 
-    public boolean personaTieneLicenciaActiva(PersonaDTO personadto) {
+    /**
+     * Verifica si una persona tiene una licencia activa y dentro del período de
+     * validez.
+     *
+     * @param personadto El objeto PersonaDTO que representa a la persona cuya
+     * licencia se desea verificar.
+     * @return true si la persona tiene una licencia activa y dentro del período
+     * de validez, false de lo contrario.
+     */
+    @Override
+    public boolean verificarLicenciaActiva(PersonaDTO personadto) {
         Persona persona = conversiones.PersonaDTOAPersona(personadto);
         try {
+
             Licencia licenciaActiva = licenciaDAO.obtenerLicenciaActiva(persona);
-            return licenciaActiva != null;
+
+            if (licenciaActiva != null) {
+
+                Calendar fechaActual = Calendar.getInstance();
+                Calendar fechaVencimiento = licenciaActiva.getFechaVencimiento();
+                if (fechaVencimiento != null && fechaVencimiento.before(fechaActual)) {
+
+                    licenciaActiva.setEstado("expirada");
+                    licenciaDAO.actualizarLicencia(licenciaActiva);
+                    System.out.println("La licencia ha expirado y se ha actualizado.");
+                    return false;
+                } else {
+                    System.out.println("La licencia está activa y dentro del período de validez.");
+                    return true;
+                }
+            } else {
+                System.out.println("No hay licencia activa para la persona.");
+                return false;
+            }
         } catch (PersistenciaException ex) {
+            System.out.println("Error al obtener la licencia activa.");
             return false;
         }
+    }
+
+    /**
+     * Actualiza el estado de una licencia a "expirada".
+     *
+     * @param licenciaDTO El objeto LicenciaDTO que representa la licencia a
+     * actualizar.
+     */
+    private void actualizarLicencia(LicenciaDTO licenciaDTO) {
+        licenciaDTO.setEstadoActual(LicenciaDTO.estadoDTO.EXPIRADA);
+        Licencia licencia = conversiones.LicenciaDTOALicencia(licenciaDTO);
+        try {
+            licenciaDAO.actualizarLicencia(licencia);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(RegistrarLicencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Obtiene una lista de todas las personas registradas en el sistema.
+     *
+     * @return Lista de objetos PersonaDTO que representan a todas las personas
+     * registradas en el sistema.
+     */
+    public List<PersonaDTO> obtenerPersonas() {
+        List<PersonaDTO> personasRegistradasDTO = new ArrayList<>();
+
+        // Obtener la lista de personas del DAO
+        List<Persona> personasRegistradas = null;
+        try {
+            personasRegistradas = personaDAO.obtenerTodasLasPersonas();
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(RegistrarLicencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // Convertir cada persona a DTO y agregarla a la lista de DTOs
+        for (Persona persona : personasRegistradas) {
+            PersonaDTO personaDTO = conversiones.convertirAPersonaDTO(persona);
+            personasRegistradasDTO.add(personaDTO);
+        }
+
+        return personasRegistradasDTO;
     }
 }

@@ -121,6 +121,12 @@ public class Conversiones {
 
     }
 
+    /**
+     * Convierte un objeto de tipo VehiculoDTO a un objeto de tipo Vehiculo.
+     *
+     * @param vehiculoDTO El objeto VehiculoDTO que se desea convertir.
+     * @return El objeto Vehiculo resultante.
+     */
     public Vehiculo VehiculoDTOAVehiculo(VehiculoDTO vehiculoDTO) {
         Vehiculo vehiculo = new Vehiculo();
         vehiculo.setId(vehiculoDTO.getId());
@@ -135,6 +141,12 @@ public class Conversiones {
         return vehiculo;
     }
 
+    /**
+     * Convierte un objeto de tipo Vehiculo a un objeto de tipo VehiculoDTO.
+     *
+     * @param vehiculo El objeto Vehiculo que se desea convertir.
+     * @return El objeto VehiculoDTO resultante.
+     */
     public VehiculoDTO VehiculoAVehiculoDTO(Vehiculo vehiculo) {
         VehiculoDTO vehiculoDTO = new VehiculoDTO();
         vehiculoDTO.setId(vehiculo.getId());
@@ -149,6 +161,12 @@ public class Conversiones {
         return vehiculoDTO;
     }
 
+    /**
+     * Convierte un objeto de tipo PlacaDTO a un objeto de tipo Placa.
+     *
+     * @param placaDTO El objeto PlacaDTO que se desea convertir.
+     * @return El objeto Placa resultante.
+     */
     public Placa PlacaDTOAPlaca(PlacaDTO placaDTO) {
         Placa placa = new Placa();
         placa.setCodigo(placaDTO.getCodigo());
@@ -159,7 +177,15 @@ public class Conversiones {
         placa.setVehiculo(VehiculoDTOAVehiculo(placaDTO.getVehiculo()));
         return placa;
     }
- public Placa PlacaDTOAPlacaSinVehiculo(PlacaDTO placaDTO) {
+
+    /**
+     * Convierte un objeto de tipo PlacaDTO a un objeto de tipo Placa, sin
+     * incluir la referencia al vehículo.
+     *
+     * @param placaDTO El objeto PlacaDTO que se desea convertir.
+     * @return El objeto Placa resultante.
+     */
+    public Placa PlacaDTOAPlacaSinVehiculo(PlacaDTO placaDTO) {
         Placa placa = new Placa();
         placa.setCodigo(placaDTO.getCodigo());
         placa.setCosto(placaDTO.getCosto());
@@ -168,10 +194,18 @@ public class Conversiones {
         placa.setFechaRecepcion(placaDTO.getFechaRecepcion());
         return placa;
     }
+
+    /**
+     * Convierte una lista de objetos de tipo PlacaDTO a una lista de objetos de
+     * tipo Placa, sin incluir las referencias a los vehículos.
+     *
+     * @param placasDTO La lista de objetos PlacaDTO que se desea convertir.
+     * @return La lista de objetos Placa resultante.
+     */
     public List<Placa> PlacasDTOAPlacas(List<PlacaDTO> placasDTO) {
         List<Placa> placas = new ArrayList<>();
         for (PlacaDTO placaDTO : placasDTO) {
-            Placa placa =PlacaDTOAPlacaSinVehiculo(placaDTO);
+            Placa placa = PlacaDTOAPlacaSinVehiculo(placaDTO);
             placas.add(placa);
         }
         return placas;

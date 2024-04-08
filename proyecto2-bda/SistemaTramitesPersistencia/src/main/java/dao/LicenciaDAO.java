@@ -54,6 +54,34 @@ public class LicenciaDAO implements ILicencia {
     }
 
     /**
+     * Actualiza una licencia en la base de datos.
+     *
+     * @param licencia La licencia que se actualizará en la base de datos.
+     * @return true si la licencia se actualizó correctamente, false en caso
+     * contrario.
+     * @throws PersistenciaException Si ocurre un error durante la actualización
+     * de la licencia.
+     */
+    @Override
+    public boolean actualizarLicencia(Licencia licencia) throws PersistenciaException {
+        EntityManager entityManager = null;
+        try {
+            entityManager = conexion.getEntityManager();
+            entityManager.getTransaction().begin();
+            entityManager.merge(licencia); // Utilizamos merge en lugar de persist para actualizar la licencia existente
+            entityManager.getTransaction().commit();
+            return true;
+        } catch (Exception ex) {
+            if (entityManager != null && entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al actualizar la licencia", ex);
+        } finally {
+            conexion.close();
+        }
+    }
+
+    /**
      * Método para obtener una licencia a partir de un parametro de busqueda
      *
      * @param buscarParametro Parámetro de busqueda
@@ -99,7 +127,12 @@ public class LicenciaDAO implements ILicencia {
             conexion.close();
         }
     }
-
+/**
+ * Metodo para obtener la licencia activa de una persona si la hay
+ * @param persona
+ * @return licencia activa, null si es que no hay una licencia activa
+ * @throws PersistenciaException 
+ */
     @Override
     public Licencia obtenerLicenciaActiva(Persona persona) throws PersistenciaException {
         EntityManager entityManager = null;
@@ -121,7 +154,12 @@ public class LicenciaDAO implements ILicencia {
         }
         return licencia;
     }
-
+/**
+ * Metodo que regresa una lista con todas las licencias asociadas con una persona
+ * @param persona
+ * @return Lista de licencias
+ * @throws PersistenciaException 
+ */
     @Override
     public List<Licencia> obtenerLicenciasPorPersona(Persona persona) throws PersistenciaException {
 

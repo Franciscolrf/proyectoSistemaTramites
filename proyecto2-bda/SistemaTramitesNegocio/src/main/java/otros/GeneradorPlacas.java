@@ -31,7 +31,11 @@ public class GeneradorPlacas {
         this.random = new Random();
         placaDAO = new PlacaDAO();
     }
-
+/**
+ * Se encarga de generar un codigo para la placa, si el codigo existe se encargara de generarlo hasta hacer uno 
+ * que no exista
+ * @return Codigo de la placa
+ */
     public String generarCodigoPlaca() {
         String codigo;
         boolean codigoExistente = false;
@@ -48,6 +52,11 @@ public class GeneradorPlacas {
         return codigo;
     }
 
+    /**
+     * Genera un codigo para la placa
+     *
+     * @return los caracteres y los digitos que componen el codigo
+     */
     private String crearCodigoAleatorio() {
         String car = caracteres[random.nextInt(caracteres.length)] + caracteres[random.nextInt(caracteres.length)] + caracteres[random.nextInt(caracteres.length)];
         String dig = digitos[random.nextInt(digitos.length)] + digitos[random.nextInt(digitos.length)] + digitos[random.nextInt(digitos.length)];
@@ -123,7 +132,10 @@ public class GeneradorPlacas {
         }
         return placa;
     }
-
+/**
+ * Metodo que genera una lista de 4 placas
+ * @return lista de placas
+ */
     public List<PlacaDTO> generarPlacas() {
         List<PlacaDTO> placasGeneradas = new ArrayList<>();
 
@@ -139,7 +151,7 @@ public class GeneradorPlacas {
         Calendar fechaRecepcionPlaca4 = (Calendar) fechaRecepcionPlaca3.clone();
         fechaRecepcionPlaca4.add(Calendar.YEAR, 1);
 
-        placa4.setFechaExpedicion( fechaRecepcionPlaca3);
+        placa4.setFechaExpedicion(fechaRecepcionPlaca3);
         placa4.setFechaRecepcion(fechaRecepcionPlaca4);
 
         placasGeneradas.add(placa1);

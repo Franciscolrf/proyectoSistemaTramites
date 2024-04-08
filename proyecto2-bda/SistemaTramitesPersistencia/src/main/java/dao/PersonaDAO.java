@@ -29,7 +29,7 @@ public class PersonaDAO implements IPersona {
      * @param conexion Objeto que proporciona la conexión a la base de datos.
      */
     public PersonaDAO() {
-         conexion = new ConexionJPA("bda.itson_SistemaTramitesPersistencia_jar_1.0-SNAPSHOTPU");
+        conexion = new ConexionJPA("bda.itson_SistemaTramitesPersistencia_jar_1.0-SNAPSHOTPU");
     }
 
     /**
@@ -98,24 +98,24 @@ public class PersonaDAO implements IPersona {
      * @return El objeto Persona correspondiente al RFC proporcionado, o null si
      * no se encuentra.
      */
-  public Persona obtenerPersonaRFC(String rfc) {
-    EntityManager entityManager = null;
-    Persona persona = null;
-    try {
-        entityManager = conexion.getEntityManager();
-        Query query = entityManager.createQuery("SELECT p FROM Persona p WHERE p.RFC = :rfc");
-        query.setParameter("rfc", rfc);
-        persona = (Persona) query.getSingleResult();
-    } catch (NoResultException e) {
-        persona = null;
-    } finally {
-        if (entityManager != null) {
-            entityManager.close();
+    public Persona obtenerPersonaRFC(String rfc) {
+        EntityManager entityManager = null;
+        Persona persona = null;
+        try {
+            entityManager = conexion.getEntityManager();
+            Query query = entityManager.createQuery("SELECT p FROM Persona p WHERE p.RFC = :rfc");
+            query.setParameter("rfc", rfc);
+            persona = (Persona) query.getSingleResult();
+        } catch (NoResultException e) {
+            persona = null;
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
+        return persona;
     }
-    return persona;
-}
-  
+
     /**
      * Método para obtener una licencia a partir de un parametro de busqueda
      *
@@ -132,5 +132,26 @@ public class PersonaDAO implements IPersona {
                 Persona.class);
         query.setParameter("parametro", "%" + buscarParametro + "%");
         return query.getResultList();
+    }
+
+    /**
+     * Método para obtener todas las personas registradas en la base de datos
+     *
+     * @return Lista de todas las personas registradas
+     * @throws PersistenciaException
+     */
+    @Override
+    public List<Persona> obtenerTodasLasPersonas() throws PersistenciaException {
+        EntityManager entityManager = null;
+        try {
+            entityManager = conexion.getEntityManager();
+            TypedQuery<Persona> query = entityManager.createQuery(
+                    "SELECT p FROM Persona p", Persona.class);
+            return query.getResultList();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
     }
 }

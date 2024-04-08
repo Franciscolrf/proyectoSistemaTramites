@@ -23,21 +23,38 @@ import java.util.logging.Logger;
 import otros.Conversiones;
 
 /**
+ * Esta clase proporciona métodos para realizar consultas relacionadas con
+ * licencias y placas. Implementa la interfaz IConsultas.
  *
  * @author abelc
  */
 public class Consultas implements IConsultas {
-    
+
     Conversiones conversiones;
     ILicencia licenciaDAO;
     IPlacaDAO placaDAO;
-    
+
+    /**
+     * Constructor de la clase Consultas. Inicializa las instancias de las
+     * clases DAO necesarias.
+     */
     public Consultas() {
         conversiones = new Conversiones();
         licenciaDAO = new LicenciaDAO();
         placaDAO = new PlacaDAO();
     }
-    
+
+    /**
+     * Obtiene una lista de licencias emitidas para una persona durante un
+     * período de tiempo específico.
+     *
+     * @param personaDTO El objeto PersonaDTO que representa a la persona para
+     * la cual se desean consultar las licencias.
+     * @param fechaInicio La fecha de inicio del período de tiempo.
+     * @param fechaFin La fecha de fin del período de tiempo.
+     * @return Lista de objetos LicenciaDTO emitidos para la persona durante el
+     * período de tiempo especificado.
+     */
     @Override
     public List<LicenciaDTO> obtenerLicenciasPorPeriodo(PersonaDTO personaDTO, Calendar fechaInicio, Calendar fechaFin) {
         List<LicenciaDTO> licenciasDTO = new ArrayList<>();
@@ -53,7 +70,14 @@ public class Consultas implements IConsultas {
         }
         return licenciasDTO;
     }
-    
+
+    /**
+     * Obtiene una lista de todas las licencias emitidas para una persona.
+     *
+     * @param personaDTO El objeto PersonaDTO que representa a la persona para
+     * la cual se desean consultar las licencias.
+     * @return Lista de objetos LicenciaDTO emitidos para la persona.
+     */
     @Override
     public List<LicenciaDTO> obtenerLicenciasPorPersona(PersonaDTO personaDTO) {
         List<LicenciaDTO> licenciasDTO = new ArrayList<>();
@@ -69,7 +93,18 @@ public class Consultas implements IConsultas {
         }
         return licenciasDTO;
     }
-    
+
+    /**
+     * Obtiene una lista de placas tramitadas para una persona durante un
+     * período de tiempo específico.
+     *
+     * @param personaDTO El objeto PersonaDTO que representa a la persona para
+     * la cual se desean consultar las placas tramitadas.
+     * @param fechaInicio La fecha de inicio del período de tiempo.
+     * @param fechaFin La fecha de fin del período de tiempo.
+     * @return Lista de objetos PlacaDTO tramitadas para la persona durante el
+     * período de tiempo especificado.
+     */
     @Override
     public List<PlacaDTO> obtenerPlacasPorPeriodo(PersonaDTO personaDTO, Calendar fechaInicio, Calendar fechaFin) {
         List<PlacaDTO> placasDTO = new ArrayList<>();
@@ -85,7 +120,14 @@ public class Consultas implements IConsultas {
         }
         return placasDTO;
     }
-    
+
+    /**
+     * Obtiene una lista de todas las placas tramitadas para una persona.
+     *
+     * @param personaDTO El objeto PersonaDTO que representa a la persona para
+     * la cual se desean consultar las placas tramitadas.
+     * @return Lista de objetos PlacaDTO tramitadas para la persona.
+     */
     @Override
     public List<PlacaDTO> obtenerPlacasPorPersona(PersonaDTO personaDTO) {
         List<PlacaDTO> placasDTO = new ArrayList<>();
@@ -101,5 +143,5 @@ public class Consultas implements IConsultas {
         }
         return placasDTO;
     }
-    
+
 }

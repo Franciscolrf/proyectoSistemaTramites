@@ -47,11 +47,43 @@ public interface IPlacaDAO {
     public List<Placa> consultarPlacasTramitadasPorPeriodo(Persona persona, Calendar fechaInicio, Calendar fechaFin)
             throws PersistenciaException;
 
+    /**
+     * Consulta las placas tramitadas por una persona.
+     *
+     * @param persona La persona para la cual se desean consultar las placas
+     * tramitadas.
+     * @return Lista de placas tramitadas por la persona.
+     * @throws PersistenciaException Si hay un error durante la consulta.
+     */
     public List<Placa> consultarPlacasTramitadasPorPersona(Persona persona) throws PersistenciaException;
 
+    /**
+     * Busca una placa por su código.
+     *
+     * @param codigo El código de la placa a buscar.
+     * @return La placa correspondiente al código proporcionado, o null si no se
+     * encuentra ninguna placa con ese código.
+     * @throws PersistenciaException Si hay un error durante la consulta.
+     */
     public Placa buscarPlacaCodigo(String codigo) throws PersistenciaException;
 
+    /**
+     * Actualiza la información de una placa en la base de datos.
+     *
+     * @param placa La placa que se desea actualizar.
+     * @return La placa actualizada.
+     * @throws PersistenciaException Si hay un error durante la actualización.
+     */
     public Placa actualizar(Placa placa) throws PersistenciaException;
 
+    /**
+     * Obtiene la última placa registrada para un vehículo.
+     *
+     * @param vehiculo El vehículo para el cual se desea obtener la última
+     * placa.
+     * @return La última placa registrada para el vehículo, o null si no hay
+     * ninguna placa registrada para el vehículo.
+     * @throws PersistenciaException Si hay un error durante la consulta.
+     */
     public Placa obtenerUltimaPlacaPorVehiculo(Vehiculo vehiculo) throws PersistenciaException;
 }

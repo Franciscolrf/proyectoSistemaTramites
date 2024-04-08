@@ -45,7 +45,14 @@ public interface IRegistrarLicenciaBO {
      * @param persona
      * @return dependiendo de lo establecido lanzara un mensaje
      */
-    boolean personaTieneLicenciaActiva(PersonaDTO persona);
+    boolean verificarLicenciaActiva(PersonaDTO persona);
+    /**
+     * Obtiene una lista de todas las personas registradas en el sistema.
+     *
+     * @return Lista de objetos PersonaDTO que representan a todas las personas
+     * registradas en el sistema.
+     */
+    public List<PersonaDTO> obtenerPersonas();
 }
 
 

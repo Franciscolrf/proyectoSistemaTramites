@@ -22,6 +22,7 @@ import otros.GeneradorPersonas;
 import otros.GeneradorPlacas;
 import otros.GeneradorVehiculos;
 import interfaces.IregistrarPersona;
+import otros.Encriptacion;
 
 /**
  *
@@ -81,6 +82,11 @@ public class RegistrarPersona implements IregistrarPersona {
     public boolean registroMasivo(List<PersonaDTO> personas) {
         List<Persona> personasEntidad = new ArrayList<>();
         for (PersonaDTO persona : personas) {
+            try {
+                persona.setTelefono(Encriptacion.encriptarTelefono(persona.getTelefono()));
+            } catch (Exception ex) {
+                Logger.getLogger(RegistrarPersona.class.getName()).log(Level.SEVERE, null, ex);
+            }
             Persona pEntidad = conversiones.PersonaDTOAPersona(persona);
             List<VehiculoDTO> vehiculosDTO = gv.generarVehiculos(5);
             List<Vehiculo> vehiculos = conversiones.convertirVehiculosDTOaEntidad(vehiculosDTO);

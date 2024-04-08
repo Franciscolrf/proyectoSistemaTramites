@@ -46,5 +46,11 @@ public interface IPersona {
      * @return Licencia con el parametro de busqueda especificado
      * @throws PersistenciaException
      */
-    public List<Persona> buscarPersonas(String buscarParametro) throws PersistenciaException;
+     public List<Persona> buscarPersonas(String buscarParametro) throws PersistenciaException;
+     /**
+      * Obtiene una lista de todas las personas registradas
+      * @return lista de personas
+      * @throws PersistenciaException 
+      */
+     public List<Persona> obtenerTodasLasPersonas() throws PersistenciaException;
 }
