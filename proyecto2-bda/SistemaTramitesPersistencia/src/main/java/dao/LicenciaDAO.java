@@ -87,7 +87,7 @@ public class LicenciaDAO implements ILicencia {
         try {
             entityManager = conexion.getEntityManager();
             TypedQuery<Licencia> query = entityManager.createQuery(
-                    "SELECT l FROM Licencia l JOIN l.persona per WHERE per.id= :personaId AND l.fechaExpedicion BETWEEN :fechaInicio AND :fechaFin",
+                    "SELECT l FROM Licencia l JOIN l.persona per WHERE per.id= :personaId AND l.fechaExpedicion BETWEEN :fechaInicio AND :fechaFin ORDER BY l.fechaExpedicion DESC",
                     Licencia.class);
             query.setParameter("personaId", persona.getId());
             query.setParameter("fechaInicio", fechaInicio);
@@ -129,7 +129,7 @@ public class LicenciaDAO implements ILicencia {
         try {
             entityManager = conexion.getEntityManager();
             TypedQuery<Licencia> query = entityManager.createQuery(
-                    "SELECT l FROM Licencia l JOIN l.persona per WHERE per.id= :personaId", Licencia.class);
+                    "SELECT l FROM Licencia l JOIN l.persona per WHERE per.id= :personaId ORDER BY l.fechaExpedicion DESC", Licencia.class);
             query.setParameter("personaId", persona.getId());
             return query.getResultList();
         } catch (Exception ex) {

@@ -10,6 +10,7 @@ import java.util.List;
 import excepciones.PersistenciaException;
 
 import bda.itson.entidadesJPA.Placa;
+import bda.itson.entidadesJPA.Vehiculo;
 
 /**
  *
@@ -49,4 +50,8 @@ public interface IPlacaDAO {
     public List<Placa> consultarPlacasTramitadasPorPersona(Persona persona) throws PersistenciaException;
 
     public Placa buscarPlacaCodigo(String codigo) throws PersistenciaException;
+
+    public Placa actualizar(Placa placa) throws PersistenciaException;
+
+    public Placa obtenerUltimaPlacaPorVehiculo(Vehiculo vehiculo) throws PersistenciaException;
 }
