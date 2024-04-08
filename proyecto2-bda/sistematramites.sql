@@ -80,15 +80,19 @@ END;
 //
 DELIMITER ;
 
-
--- Trigger para actualizar automáticamente el estado de la placa
+-- Trigger para actualizar el estado de un vehiculo si tiene placas inactivas
 DELIMITER //
-CREATE TRIGGER actualizar_estado_placa BEFORE UPDATE ON Placa
+CREATE TRIGGER actualizar_estado_vehiculo AFTER INSERT ON Placa
 FOR EACH ROW
 BEGIN
-    IF OLD.estado != NEW.estado THEN
-        IF NEW.estado = 'activa' THEN
-            UPDATE Placa SET estado = 'inactiva' WHERE codigo = NEW.codigo AND estado = 'activa';
+    DECLARE vehiculo_estado VARCHAR(50);
+    
+    SELECT estado INTO vehiculo_estado FROM Vehiculo WHERE idVehiculo = NEW.idVehiculo;
+
+    IF EXISTS (SELECT * FROM Placa WHERE idVehiculo = NEW.idVehiculo AND estado = 'Inactiva') THEN
+       
+        IF vehiculo_estado != 'Usado' THEN
+            UPDATE Vehiculo SET estado = 'Usado' WHERE idVehiculo = NEW.idVehiculo;
         END IF;
     END IF;
 END;

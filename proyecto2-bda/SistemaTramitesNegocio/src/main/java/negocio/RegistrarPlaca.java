@@ -43,6 +43,7 @@ public class RegistrarPlaca implements IRegistrarPlaca {
 
     @Override
     public void registrarPLaca(PlacaDTO placaDTO) {
+        actualizarPlacaAnterior(placaDTO);
         Placa placa = new Placa();
         placa = conversiones.PlacaDTOAPlaca(placaDTO);
         try {
@@ -74,7 +75,7 @@ public class RegistrarPlaca implements IRegistrarPlaca {
     }
 
     @Override
-    public VehiculoDTO buscarPorNumeroSerie(String numeroSerie) {
+    public VehiculoDTO buscarVehiculoPorNumeroSerie(String numeroSerie) {
         VehiculoDTO vehiculoDTO = new VehiculoDTO();
         try {
             vehiculoDTO = conversiones.VehiculoAVehiculoDTO(vehiculoDAO.consultarNumeroSeria(numeroSerie));
@@ -82,6 +83,19 @@ public class RegistrarPlaca implements IRegistrarPlaca {
             Logger.getLogger(RegistrarPlaca.class.getName()).log(Level.SEVERE, null, ex);
         }
         return vehiculoDTO;
+    }
+
+    private void actualizarPlacaAnterior(PlacaDTO placaDTO) {
+        try {
+            Placa placa = placaDAO.obtenerUltimaPlacaPorVehiculo(conversiones.VehiculoDTOAVehiculo(placaDTO.getVehiculo()));
+            if (placa != null && placa.getEstado().equals("activa")) {
+                placa.setEstado("inactiva");
+                placa.setFechaRecepcion(placaDTO.getFechaExpedicion());
+                placaDAO.actualizar(placa); // Actualizar la placa en la base de datos
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(RegistrarPlaca.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

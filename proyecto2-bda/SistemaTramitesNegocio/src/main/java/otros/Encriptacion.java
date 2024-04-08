@@ -7,7 +7,7 @@ import java.util.Base64;
 
 /**
  * Clase que proporciona métodos para encriptar y desencriptar números de teléfono.
- * @author Fran 
+ * @author Francisco López Ruiz
  */
 public class Encriptacion {
     private static final String ALGORITMO = "AES";

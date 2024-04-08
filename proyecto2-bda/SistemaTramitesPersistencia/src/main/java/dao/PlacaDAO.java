@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import bda.itson.entidadesJPA.Placa;
+import bda.itson.entidadesJPA.Vehiculo;
 import excepciones.PersistenciaException;
 import interfaces.IConexion;
 import interfaces.IPlacaDAO;
@@ -65,6 +66,61 @@ public class PlacaDAO implements IPlacaDAO {
     }
 
     /**
+     * Actualiza una placa existente en la base de datos.
+     *
+     * @param placa Objeto de tipo Placa que se actualizará.
+     * @return El objeto Placa actualizado.
+     * @throws PersistenciaException Si ocurre un error durante la actualización
+     * de la placa.
+     */
+    @Override
+    public Placa actualizar(Placa placa) throws PersistenciaException {
+        EntityManager entityManager = null;
+        try {
+            entityManager = conexion.getEntityManager();
+            entityManager.getTransaction().begin();
+            Placa placaActualizada = entityManager.merge(placa);
+            entityManager.getTransaction().commit();
+            return placaActualizada;
+        } catch (Exception ex) {
+            if (entityManager != null && entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al actualizar placa", ex);
+        } finally {
+            conexion.close();
+        }
+    }
+
+    /**
+     * Obtiene la última placa por fecha de expedición asociada a un vehículo.
+     *
+     * @param vehiculo Objeto de tipo Vehículo.
+     * @return La última placa asociada al vehículo, ordenada por fecha de
+     * expedición.
+     * @throws PersistenciaException Si ocurre un error al obtener la última
+     * placa.
+     */
+    @Override
+    public Placa obtenerUltimaPlacaPorVehiculo(Vehiculo vehiculo) throws PersistenciaException {
+        EntityManager entityManager = null;
+        try {
+            entityManager = conexion.getEntityManager();
+            TypedQuery<Placa> query = entityManager.createQuery(
+                    "SELECT p FROM Placa p WHERE p.vehiculo = :vehiculo ORDER BY p.id DESC", Placa.class);
+            query.setParameter("vehiculo", vehiculo);
+            query.setMaxResults(1);
+            return query.getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        } catch (Exception ex) {
+            throw new PersistenciaException("Error al obtener la última placa", ex);
+        } finally {
+            conexion.close();
+        }
+    }
+
+    /**
      * Consulta una placa en la base de datos por su identificador.
      *
      * @param idPlaca Identificador de la placa a consultar.
@@ -100,7 +156,7 @@ public class PlacaDAO implements IPlacaDAO {
             entityManager = conexion.getEntityManager();
             TypedQuery<Placa> query = entityManager.createQuery(
                     "SELECT p FROM Placa p JOIN p.vehiculo v JOIN v.propietario per WHERE per.id= :personaId"
-                    + " AND p.fechaExpedicion BETWEEN :fechaInicio AND :fechaFin", Placa.class);
+                    + " AND p.fechaExpedicion BETWEEN :fechaInicio AND :fechaFin ORDER BY p.fechaExpedicion DESC", Placa.class);
             query.setParameter("personaId", persona.getId());
             query.setParameter("fechaInicio", fechaInicio);
             query.setParameter("fechaFin", fechaFin);
@@ -138,7 +194,7 @@ public class PlacaDAO implements IPlacaDAO {
         try {
             entityManager = conexion.getEntityManager();
             TypedQuery<Placa> query = entityManager.createQuery(
-                    "SELECT p FROM Placa p JOIN p.vehiculo v JOIN v.propietario per WHERE per.id= :personaId", Placa.class);
+                    "SELECT p FROM Placa p JOIN p.vehiculo v JOIN v.propietario per WHERE per.id = :personaId ORDER BY p.fechaExpedicion DESC", Placa.class);
             query.setParameter("personaId", persona.getId());
             return query.getResultList();
         } catch (Exception ex) {

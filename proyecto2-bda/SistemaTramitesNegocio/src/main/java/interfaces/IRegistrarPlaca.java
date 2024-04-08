@@ -21,5 +21,5 @@ public interface IRegistrarPlaca {
 
     void generarPlaca(PlacaDTO placaDTO);
 
-    VehiculoDTO buscarPorNumeroSerie(String numeroSerie);
+    VehiculoDTO buscarVehiculoPorNumeroSerie(String numeroSerie);
 }
