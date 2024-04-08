@@ -18,36 +18,38 @@ import negocio.RegistrarPlaca;
  * @author abelc
  */
 public class dlgConfirmaciones extends javax.swing.JDialog {
-LicenciaDTO licenciaDatos;
-IRegistrarLicenciaBO licencia;
-PlacaDTO placaDTO;
-int operacion;
-IRegistrarPlaca placa;
+
+    LicenciaDTO licenciaDatos;
+    IRegistrarLicenciaBO licencia;
+    PlacaDTO placaDTO;
+    int operacion;
+    IRegistrarPlaca placa;
+
     /**
      * Creates new form dlgConfirmarLicencia
      */
-    public dlgConfirmaciones(java.awt.Frame parent, boolean modal,LicenciaDTO licenciaDatos,PlacaDTO placaDTO,int operacion) {
+    public dlgConfirmaciones(java.awt.Frame parent, boolean modal, LicenciaDTO licenciaDatos, PlacaDTO placaDTO, int operacion) {
         super(parent, modal);
-        placa=new RegistrarPlaca();
-         this.licencia=new RegistrarLicencia();
-         this.operacion=operacion;
-         this.licenciaDatos = licenciaDatos; 
-         this.placaDTO=placaDTO;
+        placa = new RegistrarPlaca();
+        this.licencia = new RegistrarLicencia();
+        this.operacion = operacion;
+        this.licenciaDatos = licenciaDatos;
+        this.placaDTO = placaDTO;
         initComponents();
-        if (operacion==1) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        personaTxt.setText(licenciaDatos.getPersona().getNombres()+" "+
-        licenciaDatos.getPersona().getApellidoPaterno()+" "+licenciaDatos.getPersona().getApellidoMaterno());
-        rfcTxt.setText(licenciaDatos.getPersona().getRFC());
-        vigenciaTxt.setText(Integer.toString(licenciaDatos.getVigencia()));
-        fechaExTxt.setText(dateFormat.format(licenciaDatos.getFechaExpedicion().getTime()));
-        fechaVenTxt.setText(dateFormat.format(licenciaDatos.getFechaVencimiento().getTime()));
-      costoTxt.setText("$"+Double.toString(licenciaDatos.getCosto()));
+        if (operacion == 1) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            personaTxt.setText(licenciaDatos.getPersona().getNombres() + " "
+                    + licenciaDatos.getPersona().getApellidoPaterno() + " " + licenciaDatos.getPersona().getApellidoMaterno());
+            rfcTxt.setText(licenciaDatos.getPersona().getRFC());
+            vigenciaTxt.setText(Integer.toString(licenciaDatos.getVigencia()));
+            fechaExTxt.setText(dateFormat.format(licenciaDatos.getFechaExpedicion().getTime()));
+            fechaVenTxt.setText(dateFormat.format(licenciaDatos.getFechaVencimiento().getTime()));
+            costoTxt.setText("$" + Double.toString(licenciaDatos.getCosto()));
         }
-        if (operacion==2) {
-            personaTxt.setText(placaDTO.getVehiculo().getPropietario().getNombres()+" "+
-            placaDTO.getVehiculo().getPropietario().getApellidoPaterno()+" "
-           +placaDTO.getVehiculo().getPropietario().getApellidoMaterno());
+        if (operacion == 2) {
+            personaTxt.setText(placaDTO.getVehiculo().getPropietario().getNombres() + " "
+                    + placaDTO.getVehiculo().getPropietario().getApellidoPaterno() + " "
+                    + placaDTO.getVehiculo().getPropietario().getApellidoMaterno());
             Txt1.setText("Numero de serie:");
             rfcTxt.setText(placaDTO.getVehiculo().getNumeroSerie());
             Txt2.setText("Marca de carro:");
@@ -56,11 +58,11 @@ IRegistrarPlaca placa;
             fechaExTxt.setText(placaDTO.getVehiculo().getModelo());
             Txt6.setText("Código de placa:");
             fechaVenTxt.setText(placaDTO.getCodigo());
-            costoTxt.setText("$"+Double.toString(placaDTO.getCosto()));
+            costoTxt.setText("$" + Double.toString(placaDTO.getCosto()));
             confirmarBtn.setText("Registrar placa");
         }
         setVisible(true);
-     
+
     }
 
     /**
@@ -281,15 +283,15 @@ IRegistrarPlaca placa;
     }//GEN-LAST:event_regresarBtnActionPerformed
 
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
-        if (operacion==1) {
-              licencia.registrarLicencia(licenciaDatos);
-         JOptionPane.showMessageDialog(this, "La licencia se ha registrado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
-        dispose();
+        if (operacion == 1) {
+            licencia.registrarLicencia(licenciaDatos);
+            JOptionPane.showMessageDialog(this, "La licencia se ha registrado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
         }
-        if (operacion==2) {
+        if (operacion == 2) {
             placa.registrarPLaca(placaDTO);
             JOptionPane.showMessageDialog(this, "La placa se ha registrado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
-        dispose();
+            dispose();
         }
     }//GEN-LAST:event_confirmarBtnActionPerformed
 

@@ -210,6 +210,7 @@ public class Vehiculos extends javax.swing.JFrame {
         System.out.println(placaDTO.getVehiculo().getId());
         placa.generarPlaca(placaDTO);
         dlgConfirmaciones confirmacion = new dlgConfirmaciones(this, true, null, placaDTO, 2);
+        actualizarTablaVehiculos();
     }//GEN-LAST:event_seleccionarBtn1ActionPerformed
     public void obtenerDatosFilaSeleccionada() {
         int filaSeleccionada = tablaVehiculos.getSelectedRow();
@@ -222,7 +223,13 @@ public class Vehiculos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Por favor, seleccione un vehiculo.");
         }
     }
-
+   private void actualizarTablaVehiculos() {
+        DefaultTableModel model = (DefaultTableModel) tablaVehiculos.getModel();
+        model.setRowCount(0);
+        List<VehiculoDTO> vehiculos = placa.obtenerVehiculosDePersona(personaDTO);
+        DefaultTableModel newModel = tabla.vehiculosTableModel(vehiculos);
+        tablaVehiculos.setModel(newModel);
+    }
     /**
      * @param args the command line arguments
      */

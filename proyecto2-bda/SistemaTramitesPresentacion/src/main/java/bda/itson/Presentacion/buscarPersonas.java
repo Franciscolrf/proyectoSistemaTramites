@@ -26,7 +26,7 @@ import interfaces.IregistrarPersona;
  * @author abelc
  */
 public class buscarPersonas extends javax.swing.JFrame {
-    
+
     IRegistrarLicenciaBO licencia;
     IregistrarPersona personas;
     Conversiones tabla;
@@ -48,12 +48,27 @@ public class buscarPersonas extends javax.swing.JFrame {
         if (operacion == 1) {
             vigenciaCombobox.setVisible(true);
             jLabel3.setVisible(true);
+            DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
+            model.setRowCount(0);
+            List<PersonaDTO> listaPersonas = licencia.obtenerPersonas();
+            DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
+            tablaPersonas.setModel(newModel);
         } else {
             vigenciaCombobox.setVisible(false);
             jLabel3.setVisible(false);
+            DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
+            model.setRowCount(0);
+            List<PersonaDTO> listaPersonas = licencia.obtenerPersonas();
+            DefaultTableModel newModel = tabla.personasModuloPlacasTableModel(listaPersonas);
+            tablaPersonas.setModel(newModel);
         }
         if (operacion == 3) {
             seleccionarBtn.setText("Ver historial");
+            DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
+            model.setRowCount(0);
+            List<PersonaDTO> listaPersonas = licencia.obtenerPersonas();
+            DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
+            tablaPersonas.setModel(newModel);
         }
     }
 
@@ -238,24 +253,23 @@ public class buscarPersonas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
+        model.setRowCount(0);
+
+        List<PersonaDTO> listaPersonas = licencia.buscarPersonas(parametroTxtField.getText());
+
+        if (listaPersonas.isEmpty() || parametroTxtField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se encontraron resultados", "Búsqueda vacía", JOptionPane.INFORMATION_MESSAGE);
+            listaPersonas=licencia.obtenerPersonas();
+        }
+
         if (operacion == 1) {
-            DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
-            model.setRowCount(0);
-            List<PersonaDTO> listaPersonas = licencia.buscarPersonas(parametroTxtField.getText());
             DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
             tablaPersonas.setModel(newModel);
-        }
-        if (operacion == 2) {
-            DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
-            model.setRowCount(0);
-            List<PersonaDTO> listaPersonas = licencia.buscarPersonas(parametroTxtField.getText());
+        } else if (operacion == 2) {
             DefaultTableModel newModel = tabla.personasModuloPlacasTableModel(listaPersonas);
             tablaPersonas.setModel(newModel);
-        }
-        if (operacion == 3) {
-            DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
-            model.setRowCount(0);
-            List<PersonaDTO> listaPersonas = licencia.buscarPersonas(parametroTxtField.getText());
+        } else if (operacion == 3) {
             DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
             tablaPersonas.setModel(newModel);
         }
@@ -264,17 +278,17 @@ public class buscarPersonas extends javax.swing.JFrame {
     private void seleccionarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtnActionPerformed
         if (operacion == 1) {
             obtenerDatosFilaSeleccionada();
-            if (licencia.personaTieneLicenciaActiva(licenciaDTO.getPersona()) == false) {
+            if (licencia.verificarLicenciaActiva(licenciaDTO.getPersona()) == false) {
                 System.out.println(licenciaDTO.getCosto());
                 dlgConfirmaciones dlgConfLicencia = new dlgConfirmaciones(this, true, licenciaDTO, null, 1);
             } else {
                 JOptionPane.showMessageDialog(null, "La persona ya tiene una licencia activa.", "Licencia activa encontrada", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        
+
         if (operacion == 2) {
             obtenerDatosFilaSeleccionada();
-            if (licencia.personaTieneLicenciaActiva(personaDTO) == true) {
+            if (licencia.verificarLicenciaActiva(personaDTO) == true) {
                 Vehiculos vehiculosVentana = new Vehiculos(personaDTO);
                 vehiculosVentana.setVisible(true);
             } else {
@@ -291,17 +305,17 @@ public class buscarPersonas extends javax.swing.JFrame {
                             new String[]{"1 año", "2 años", "3 años"},
                             "1 año");
                     if (resp == 0) {
-                        
+
                         int duracion = 1;
-                        
+
                     } else if (resp == 1) {
-                        
+
                         int duracion = 2;
-                        
+
                     } else if (resp == 2) {
-                        
+
                         int duracion = 3;
-                        
+
                     }
                     licenciaDTO.setVigencia(resp);
                     licencia.asignarValoresLicencia(licenciaDTO);
@@ -322,12 +336,12 @@ public class buscarPersonas extends javax.swing.JFrame {
     private void obtenerDatosFilaSeleccionada() {
         if (operacion == 1) {
             int filaSeleccionada = tablaPersonas.getSelectedRow();
-            
+
             if (filaSeleccionada != -1) {
                 String rfc = tablaPersonas.getValueAt(filaSeleccionada, 4).toString(); // Obtener RFC de la fila seleccionada
 
                 PersonaDTO personaDTO = personas.buscarRFC(rfc);
-                
+
                 if (personaDTO != null) {
                     licenciaDTO.setPersona(personaDTO);
                     System.out.println(licenciaDTO.getPersona().getId());
@@ -337,7 +351,7 @@ public class buscarPersonas extends javax.swing.JFrame {
                         System.err.println("El valor seleccionado no es un número válido.");
                     }
                     licencia.asignarValoresLicencia(licenciaDTO);
-                    
+
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, seleccione una persona.");
@@ -345,7 +359,7 @@ public class buscarPersonas extends javax.swing.JFrame {
         }
         if (operacion == 2) {
             int filaSeleccionada = tablaPersonas.getSelectedRow();
-            
+
             if (filaSeleccionada != -1) {
                 String rfc = tablaPersonas.getValueAt(filaSeleccionada, 4).toString();
                 System.out.println(rfc);
@@ -356,7 +370,7 @@ public class buscarPersonas extends javax.swing.JFrame {
         }
         if (operacion == 3) {
             int filaSeleccionada = tablaPersonas.getSelectedRow();
-            
+
             if (filaSeleccionada != -1) {
                 String rfc = tablaPersonas.getValueAt(filaSeleccionada, 4).toString();
                 System.out.println(rfc);

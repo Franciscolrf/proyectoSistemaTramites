@@ -63,7 +63,7 @@ public class Conversiones {
                 persona.getRFC(),
                 discapacitado = (persona.isEsDiscapacitado()) ? "Si" : "No",
                 dateFormat.format(persona.getFechaNacimiento().getTime()),
-                licenciaActiva = (licencia.personaTieneLicenciaActiva(persona)) ? "Si" : "No"
+                licenciaActiva = (licencia.verificarLicenciaActiva(persona)) ? "Si" : "No"
             };
             modelo.addRow(fila);
         }
