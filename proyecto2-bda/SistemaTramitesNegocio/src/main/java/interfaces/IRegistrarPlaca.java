@@ -11,7 +11,8 @@ import java.util.List;
 
 /**
  *
- * @author abelc interfaz para el registro y acciones necesarias relacionadas a placas
+ * @author abelc 
+ * interfaz para el registro y acciones necesarias relacionadas a placas
  */
 public interface IRegistrarPlaca {
 

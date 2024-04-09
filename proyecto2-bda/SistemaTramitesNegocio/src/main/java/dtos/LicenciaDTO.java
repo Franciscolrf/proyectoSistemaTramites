@@ -9,7 +9,8 @@ import java.util.Calendar;
 
 /**
  *
- * @author fabri Clase que representa una licencia de conducir en formato DTO
+ * @author fabri 
+ * Clase que representa una licencia de conducir en formato DTO
  * (Data Transfer Object). Contiene información sobre la licencia, como la
  * persona a la que pertenece, la fecha de expedición, la fecha de vencimiento,
  * el costo y el estado actual.

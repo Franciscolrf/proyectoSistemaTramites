@@ -8,7 +8,8 @@ import dtos.PersonaDTO;
 import java.util.List;
 
 /**
- * @author abelc Interfaz para el registro de personas en el sistema.
+ * @author abelc 
+ * Interfaz para el registro de personas en el sistema.
  */
 public interface IregistrarPersona {
 

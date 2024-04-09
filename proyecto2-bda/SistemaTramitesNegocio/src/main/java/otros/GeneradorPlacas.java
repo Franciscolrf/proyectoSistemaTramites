@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author abelc
+ * @author abelc Clase encargada de generar las placas
  */
 public class GeneradorPlacas {
 
@@ -31,11 +31,13 @@ public class GeneradorPlacas {
         this.random = new Random();
         placaDAO = new PlacaDAO();
     }
-/**
- * Se encarga de generar un codigo para la placa, si el codigo existe se encargara de generarlo hasta hacer uno 
- * que no exista
- * @return Codigo de la placa
- */
+
+    /**
+     * Se encarga de generar un codigo para la placa, si el codigo existe se
+     * encargara de generarlo hasta hacer uno que no exista
+     *
+     * @return Codigo de la placa
+     */
     public String generarCodigoPlaca() {
         String codigo;
         boolean codigoExistente = false;
@@ -132,10 +134,12 @@ public class GeneradorPlacas {
         }
         return placa;
     }
-/**
- * Metodo que genera una lista de 4 placas
- * @return lista de placas
- */
+
+    /**
+     * Metodo que genera una lista de 4 placas
+     *
+     * @return lista de placas
+     */
     public List<PlacaDTO> generarPlacas() {
         List<PlacaDTO> placasGeneradas = new ArrayList<>();
 

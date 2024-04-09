@@ -24,6 +24,8 @@ import otros.Conversiones;
 import otros.Encriptacion;
 
 /**
+ * Esta clase proporciona metodos para realizar todas las operacionas
+ * relacionadas al registro de licencias
  *
  * @author fabri
  */
