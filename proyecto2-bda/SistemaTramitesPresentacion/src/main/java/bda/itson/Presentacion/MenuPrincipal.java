@@ -7,9 +7,10 @@ package bda.itson.Presentacion;
 /**
  *
  * @author abelc
+ * Frame del menu principal
  */
 public class MenuPrincipal extends javax.swing.JFrame {
-   buscarPersonas seleccionarPersona;
+   BuscarPersona seleccionarPersona;
     /**
      * Creates new form MenuPrincipal
      */
@@ -150,17 +151,21 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void realizarTramiteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_realizarTramiteBtnActionPerformed
-        dlgEleccionTramite elegirTramite=new  dlgEleccionTramite(this,true);
+        this.dispose();
+        DlgEleccionTramite elegirTramite=new  DlgEleccionTramite(this,true);
     }//GEN-LAST:event_realizarTramiteBtnActionPerformed
 
     private void consultasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultasBtnActionPerformed
-        seleccionarPersona = new buscarPersonas(3);
+
+        seleccionarPersona = new BuscarPersona(3);
         seleccionarPersona.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_consultasBtnActionPerformed
 
     private void generarClientesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarClientesBtnActionPerformed
        InsercionesFrm insercionClientes=new InsercionesFrm();
        insercionClientes.setVisible(true);
+       this.dispose();
     }//GEN-LAST:event_generarClientesBtnActionPerformed
 
     private void salirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirBtnActionPerformed

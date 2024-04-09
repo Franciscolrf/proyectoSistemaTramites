@@ -25,7 +25,7 @@ import interfaces.IregistrarPersona;
  *
  * @author abelc
  */
-public class buscarPersonas extends javax.swing.JFrame {
+public class BuscarPersona extends javax.swing.JFrame {
 
     IRegistrarLicenciaBO licencia;
     IregistrarPersona personas;
@@ -37,7 +37,7 @@ public class buscarPersonas extends javax.swing.JFrame {
     /**
      * Creates new form buscarPersonas
      */
-    public buscarPersonas(int operacion) {
+    public BuscarPersona(int operacion) {
         this.tabla = new Conversiones();
         this.licencia = new RegistrarLicencia();
         this.licenciaDTO = new LicenciaDTO();
@@ -260,7 +260,7 @@ public class buscarPersonas extends javax.swing.JFrame {
 
         if (listaPersonas.isEmpty() || parametroTxtField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "No se encontraron resultados", "Búsqueda vacía", JOptionPane.INFORMATION_MESSAGE);
-            listaPersonas=licencia.obtenerPersonas();
+            listaPersonas = licencia.obtenerPersonas();
         }
 
         if (operacion == 1) {
@@ -280,7 +280,8 @@ public class buscarPersonas extends javax.swing.JFrame {
             obtenerDatosFilaSeleccionada();
             if (licencia.verificarLicenciaActiva(licenciaDTO.getPersona()) == false) {
                 System.out.println(licenciaDTO.getCosto());
-                dlgConfirmaciones dlgConfLicencia = new dlgConfirmaciones(this, true, licenciaDTO, null, 1);
+                this.dispose();
+                DlgConfirmaciones dlgConfLicencia = new DlgConfirmaciones(this, true, licenciaDTO, null, 1);
             } else {
                 JOptionPane.showMessageDialog(null, "La persona ya tiene una licencia activa.", "Licencia activa encontrada", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -291,6 +292,7 @@ public class buscarPersonas extends javax.swing.JFrame {
             if (licencia.verificarLicenciaActiva(personaDTO) == true) {
                 Vehiculos vehiculosVentana = new Vehiculos(personaDTO);
                 vehiculosVentana.setVisible(true);
+                this.dispose();
             } else {
                 int respuesta = JOptionPane.showOptionDialog(null, "¿Quiere tramitar una licencia?", "La persona seleccionada no cuenta con licencia activa", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sí", "No"}, "Sí");
                 if (respuesta == JOptionPane.YES_OPTION) {
@@ -304,22 +306,27 @@ public class buscarPersonas extends javax.swing.JFrame {
                             null,
                             new String[]{"1 año", "2 años", "3 años"},
                             "1 año");
+                    int duracion = 0;
                     if (resp == 0) {
 
-                        int duracion = 1;
+                        duracion = 1;
 
                     } else if (resp == 1) {
 
-                        int duracion = 2;
+                        duracion = 2;
 
                     } else if (resp == 2) {
 
-                        int duracion = 3;
+                        duracion = 3;
 
                     }
-                    licenciaDTO.setVigencia(resp);
-                    licencia.asignarValoresLicencia(licenciaDTO);
-                    dlgConfirmaciones dlgConfLicencia = new dlgConfirmaciones(this, true, licenciaDTO, null, 1);
+                    if (duracion!=0) {
+                        licenciaDTO.setVigencia(duracion);
+                        licencia.asignarValoresLicencia(licenciaDTO);
+                        this.dispose();
+                        DlgConfirmaciones dlgConfLicencia = new DlgConfirmaciones(this, true, licenciaDTO, null, 1);
+                    }
+      
                 }
             }
         }
@@ -327,11 +334,22 @@ public class buscarPersonas extends javax.swing.JFrame {
             obtenerDatosFilaSeleccionada();
             Historial historial = new Historial(personaDTO);
             historial.setVisible(true);
+            this.dispose();
         }
     }//GEN-LAST:event_seleccionarBtnActionPerformed
 
     private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
-        this.dispose();
+        if (operacion == 1 || operacion == 2) {
+            this.dispose();
+            DlgEleccionTramite eleccionTramite = new DlgEleccionTramite(this, true);
+
+        }
+        if (operacion == 3) {
+            MenuPrincipal menu = new MenuPrincipal();
+            menu.setVisible(true);
+            this.dispose();
+        }
+
     }//GEN-LAST:event_regresarBtnActionPerformed
     private void obtenerDatosFilaSeleccionada() {
         if (operacion == 1) {
@@ -362,7 +380,7 @@ public class buscarPersonas extends javax.swing.JFrame {
 
             if (filaSeleccionada != -1) {
                 String rfc = tablaPersonas.getValueAt(filaSeleccionada, 4).toString();
-                System.out.println(rfc);
+
                 personaDTO = personas.buscarRFC(rfc);
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, seleccione una persona.");
@@ -373,7 +391,7 @@ public class buscarPersonas extends javax.swing.JFrame {
 
             if (filaSeleccionada != -1) {
                 String rfc = tablaPersonas.getValueAt(filaSeleccionada, 4).toString();
-                System.out.println(rfc);
+
                 personaDTO = personas.buscarRFC(rfc);
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, seleccione una persona.");
@@ -398,20 +416,27 @@ public class buscarPersonas extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(buscarPersonas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuscarPersona.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(buscarPersonas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuscarPersona.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(buscarPersonas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuscarPersona.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(buscarPersonas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuscarPersona.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new buscarPersonas(1).setVisible(true);
+                new BuscarPersona(1).setVisible(true);
             }
         });
     }

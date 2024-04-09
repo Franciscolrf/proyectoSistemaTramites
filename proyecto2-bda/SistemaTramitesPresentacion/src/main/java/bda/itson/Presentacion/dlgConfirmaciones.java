@@ -17,7 +17,7 @@ import negocio.RegistrarPlaca;
  *
  * @author abelc
  */
-public class dlgConfirmaciones extends javax.swing.JDialog {
+public class DlgConfirmaciones extends javax.swing.JDialog {
 
     LicenciaDTO licenciaDatos;
     IRegistrarLicenciaBO licencia;
@@ -28,7 +28,7 @@ public class dlgConfirmaciones extends javax.swing.JDialog {
     /**
      * Creates new form dlgConfirmarLicencia
      */
-    public dlgConfirmaciones(java.awt.Frame parent, boolean modal, LicenciaDTO licenciaDatos, PlacaDTO placaDTO, int operacion) {
+    public DlgConfirmaciones(java.awt.Frame parent, boolean modal, LicenciaDTO licenciaDatos, PlacaDTO placaDTO, int operacion) {
         super(parent, modal);
         placa = new RegistrarPlaca();
         this.licencia = new RegistrarLicencia();
@@ -279,10 +279,22 @@ public class dlgConfirmaciones extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
-        dispose();
+        if (operacion == 1) {
+            BuscarPersona ventanaAnterior = new BuscarPersona(1);
+            this.dispose();
+            ventanaAnterior.setVisible(true);
+
+        }
+        if (operacion == 2) {
+            Vehiculos ventanaVehiculos = new Vehiculos(placaDTO.getVehiculo().getPropietario());
+            this.dispose();
+            ventanaVehiculos.setVisible(true);
+
+        }
     }//GEN-LAST:event_regresarBtnActionPerformed
 
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
+
         if (operacion == 1) {
             licencia.registrarLicencia(licenciaDatos);
             JOptionPane.showMessageDialog(this, "La licencia se ha registrado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
@@ -291,7 +303,9 @@ public class dlgConfirmaciones extends javax.swing.JDialog {
         if (operacion == 2) {
             placa.registrarPLaca(placaDTO);
             JOptionPane.showMessageDialog(this, "La placa se ha registrado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
+            Vehiculos ventanaVehiculos = new Vehiculos(placaDTO.getVehiculo().getPropietario());
+            this.dispose();
+            ventanaVehiculos.setVisible(true);
         }
     }//GEN-LAST:event_confirmarBtnActionPerformed
 

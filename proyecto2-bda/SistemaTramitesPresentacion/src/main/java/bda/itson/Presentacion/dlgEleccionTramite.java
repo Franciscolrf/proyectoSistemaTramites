@@ -10,14 +10,14 @@ import interfaces.IRegistrarLicenciaBO;
  *
  * @author abelc
  */
-public class dlgEleccionTramite extends javax.swing.JDialog {
+public class DlgEleccionTramite extends javax.swing.JDialog {
 
     /**
      * Creates new form dlgEleccionTramite
      */
-    buscarPersonas licenciaTramite;
+    BuscarPersona licenciaTramite;
 
-    public dlgEleccionTramite(java.awt.Frame parent, boolean modal) {
+    public DlgEleccionTramite(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
 
         initComponents();
@@ -148,19 +148,22 @@ public class dlgEleccionTramite extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tramitarLicenciaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tramitarLicenciaBtnActionPerformed
-        licenciaTramite = new buscarPersonas(1);
+        licenciaTramite = new BuscarPersona(1);
         this.dispose();
         licenciaTramite.setVisible(true);
     }//GEN-LAST:event_tramitarLicenciaBtnActionPerformed
 
     private void tramitarLicenciaBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tramitarLicenciaBtn1ActionPerformed
-        licenciaTramite = new buscarPersonas(2);
+        licenciaTramite = new BuscarPersona(2);
         this.dispose();
         licenciaTramite.setVisible(true);
     }//GEN-LAST:event_tramitarLicenciaBtn1ActionPerformed
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-       this.dispose();
+        MenuPrincipal menu = new MenuPrincipal();
+        this.dispose();
+        menu.setVisible(true);
+        
     }//GEN-LAST:event_jLabel3MouseClicked
 
 

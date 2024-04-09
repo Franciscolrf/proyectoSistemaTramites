@@ -220,50 +220,56 @@ public class InsercionesFrm extends javax.swing.JFrame {
     en la base de datos
      */
     private void registrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarBtnActionPerformed
-        List<PersonaDTO> listaPersonas = new ArrayList<>();
-        DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
-        int rowCount = model.getRowCount();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        boolean esDiscapacitado;
+    List<PersonaDTO> listaPersonas = new ArrayList<>();
+    DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
+    int rowCount = model.getRowCount();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    boolean esDiscapacitado;
 
-        for (int i = 0; i < rowCount; i++) {
-            String nombre = (String) model.getValueAt(i, 0);
-            String apellidoPaterno = (String) model.getValueAt(i, 1);
-            String apellidoMaterno = (String) model.getValueAt(i, 2);
-            String telefono = (String) model.getValueAt(i, 3);
-            String rfc = (String) model.getValueAt(i, 4);
-            if ("Si".equals((String) model.getValueAt(i, 5))) {
-                esDiscapacitado = true;
-            } else {
-                esDiscapacitado = false;
-            }
+    if (rowCount == 0) {
+        JOptionPane.showMessageDialog(this, "No hay personas para registrar", "Tabla Vacía", JOptionPane.WARNING_MESSAGE);
+        return; 
+    }
+    
+    for (int i = 0; i < rowCount; i++) {
+        String nombre = (String) model.getValueAt(i, 0);
+        String apellidoPaterno = (String) model.getValueAt(i, 1);
+        String apellidoMaterno = (String) model.getValueAt(i, 2);
+        String telefono = (String) model.getValueAt(i, 3);
+        String rfc = (String) model.getValueAt(i, 4);
+       
+        esDiscapacitado = "Si".equals((String) model.getValueAt(i, 5));
 
-            String fechaNacimientoString = (String) model.getValueAt(i, 6);
+        String fechaNacimientoString = (String) model.getValueAt(i, 6);
 
-            Calendar fechaNacimiento = Calendar.getInstance();
-            try {
-                fechaNacimiento.setTime(dateFormat.parse(fechaNacimientoString));
-            } catch (ParseException ex) {
-                ex.printStackTrace();
-            }
-
-            PersonaDTO persona = new PersonaDTO();
-            persona.setNombres(nombre);
-            persona.setApellidoPaterno(apellidoPaterno);
-            persona.setApellidoMaterno(apellidoMaterno);
-            persona.setTelefono(telefono);
-            persona.setRFC(rfc);
-            persona.setEsDiscapacitado(esDiscapacitado);
-            persona.setFechaNacimiento(fechaNacimiento);
-
-            listaPersonas.add(persona);
+        Calendar fechaNacimiento = Calendar.getInstance();
+        try {
+            fechaNacimiento.setTime(dateFormat.parse(fechaNacimientoString));
+        } catch (ParseException ex) {
+            ex.printStackTrace();
         }
-        persona.registroMasivo(listaPersonas);
-        model.setRowCount(0);
-        JOptionPane.showMessageDialog(this, "El registro se ha realizado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+
+        PersonaDTO persona = new PersonaDTO();
+        persona.setNombres(nombre);
+        persona.setApellidoPaterno(apellidoPaterno);
+        persona.setApellidoMaterno(apellidoMaterno);
+        persona.setTelefono(telefono);
+        persona.setRFC(rfc);
+        persona.setEsDiscapacitado(esDiscapacitado);
+        persona.setFechaNacimiento(fechaNacimiento);
+
+        listaPersonas.add(persona);
+    }
+ 
+    persona.registroMasivo(listaPersonas);
+    model.setRowCount(0); // Limpia la tabla
+   
+    JOptionPane.showMessageDialog(this, "El registro se ha realizado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_registrarBtnActionPerformed
 
     private void regresarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtn1ActionPerformed
+        MenuPrincipal menu=new MenuPrincipal();
+        menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_regresarBtn1ActionPerformed
 
