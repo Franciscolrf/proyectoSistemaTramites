@@ -19,15 +19,15 @@ public interface IPersona {
    * 
    * @param persona Persona a registrar
    * @return Persona registrada
-   * @throws PersistenciaException
-   */
+   * @throws PersistenciaException excepcion si falla algo en la operacion
+   */ 
   Persona registrarPersona(Persona persona) throws PersistenciaException;
 
   /**
    * Método para inserar masivamente personas en la base de datos.
    * @param personas Lista de personas a insertar.
    * @return Lista de personas insertadas.
-   * @throws PersistenciaException
+   * @throws PersistenciaException excepcion si falla algo en la operacion
    */
   List<Persona> insercionMasivaPersonas(List<Persona> personas) throws PersistenciaException;
 
@@ -44,13 +44,13 @@ public interface IPersona {
      *
      * @param buscarParametro Parámetro de busqueda
      * @return Licencia con el parametro de busqueda especificado
-     * @throws PersistenciaException
+     * @throws PersistenciaException excepcion si falla algo en la operacion
      */
      public List<Persona> buscarPersonas(String buscarParametro) throws PersistenciaException;
      /**
       * Obtiene una lista de todas las personas registradas
       * @return lista de personas
-      * @throws PersistenciaException 
+      * @throws PersistenciaException  excepcion si falla algo en la operacion
       */
      public List<Persona> obtenerTodasLasPersonas() throws PersistenciaException;
 }

@@ -12,7 +12,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 /**
- *
+ * Clase dao con las operaciones necesarias relacionadas a la entidad licencia
  * @author fabri
  */
 public class LicenciaDAO implements ILicencia {
@@ -22,6 +22,9 @@ public class LicenciaDAO implements ILicencia {
 //    public LicenciaDAO(IConexion conexion) {
 //        this.conexion = conexion;
 //    }
+    /**
+     * Constructor vacio que establece la conexion a JPA
+     */
     public LicenciaDAO() {
         conexion = new ConexionJPA("bda.itson_SistemaTramitesPersistencia_jar_1.0-SNAPSHOTPU");
     }
@@ -31,7 +34,7 @@ public class LicenciaDAO implements ILicencia {
      *
      * @param licencia Licencia a registrar
      * @return true si se registró correctamente, false en caso contrario
-     * @throws PersistenciaException
+     * @throws PersistenciaException excepcion si falla algo en la operacion
      */
     @Override
     public boolean registrarLicencia(Licencia licencia) throws PersistenciaException {
@@ -86,7 +89,7 @@ public class LicenciaDAO implements ILicencia {
      *
      * @param buscarParametro Parámetro de busqueda
      * @return Licencia con el parametro de busqueda especificado
-     * @throws PersistenciaException
+     * @throws PersistenciaException excepcion si falla algo en la operacion
      */
     @Override
     public List<Persona> buscarPersonas(String buscarParametro) throws PersistenciaException {
@@ -105,7 +108,7 @@ public class LicenciaDAO implements ILicencia {
      * @param fechaInicio Fecha de inicio del periodo
      * @param fechaFin Fecha de fin del periodo
      * @return Lista de licencias en el periodo especificado
-     * @throws PersistenciaException
+     * @throws PersistenciaException excepcion si falla algo en la operacion
      *
      */
     @Override
@@ -129,9 +132,9 @@ public class LicenciaDAO implements ILicencia {
     }
 /**
  * Metodo para obtener la licencia activa de una persona si la hay
- * @param persona
+ * @param persona Persona de la cual se quiere obtener la licencia activa
  * @return licencia activa, null si es que no hay una licencia activa
- * @throws PersistenciaException 
+ * @throws PersistenciaException excepcion si falla algo en la operacion
  */
     @Override
     public Licencia obtenerLicenciaActiva(Persona persona) throws PersistenciaException {
@@ -156,9 +159,9 @@ public class LicenciaDAO implements ILicencia {
     }
 /**
  * Metodo que regresa una lista con todas las licencias asociadas con una persona
- * @param persona
+ * @param persona Persona de la cual se quieren obtener las licencias
  * @return Lista de licencias
- * @throws PersistenciaException 
+ * @throws PersistenciaException excepcion si falla algo en la operacion
  */
     @Override
     public List<Licencia> obtenerLicenciasPorPersona(Persona persona) throws PersistenciaException {

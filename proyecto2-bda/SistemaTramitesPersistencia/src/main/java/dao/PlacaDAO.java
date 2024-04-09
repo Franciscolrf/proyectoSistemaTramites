@@ -19,7 +19,7 @@ import interfaces.IPlacaDAO;
 import javax.persistence.NoResultException;
 
 /**
- *
+ * ClaseDAO con operaciones necesarias para la entidad placa
  * @author ID145
  */
 public class PlacaDAO implements IPlacaDAO {
@@ -32,7 +32,6 @@ public class PlacaDAO implements IPlacaDAO {
     /**
      * Constructor de la clase PlacaDAO.
      *
-     * @param conexion
      */
     public PlacaDAO() {
         conexion = new ConexionJPA("bda.itson_SistemaTramitesPersistencia_jar_1.0-SNAPSHOTPU");

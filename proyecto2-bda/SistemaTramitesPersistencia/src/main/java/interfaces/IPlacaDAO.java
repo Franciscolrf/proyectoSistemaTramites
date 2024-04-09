@@ -13,7 +13,7 @@ import bda.itson.entidadesJPA.Placa;
 import bda.itson.entidadesJPA.Vehiculo;
 
 /**
- *
+ *Interface para la clase placaDAO
  * @author ID145
  */
 public interface IPlacaDAO {
@@ -39,6 +39,7 @@ public interface IPlacaDAO {
     /**
      * Método para consultar las placas tramitadas entre dos fechas.
      *
+     * @param persona Persona a la que le pertenecen las placas
      * @param fechaInicio Fecha de inicio del rango de búsqueda.
      * @param fechaFin Fecha de fin del rango de búsqueda.
      * @return Lista de placas tramitadas entre las fechas especificadas.

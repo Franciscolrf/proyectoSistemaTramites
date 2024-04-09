@@ -10,37 +10,58 @@ import java.util.Calendar;
 import javax.persistence.*;
 
 /**
- *
+ *Clase que represnta una entidad licencia con su mapeo
  * @author ID145
  */
 @Entity
 @Table(name = "licencia")
 public class Licencia implements Serializable {
+   // Atributos de la clase
 
-    // Atributos de la clase
+    /** Identificador único de la licencia. */
     private static final long serialVersionUID = 1L;
+
+    /** Identificador de la licencia. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idLicencia;
 
+    /** Fecha en que se expedición la licencia. */
     @Temporal(TemporalType.DATE)
     @Column(name = "fechaExpedicion", nullable = false)
     private Calendar fechaExpedicion;
 
+    /** Fecha en que la licencia vence. */
     @Temporal(TemporalType.DATE)
     @Column(name = "fechaVencimiento", nullable = false)
     private Calendar fechaVencimiento;
 
+    /** Costo asociado con la licencia. */
     private double costo;
 
+    /** Periodo de vigencia de la licencia. */
     private int vigencia;
 
+    /** Estado actual de la licencia. */
     private String estado;
 
+    /** Persona a la que se le otorga la licencia. */
     @ManyToOne
     @JoinColumn(name = "idPersona")
     private Persona persona;
 
+    // Constructores
+
+    /**
+     * Constructor con parámetros para inicializar todos los atributos de la licencia.
+     *
+     * @param fechaExpedicion Fecha de expedición de la licencia.
+     * @param fechaVencimiento Fecha de vencimiento de la licencia.
+     * @param costo Costo de la licencia.
+     * @param vigencia Periodo de vigencia de la licencia.
+     * @param estado Estado actual de la licencia.
+     * @param persona Persona a la que se le otorga la licencia.
+     */
     public Licencia(Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, int vigencia, String estado, Persona persona) {
         this.fechaExpedicion = fechaExpedicion;
         this.fechaVencimiento = fechaVencimiento;
@@ -50,6 +71,17 @@ public class Licencia implements Serializable {
         this.persona = persona;
     }
 
+    /**
+     * Constructor con parámetros para inicializar todos los atributos excepto el id de la licencia.
+     *
+     * @param idLicencia Identificador de la licencia.
+     * @param fechaExpedicion Fecha de expedición de la licencia.
+     * @param fechaVencimiento Fecha de vencimiento de la licencia.
+     * @param costo Costo de la licencia.
+     * @param vigencia Periodo de vigencia de la licencia.
+     * @param estado Estado actual de la licencia.
+     * @param persona Persona a la que se le otorga la licencia.
+     */
     public Licencia(Integer idLicencia, Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, int vigencia, String estado, Persona persona) {
         this.idLicencia = idLicencia;
         this.fechaExpedicion = fechaExpedicion;
@@ -60,129 +92,146 @@ public class Licencia implements Serializable {
         this.persona = persona;
     }
 
+    /**
+     * Constructor vacío.
+     */
     public Licencia() {
     }
 
+    // Métodos getters y setters
+
     /**
-     * Método que regresa el id de la licencia
+     * Método que regresa el id de la licencia.
      *
-     * @return
+     * @return Id de la licencia.
      */
     public Integer getIdLicencia() {
         return idLicencia;
     }
 
     /**
-     * Método que regresa la fecha de expedición
+     * Método que establece el id de la licencia.
      *
-     * @return
+     * @param idLicencia Id de la licencia.
      */
     public void setIdLicencia(Integer idLicencia) {
         this.idLicencia = idLicencia;
     }
 
     /**
-     * Método que regresa la fecha de expedición
+     * Método que regresa la fecha de expedición de la licencia.
      *
-     * @return
+     * @return Fecha de expedición de la licencia.
      */
     public Calendar getFechaExpedicion() {
         return fechaExpedicion;
     }
 
     /**
-     * Método que recibe la fecha de expedición
+     * Método que establece la fecha de expedición de la licencia.
      *
-     * @param fechaExpedicion
+     * @param fechaExpedicion Fecha de expedición de la licencia.
      */
     public void setFechaExpedicion(Calendar fechaExpedicion) {
         this.fechaExpedicion = fechaExpedicion;
     }
 
     /**
-     * Método que regresa la fecha de vencimiento
+     * Método que regresa la fecha de vencimiento de la licencia.
      *
-     * @return
+     * @return Fecha de vencimiento de la licencia.
      */
     public Calendar getFechaVencimiento() {
         return fechaVencimiento;
     }
 
     /**
-     * Método que recibe la fecha de vencimiento
+     * Método que establece la fecha de vencimiento de la licencia.
      *
-     * @param fechaVencimiento
+     * @param fechaVencimiento Fecha de vencimiento de la licencia.
      */
     public void setFechaVencimiento(Calendar fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
     }
 
     /**
-     * Método que regresa el costo
+     * Método que regresa el costo de la licencia.
      *
-     * @return
+     * @return Costo de la licencia.
      */
     public double getCosto() {
         return costo;
     }
 
     /**
-     * Método que recibe el costo
+     * Método que establece el costo de la licencia.
      *
-     * @param costo
+     * @param costo Costo de la licencia.
      */
     public void setCosto(double costo) {
         this.costo = costo;
     }
 
     /**
-     * Método que regresa el estado
+     * Método que regresa el estado de la licencia.
      *
-     * @return
+     * @return Estado de la licencia.
      */
     public String getEstado() {
         return estado;
     }
 
     /**
-     * Método que recibe el estado
+     * Método que establece el estado de la licencia.
      *
-     * @param estado
+     * @param estado Estado de la licencia.
      */
     public void setEstado(String estado) {
         this.estado = estado;
     }
 
+    /**
+     * Método que regresa la vigencia de la licencia.
+     *
+     * @return Vigencia de la licencia.
+     */
     public int getVigencia() {
         return vigencia;
     }
 
+    /**
+     * Método que establece la vigencia de la licencia.
+     *
+     * @param vigencia Vigencia de la licencia.
+     */
     public void setVigencia(int vigencia) {
         this.vigencia = vigencia;
     }
 
     /**
-     * Método que regresa la persona
+     * Método que regresa la persona a la que se le otorga la licencia.
      *
-     * @return
+     * @return Persona a la que se le otorga la licencia.
      */
     public Persona getPersona() {
         return persona;
     }
 
     /**
-     * Método que recibe la persona
+     * Método que establece la persona a la que se le otorga la licencia.
      *
-     * @param persona
+     * @param persona Persona a la que se le otorga la licencia.
      */
     public void setPersona(Persona persona) {
         this.persona = persona;
     }
 
+    // Métodos sobrescritos
+
     /**
-     * Método que regresa el hash
+     * Método que genera un valor hash basado en el id de la licencia.
      *
-     * @return hash
+     * @return Valor hash.
      */
     @Override
     public int hashCode() {
@@ -192,10 +241,10 @@ public class Licencia implements Serializable {
     }
 
     /**
-     * Método que compara objetos
+     * Método que compara si dos objetos Licencia son iguales basándose en el id de la licencia.
      *
-     * @param object
-     * @return true si son iguales, false si no
+     * @param object Objeto a comparar.
+     * @return true si son iguales, false si no.
      */
     @Override
     public boolean equals(Object object) {
@@ -211,14 +260,15 @@ public class Licencia implements Serializable {
     }
 
     /**
-     * Método que regresa la representación en cadena del objeto
+     * Método que devuelve una representación en cadena de la licencia.
      *
-     * @return
+     * @return Representación en cadena de la licencia.
      */
     @Override
     public String toString() {
         return "Licencia [idLicencia=" + idLicencia + ", fechaExpedicion=" + fechaExpedicion + ", fechaVencimiento="
                 + fechaVencimiento + ", costo=" + costo + ", estado=" + estado + ", persona=" + persona + "]";
     }
-
 }
+
+

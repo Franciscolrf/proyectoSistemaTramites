@@ -4,15 +4,16 @@
  */
 package dao;
 
-/**
- *
- * @author abelc
- */
 import interfaces.IConexion;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+/**
+ * Interface para la conexion a JPA
+ *
+ * @author abelc
+ */
 public class ConexionJPA implements IConexion {
 
     private final String unidadPersistencia;
@@ -21,7 +22,8 @@ public class ConexionJPA implements IConexion {
     /**
      * Constructor de la clase ConexionJPA.
      *
-     * @param unidadPersistencia El nombre de la unidad de persistencia configurada en persistence.xml.
+     * @param unidadPersistencia El nombre de la unidad de persistencia
+     * configurada en persistence.xml.
      */
     public ConexionJPA(String unidadPersistencia) {
         this.unidadPersistencia = unidadPersistencia;
@@ -30,7 +32,8 @@ public class ConexionJPA implements IConexion {
     /**
      * Establece la conexión utilizando EntityManager de JPA.
      *
-     * @return Una instancia de EntityManager que permite interactuar con la base de datos.
+     * @return Una instancia de EntityManager que permite interactuar con la
+     * base de datos.
      */
     @Override
     public EntityManager getEntityManager() {
