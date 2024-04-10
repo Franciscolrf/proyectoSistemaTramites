@@ -24,6 +24,8 @@ import otros.Conversiones;
 import otros.Encriptacion;
 
 /**
+ * Esta clase proporciona metodos para realizar todas las operacionas
+ * relacionadas al registro de licencias
  *
  * @author fabri
  */
@@ -154,18 +156,18 @@ public class RegistrarLicencia implements IRegistrarLicenciaBO {
 
                     licenciaActiva.setEstado("expirada");
                     licenciaDAO.actualizarLicencia(licenciaActiva);
-                    System.out.println("La licencia ha expirado y se ha actualizado.");
+
                     return false;
                 } else {
-                    System.out.println("La licencia está activa y dentro del período de validez.");
+
                     return true;
                 }
             } else {
-                System.out.println("No hay licencia activa para la persona.");
+
                 return false;
             }
         } catch (PersistenciaException ex) {
-            System.out.println("Error al obtener la licencia activa.");
+
             return false;
         }
     }

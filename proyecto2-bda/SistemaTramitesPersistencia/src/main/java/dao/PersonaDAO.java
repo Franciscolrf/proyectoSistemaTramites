@@ -15,9 +15,10 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
- *
- * @author abelc Clase que implementa la interfaz IPersona para realizar
+ * 
+ * Clase que implementa la interfaz IPersona para realizar
  * operaciones relacionadas con entidades Persona en la base de datos.
+ * @author abelc 
  */
 public class PersonaDAO implements IPersona {
 
@@ -26,7 +27,6 @@ public class PersonaDAO implements IPersona {
     /**
      * Constructor de la clase PersonaDAO.
      *
-     * @param conexion Objeto que proporciona la conexión a la base de datos.
      */
     public PersonaDAO() {
         conexion = new ConexionJPA("bda.itson_SistemaTramitesPersistencia_jar_1.0-SNAPSHOTPU");
@@ -121,7 +121,7 @@ public class PersonaDAO implements IPersona {
      *
      * @param buscarParametro Parámetro de busqueda
      * @return Licencia con el parametro de busqueda especificado
-     * @throws PersistenciaException
+     * @throws PersistenciaException excepcion si falla algo en la operacion
      */
     @Override
     public List<Persona> buscarPersonas(String buscarParametro) throws PersistenciaException {
@@ -138,7 +138,7 @@ public class PersonaDAO implements IPersona {
      * Método para obtener todas las personas registradas en la base de datos
      *
      * @return Lista de todas las personas registradas
-     * @throws PersistenciaException
+     * @throws PersistenciaException excepcion si falla algo en la operacion
      */
     @Override
     public List<Persona> obtenerTodasLasPersonas() throws PersistenciaException {

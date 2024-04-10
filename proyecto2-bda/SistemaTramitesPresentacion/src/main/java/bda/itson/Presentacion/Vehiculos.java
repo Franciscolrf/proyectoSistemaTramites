@@ -201,34 +201,28 @@ public class Vehiculos extends javax.swing.JFrame {
     }//GEN-LAST:event_buscarBtnActionPerformed
 
     private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
+        BuscarPersona buscarPersonas=new BuscarPersona(2);
+        buscarPersonas.setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_regresarBtnActionPerformed
 
     private void seleccionarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtn1ActionPerformed
         obtenerDatosFilaSeleccionada();
-        System.out.println(placaDTO.getVehiculo().getId());
         placa.generarPlaca(placaDTO);
-        dlgConfirmaciones confirmacion = new dlgConfirmaciones(this, true, null, placaDTO, 2);
-        actualizarTablaVehiculos();
+        this.dispose();
+        DlgConfirmaciones confirmacion = new DlgConfirmaciones(this, true, null, placaDTO, 2);
+        
     }//GEN-LAST:event_seleccionarBtn1ActionPerformed
     public void obtenerDatosFilaSeleccionada() {
         int filaSeleccionada = tablaVehiculos.getSelectedRow();
         if (filaSeleccionada != -1) {
             String numSerie = tablaVehiculos.getValueAt(filaSeleccionada, 0).toString();
             VehiculoDTO vehiculo = placa.buscarVehiculoPorNumeroSerie(numSerie);
-            System.out.println(vehiculo.getId());
             placaDTO.setVehiculo(vehiculo);
         } else {
             JOptionPane.showMessageDialog(null, "Por favor, seleccione un vehiculo.");
         }
-    }
-   private void actualizarTablaVehiculos() {
-        DefaultTableModel model = (DefaultTableModel) tablaVehiculos.getModel();
-        model.setRowCount(0);
-        List<VehiculoDTO> vehiculos = placa.obtenerVehiculosDePersona(personaDTO);
-        DefaultTableModel newModel = tabla.vehiculosTableModel(vehiculos);
-        tablaVehiculos.setModel(newModel);
     }
     /**
      * @param args the command line arguments

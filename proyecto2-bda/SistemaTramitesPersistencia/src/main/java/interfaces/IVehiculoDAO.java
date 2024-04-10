@@ -20,25 +20,25 @@ public interface IVehiculoDAO {
     /**
      * Método que agrega un Vehiculo
      *
-     * @param vehiculo
-     * @return
+     * @param vehiculo Vehiculo a agregar
+     * @return Vehiculo si es agregasp
      */
     public Vehiculo agregar(Vehiculo vehiculo);
 
     /**
      * Método para consultar un Vehiculo por su id.
      *
-     * @param id
-     * @return
+     * @param id identificador del vehiculo a consultar
+     * @return Vehiculo consultado
      */
     public Vehiculo consultar(Long id);
 
     /**
      * Método para realizar una inserción masiva de Vehiculos.
      *
-     * @param vehiculos
-     * @return
-     * @throws PersistenciaException
+     * @param vehiculos Lista de vehiculos a insertar
+     * @return lista de vehiculos
+     * @throws PersistenciaException excepcion si falla algo en la operacion
      */
     public List<Vehiculo> insercionMasivaVehiculo(List<Vehiculo> vehiculos) throws PersistenciaException;
 

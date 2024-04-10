@@ -6,12 +6,12 @@ package excepciones;
 
 /**
  *
- * @author abelc
- *
  * La clase PersistenciaException representa una excepción relacionada con la
  * persistencia de datos. Puede ser lanzada en situaciones donde ocurren errores
  * durante operaciones de persistencia, como registro, edición, eliminación o
  * búsqueda de objetos en un sistema de persistencia de datos.
+ * 
+ * @author abelc
  */
 public class PersistenciaException extends Exception {
 

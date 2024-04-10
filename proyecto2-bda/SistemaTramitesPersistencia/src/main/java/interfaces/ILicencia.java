@@ -22,7 +22,7 @@ public interface ILicencia {
      *
      * @param licencia Licencia a registrar
      * @return true si se registró correctamente, false en caso contrario
-     * @throws PersistenciaException
+     * @throws PersistenciaException excepcion si falla algo en la operacion
      */
     public boolean registrarLicencia(Licencia licencia) throws PersistenciaException;
 
@@ -31,7 +31,7 @@ public interface ILicencia {
      *
      * @param buscarParametro Parámetro de busqueda
      * @return Licencia con el parametro de busqueda especificado
-     * @throws PersistenciaException
+     * @throws PersistenciaException excepcion si falla algo en la operacion
      */
     public List<Persona> buscarPersonas(String buscarParametro) throws PersistenciaException;
 
@@ -42,7 +42,7 @@ public interface ILicencia {
      * @param fechaInicio Fecha de inicio del periodo
      * @param fechaFin Fecha de fin del periodo
      * @return Lista de licencias en el periodo especificado
-     * @throws PersistenciaException
+     * @throws PersistenciaException excepcion si falla algo en la operacion
      *
      */
     public List<Licencia> obtenerLicenciasPorPeriodo(Persona persona, Calendar fechaInicio, Calendar fechaFin) throws PersistenciaException;

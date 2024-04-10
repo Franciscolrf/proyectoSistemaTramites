@@ -9,8 +9,7 @@ import java.util.Calendar;
 /**
  *
  * @author abelc
- */
-/**
+ *
  * Clase que representa los datos de una persona.
  * Esta clase se utiliza para transferir datos de personas entre las capas del sistema.
  */

@@ -25,7 +25,8 @@ import interfaces.IregistrarPersona;
 import otros.Encriptacion;
 
 /**
- *
+ *Esta clase proporciona todos los metodos relacionados al registro de personas
+ * 
  * @author abelc
  */
 public class RegistrarPersona implements IregistrarPersona {

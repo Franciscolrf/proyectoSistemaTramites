@@ -7,7 +7,7 @@ package interfaces;
 import javax.persistence.EntityManager;
 
 /**
- *
+ *Interface con operaciones para la conexion a JPA
  * @author abelc
  */
 public interface IConexion {

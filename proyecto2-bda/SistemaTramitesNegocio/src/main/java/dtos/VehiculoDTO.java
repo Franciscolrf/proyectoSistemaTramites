@@ -6,7 +6,8 @@ package dtos;
 
 /**
  *
- * @author abelc Esta clase representa un objeto de transferencia de datos (DTO)
+ * @author abelc 
+ * Esta clase representa un objeto de transferencia de datos (DTO)
  * para los vehículos. Contiene información sobre las características de un
  * vehículo y su propietario.
  *

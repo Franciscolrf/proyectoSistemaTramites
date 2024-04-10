@@ -16,13 +16,15 @@ import interfaces.IConexion;
 import interfaces.IVehiculoDAO;
 
 /**
- *
+ *Clase DAO con las operaciones necesarias para la entidad vehiculo
  * @author ID145
  */
 public class VehiculoDAO implements IVehiculoDAO {
 
     private IConexion conexion;
-
+/**
+ * Constructor de la clase vehiculosDAO
+ */
     public VehiculoDAO() {
         conexion = new ConexionJPA("bda.itson_SistemaTramitesPersistencia_jar_1.0-SNAPSHOTPU");
     }

@@ -404,6 +404,8 @@ public class Historial extends javax.swing.JFrame {
     }//GEN-LAST:event_generarReporteBtnActionPerformed
 
     private void regresarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtn1ActionPerformed
+          BuscarPersona buscarPersonas=new BuscarPersona(3);
+        buscarPersonas.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_regresarBtn1ActionPerformed
 
