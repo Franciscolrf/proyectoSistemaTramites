@@ -144,4 +144,24 @@ public class Consultas implements IConsultas {
         return placasDTO;
     }
 
+    public PlacaDTO consultarPlacaPorCodigo(String codigo) {
+        Placa placa = null;
+        PlacaDTO placaDTO = new PlacaDTO();
+
+        try {
+
+            placa = placaDAO.buscarPlacaCodigo(codigo);
+            if (placa == null) {
+                throw new PersistenciaException("La placa no se encuentra en la base de datos");
+            } else {
+                placaDTO = conversiones.placaAPlacaDTO(placa);
+
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return placaDTO;
+
+    }
+
 }

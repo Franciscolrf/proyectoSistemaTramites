@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+*Clase creade el 10 de abril de 2024
+* Esta clase es la representacion grafica en la capa del usuario para interactuar con el sistema y ver su historial de tramites
  */
 package bda.itson.Presentacion;
 
@@ -24,10 +24,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -41,6 +42,8 @@ public class Historial extends javax.swing.JFrame {
 
     /**
      * Creates new form Historial
+     *
+     * @param persona persona de la que se hara el historial
      */
     public Historial(PersonaDTO persona) {
         this.personaDTO = persona;
@@ -253,12 +256,17 @@ public class Historial extends javax.swing.JFrame {
      * @param evt
      */
     private void generarReporteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarReporteBtnActionPerformed
+        if(isTableEmpty(historialTabla)){
+            JOptionPane.showMessageDialog(null, "No hay datos encontrados");
+            return;
+        } 
         LocalDate fecha1 = datePicker1.getDate(); // Obtener la fecha del primer datePicker
         LocalDate fecha2 = datePicker2.getDate();
+
         Document documento = new Document();
         List<LicenciaDTO> licencias;
-        List<PlacaDTO> placas; 
-        
+        List<PlacaDTO> placas;
+
         try {
             String ruta = System.getProperty("user.home");
 
@@ -269,8 +277,8 @@ public class Historial extends javax.swing.JFrame {
             PdfPTable tablaPdf;
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             if (tramiteComboBox.getSelectedItem().equals("Licencias")) {
-               
-                Paragraph titulo = new Paragraph("Reporte de Licencias de "+personaDTO.getNombres()+" "+personaDTO.getApellidoPaterno()+" "+personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
+
+                Paragraph titulo = new Paragraph("Reporte de Licencias de " + personaDTO.getNombres() + " " + personaDTO.getApellidoPaterno() + " " + personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
                 titulo.setAlignment(Element.ALIGN_CENTER);
                 documento.add(titulo);
                 tablaPdf = new PdfPTable(4);
@@ -302,12 +310,12 @@ public class Historial extends javax.swing.JFrame {
                     tablaPdf.addCell(estado);
 //                    tablaPdf.addCell(licencia.getVigencia() + " Años");
                 }
-                
+
                 documento.add(tablaPdf);
                 documento.close();
 
             } else if (tramiteComboBox.getSelectedItem().equals("Placas")) {
-                Paragraph titulo = new Paragraph("Reporte de placas de "+personaDTO.getNombres()+" "+personaDTO.getApellidoPaterno()+" "+personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
+                Paragraph titulo = new Paragraph("Reporte de placas de " + personaDTO.getNombres() + " " + personaDTO.getApellidoPaterno() + " " + personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
                 titulo.setAlignment(Element.ALIGN_CENTER);
                 documento.add(titulo);
                 tablaPdf = new PdfPTable(5);
@@ -340,12 +348,12 @@ public class Historial extends javax.swing.JFrame {
                     tablaPdf.addCell(placa.getEstado());
 
                 }
-                
+
                 documento.add(tablaPdf);
                 documento.close();
 
             } else if (tramiteComboBox.getSelectedItem().equals("Todos")) {
-                Paragraph titulo = new Paragraph("Reporte de licencias y placas de "+personaDTO.getNombres()+" "+personaDTO.getApellidoPaterno()+" "+personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
+                Paragraph titulo = new Paragraph("Reporte de licencias y placas de " + personaDTO.getNombres() + " " + personaDTO.getApellidoPaterno() + " " + personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
                 titulo.setAlignment(Element.ALIGN_CENTER);
                 documento.add(titulo);
                 tablaPdf = new PdfPTable(5);
@@ -403,12 +411,23 @@ public class Historial extends javax.swing.JFrame {
 
     }//GEN-LAST:event_generarReporteBtnActionPerformed
 
+    /**
+     * Metodo para regresar al menu principal
+     *
+     * @param evt
+     */
     private void regresarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtn1ActionPerformed
-          BuscarPersona buscarPersonas=new BuscarPersona(3);
+        BuscarPersona buscarPersonas = new BuscarPersona(3);
         buscarPersonas.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_regresarBtn1ActionPerformed
 
+    /**
+     * Metodo para ejecutar la busqueda. Se toman los datos introducidos por el
+     * usuario y se realiza la busqueda en la base de datos
+     *
+     * @param evt
+     */
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
         LocalDate fecha1 = datePicker1.getDate(); // Obtener la fecha del primer datePicker
         LocalDate fecha2 = datePicker2.getDate();
@@ -471,47 +490,24 @@ public class Historial extends javax.swing.JFrame {
         DefaultTableModel newModel = tabla.tramitesTableModel(consultas.obtenerLicenciasPorPersona(personaDTO), consultas.obtenerPlacasPorPersona(personaDTO));
         historialTabla.setModel(newModel);
     }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+    
+     public  boolean isTableEmpty(JTable table) {
+        TableModel model = table.getModel();
+        if (model.getRowCount() == 0) {
+            return true;
+        }
+        for (int row = 0; row < model.getRowCount(); row++) {
+            for (int column = 0; column < model.getColumnCount(); column++) {
+                Object value = model.getValueAt(row, column);
+                if (value != null && !value.toString().isEmpty()) {
+                    return false;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Historial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Historial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Historial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Historial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-
-                PersonaDTO persona = new PersonaDTO();
-
-                Historial historial = new Historial(persona);
-                historial.setVisible(true);
-
-            }
-        });
+        return true;
     }
 
+  
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarBtn;
     private com.github.lgooddatepicker.components.DatePicker datePicker1;

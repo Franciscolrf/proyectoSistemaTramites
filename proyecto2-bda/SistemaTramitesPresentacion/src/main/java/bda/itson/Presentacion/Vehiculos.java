@@ -1,6 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+/**
+ * Clase creada el 11 de Abril de 2024
+ *
  */
 package bda.itson.Presentacion;
 
@@ -9,13 +9,17 @@ import dtos.PlacaDTO;
 import dtos.VehiculoDTO;
 import interfaces.IRegistrarPlaca;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import negocio.Consultas;
 import negocio.RegistrarPlaca;
 import tablas.Conversiones;
-import tablas.Tabla;
 
 /**
+ *
+ * Interfaz grafica de usuario para mostrar los vehiculos del cliente
  *
  * @author abelc
  */
@@ -25,11 +29,15 @@ public class Vehiculos extends javax.swing.JFrame {
     IRegistrarPlaca placa;
     Conversiones tabla;
     PlacaDTO placaDTO;
+    Consultas consultas;
 
     /**
      * Creates new form Vehiculos
+     *
+     * @param persona
      */
     public Vehiculos(PersonaDTO persona) {
+        consultas = new Consultas();
         this.personaDTO = persona;
         tabla = new Conversiones();
         this.placaDTO = new PlacaDTO();
@@ -40,6 +48,7 @@ public class Vehiculos extends javax.swing.JFrame {
         List<VehiculoDTO> vehiculos = placa.obtenerVehiculosDePersona(persona);
         DefaultTableModel newModel = tabla.vehiculosTableModel(vehiculos);
         tablaVehiculos.setModel(newModel);
+        tablaVehiculos.setDefaultEditor(Object.class, null);
     }
 
     /**
@@ -196,24 +205,103 @@ public class Vehiculos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodo para ejecutar la busqueda de un vehiculo mediante sus placas Se
+     * pueden ingresar en formato AAA-111 o AAA111 El sistema verifica que
+     * exista y que pertenezcan al mismo cliente
+     *
+     * @param evt
+     */
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
+        String codigo = parametroTxtField.getText().toUpperCase();
+        if (!"".equals(codigo)) {
+            if (!regex(codigo, "^[A-Za-z]{3}-?[1-9]{3}$")) {
+                JOptionPane.showMessageDialog(null, "Introduce el codigo correcto, (ej AAA-111 o AAA111)");
+                return;
+            }
+            if (!regex(codigo, "^[A-Za-z]{3}-[1-9]{3}$")) {
+                codigo = formatearTexto(codigo);
+                System.out.println(codigo);
+            }
+            List<PlacaDTO> placas = consultas.obtenerPlacasPorPersona(personaDTO);
+            boolean existe = false;
+            for (PlacaDTO pl : placas) {
+                if (consultas.consultarPlacaPorCodigo(codigo).getCodigo() == null ? pl.getCodigo() == null : consultas.consultarPlacaPorCodigo(codigo).getCodigo().equals(pl.getCodigo())) {
+                    existe = true;
+                }
+            }
+            if (consultas.consultarPlacaPorCodigo(codigo) != null && existe == true) {
+                DefaultTableModel model = (DefaultTableModel) tablaVehiculos.getModel();
+                model.setRowCount(0);
+                PlacaDTO placaUser = consultas.consultarPlacaPorCodigo(codigo);
+                Object[] row = {placaUser.getCodigo(), placaUser.getEstado(), placaUser.getVehiculo().getColor(), placaUser.getVehiculo().getModelo(), placaUser.getVehiculo().getMarca(), placaUser.getVehiculo().getLinea(), placaUser.getVehiculo().getTipoVehiculo()};
+                model.addRow(row);
+                tablaVehiculos.setModel(model);
+            } else {
+                JOptionPane.showMessageDialog(null, "El codigo no esta asociado a ninguna placa del cliente");
+            }
 
+        } else {
+            JOptionPane.showMessageDialog(null, "Introduzca el codigo de la placa (ej. AAA-111)");
+
+        }
     }//GEN-LAST:event_buscarBtnActionPerformed
 
+    /**
+     * Metodo privado para hacer verificaciones de expresiones regulares
+     *
+     * @param texto texto a verificar
+     * @param expresionRegular expresion que se debe cumplir
+     * @return verdadero si se cumple, falso en caso contrario
+     */
+    private boolean regex(String texto, String expresionRegular) {
+        Pattern pattern = Pattern.compile(expresionRegular);
+        Matcher matcher = pattern.matcher(texto);
+        return matcher.matches();
+    }
+
+    /**
+     * Metodo para regresar al menu principal
+     *
+     * @param evt
+     */
     private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
-        BuscarPersona buscarPersonas=new BuscarPersona(2);
+        BuscarPersona buscarPersonas = new BuscarPersona(2);
         buscarPersonas.setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_regresarBtnActionPerformed
 
+    /**
+     * Metodo para poner un guion entre los 3 digitos de letras y los 3 digitos
+     * numericos Para que no existan problemas al buscar la placa en la base de
+     * datos
+     *
+     * @param texto texto a cambiar
+     * @return texto cambiado
+     */
+    public String formatearTexto(String texto) {
+        String expresionRegular = "^([A-Za-z]{3})([1-9]{3})$";
+        String textoFormateado = texto.replaceAll(expresionRegular, "$1-$2");
+        return textoFormateado;
+    }
+
+    /**
+     * Metodo para ejecutar la seleccion del vehiculo, y asi tramitar sus placas
+     *
+     * @param evt
+     */
     private void seleccionarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtn1ActionPerformed
         obtenerDatosFilaSeleccionada();
         placa.generarPlaca(placaDTO);
         this.dispose();
         DlgConfirmaciones confirmacion = new DlgConfirmaciones(this, true, null, placaDTO, 2);
-        
+
     }//GEN-LAST:event_seleccionarBtn1ActionPerformed
+
+    /**
+     * Metodo para obtener los datos del vehiculo seleccionado
+     */
     public void obtenerDatosFilaSeleccionada() {
         int filaSeleccionada = tablaVehiculos.getSelectedRow();
         if (filaSeleccionada != -1) {
@@ -224,42 +312,7 @@ public class Vehiculos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Por favor, seleccione un vehiculo.");
         }
     }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Vehiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Vehiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Vehiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Vehiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                PersonaDTO persona = new PersonaDTO(); // Creas un objeto PersonaDTO
-                Vehiculos vehiculos = new Vehiculos(persona);
-                vehiculos.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarBtn;

@@ -1,19 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+/**
+ * Clase creada el 04 de Abril de 2024
+ * 
+ * 
  */
 package bda.itson.Presentacion;
 
 import dtos.LicenciaDTO;
 import dtos.PersonaDTO;
 import interfaces.IRegistrarLicenciaBO;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import negocio.RegistrarLicencia;
@@ -22,7 +17,9 @@ import tablas.Conversiones;
 import interfaces.IregistrarPersona;
 
 /**
- *
+ * Esta clase es la conexion entre el usuario y las funcionalidades para buscar usuarios
+ * Aqui el usuario puede buscar a los clientes registrados en la base de datos.
+ * 
  * @author abelc
  */
 public class BuscarPersona extends javax.swing.JFrame {
@@ -36,6 +33,7 @@ public class BuscarPersona extends javax.swing.JFrame {
 
     /**
      * Creates new form buscarPersonas
+     * @param operacion
      */
     public BuscarPersona(int operacion) {
         this.tabla = new Conversiones();
@@ -53,6 +51,7 @@ public class BuscarPersona extends javax.swing.JFrame {
             List<PersonaDTO> listaPersonas = licencia.obtenerPersonas();
             DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
             tablaPersonas.setModel(newModel);
+            tablaPersonas.setDefaultEditor(Object.class, null);
         } else {
             vigenciaCombobox.setVisible(false);
             jLabel3.setVisible(false);
@@ -61,6 +60,8 @@ public class BuscarPersona extends javax.swing.JFrame {
             List<PersonaDTO> listaPersonas = licencia.obtenerPersonas();
             DefaultTableModel newModel = tabla.personasModuloPlacasTableModel(listaPersonas);
             tablaPersonas.setModel(newModel);
+            tablaPersonas.setDefaultEditor(Object.class, null);
+
         }
         if (operacion == 3) {
             seleccionarBtn.setText("Ver historial");
@@ -69,6 +70,8 @@ public class BuscarPersona extends javax.swing.JFrame {
             List<PersonaDTO> listaPersonas = licencia.obtenerPersonas();
             DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
             tablaPersonas.setModel(newModel);
+            tablaPersonas.setDefaultEditor(Object.class, null);
+
         }
     }
 
@@ -97,9 +100,6 @@ public class BuscarPersona extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(232, 232, 232));
-
-        parametroTxtField.setBackground(new java.awt.Color(255, 255, 255));
-        parametroTxtField.setForeground(new java.awt.Color(0, 0, 0));
 
         jPanel2.setBackground(new java.awt.Color(107, 27, 56));
 
@@ -137,8 +137,6 @@ public class BuscarPersona extends javax.swing.JFrame {
             }
         });
 
-        tablaPersonas.setBackground(new java.awt.Color(255, 255, 255));
-        tablaPersonas.setForeground(new java.awt.Color(0, 0, 0));
         tablaPersonas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -178,11 +176,8 @@ public class BuscarPersona extends javax.swing.JFrame {
             }
         });
 
-        vigenciaCombobox.setBackground(new java.awt.Color(255, 255, 255));
-        vigenciaCombobox.setForeground(new java.awt.Color(0, 0, 0));
         vigenciaCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
 
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Vigencia:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -252,6 +247,13 @@ public class BuscarPersona extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    /**
+     * Metodo para ejecutar la busqueda de personas, donde se traeran de la logica de negocios, la lista de usuarios.
+     * 
+     * Si no existen parametros, traera todos los clientes, si existen parametros, verificara que existan en la base de datos.
+     * @param evt 
+     */
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
         DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
         model.setRowCount(0);
@@ -275,6 +277,15 @@ public class BuscarPersona extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_buscarBtnActionPerformed
 
+    
+    /**
+     * Metodo para ejecutar la seleccion de un cliente.
+     * Verifica si el cliente selecciono la opcion para tramitar licencia.
+     *  Si ya tiene licencia vigente, el sistema manda un mensaje de advertencia.
+     *  Si el usuario selecciona la opcion para tramitar placas, el sistema verifica primero si ya tiene licencia
+     *  
+     * @param evt 
+     */
     private void seleccionarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtnActionPerformed
         if (operacion == 1) {
             obtenerDatosFilaSeleccionada();
@@ -320,13 +331,13 @@ public class BuscarPersona extends javax.swing.JFrame {
                         duracion = 3;
 
                     }
-                    if (duracion!=0) {
+                    if (duracion != 0) {
                         licenciaDTO.setVigencia(duracion);
                         licencia.asignarValoresLicencia(licenciaDTO);
                         this.dispose();
                         DlgConfirmaciones dlgConfLicencia = new DlgConfirmaciones(this, true, licenciaDTO, null, 1);
                     }
-      
+
                 }
             }
         }
@@ -338,6 +349,10 @@ public class BuscarPersona extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_seleccionarBtnActionPerformed
 
+    /**
+     * Metodo para regresar al menu principal
+     * @param evt 
+     */
     private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
         if (operacion == 1 || operacion == 2) {
             this.dispose();
@@ -351,6 +366,10 @@ public class BuscarPersona extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_regresarBtnActionPerformed
+   
+    /**
+     * Metodo para obtener los datos de la persona seleccionada
+     */
     private void obtenerDatosFilaSeleccionada() {
         if (operacion == 1) {
             int filaSeleccionada = tablaPersonas.getSelectedRow();
