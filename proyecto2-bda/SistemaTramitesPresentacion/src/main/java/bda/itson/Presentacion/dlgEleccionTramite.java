@@ -22,6 +22,7 @@ public class DlgEleccionTramite extends javax.swing.JDialog {
 
         initComponents();
         setVisible(true);
+        
     }
 
     /**

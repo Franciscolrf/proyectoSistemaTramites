@@ -306,6 +306,7 @@ public class DlgConfirmaciones extends javax.swing.JDialog {
             Vehiculos ventanaVehiculos = new Vehiculos(placaDTO.getVehiculo().getPropietario());
             this.dispose();
             ventanaVehiculos.setVisible(true);
+            
         }
     }//GEN-LAST:event_confirmarBtnActionPerformed
 
