@@ -1,20 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * GeneradorPersonas.java
+ *
+ * Clase creada en Abril de 2024
  */
 package otros;
 
 import java.util.Random;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Random;
 
 /**
  *
- * @author abelc
- * Clase que proporciona métodos para generar datos aleatorios relacionados con personas.
+ * @author abelc Clase que proporciona métodos para generar datos aleatorios
+ * relacionados con personas.
  */
 public class GeneradorPersonas {
 
@@ -36,14 +38,16 @@ public class GeneradorPersonas {
     }
 
     /**
-     * Genera un nombre completo concatenando un nombre masculino y uno femenino.
+     * Genera un nombre completo concatenando un nombre masculino y uno
+     * femenino.
+     *
      * @return Un nombre completo generado aleatoriamente.
      */
     public String generarNombre() {
         String nombre;
         String nombre1;
         String nombre2;
-        
+
         // Se elige aleatoriamente si se usará un nombre masculino o femenino
         if (random.nextBoolean()) {
             nombre1 = nombresMasculinos[random.nextInt(nombresMasculinos.length)];
@@ -67,6 +71,7 @@ public class GeneradorPersonas {
 
     /**
      * Genera un apellido paterno aleatorio.
+     *
      * @return Un apellido paterno generado aleatoriamente.
      */
     public String generarApellidoPaterno() {
@@ -76,6 +81,7 @@ public class GeneradorPersonas {
 
     /**
      * Genera un apellido materno aleatorio.
+     *
      * @return Un apellido materno generado aleatoriamente.
      */
     public String generarApellidoMaterno() {
@@ -85,6 +91,7 @@ public class GeneradorPersonas {
 
     /**
      * Retorna la primera vocal encontrada en un apellido dado.
+     *
      * @param apellido El apellido del cual se desea obtener la primera vocal.
      * @return La primera vocal encontrada en el apellido.
      */
@@ -99,26 +106,38 @@ public class GeneradorPersonas {
     }
 
     /**
-     * Genera una fecha de nacimiento aleatoria dentro de un rango de años especificado.
+     * Genera una fecha de nacimiento aleatoria dentro de un rango de años
+     * especificado.
+     *
      * @param añoInicial El año inicial del rango.
      * @param añoFinal El año final del rango.
-     * @return Un objeto Calendar que representa una fecha de nacimiento generada aleatoriamente.
+     * @return Un objeto Calendar que representa una fecha de nacimiento
+     * generada aleatoriamente.
      */
+//    public Calendar generarFechaAleatoria(int añoInicial, int añoFinal) {
+//        int año = añoInicial + random.nextInt(añoFinal - añoInicial + 1);
+//        int mes = random.nextInt(12) + 1; 
+//        int dia = random.nextInt(Month.of(mes).length(true)) + 1;
+//
+//        LocalDate fechaLocal = LocalDate.of(año, mes, dia);
+//        int añoCalendar = fechaLocal.getYear();
+//        int mesCalendar = fechaLocal.getMonthValue();
+//        int diaCalendar = fechaLocal.getDayOfMonth();
+//
+//        return new GregorianCalendar(añoCalendar, mesCalendar - 1, diaCalendar);
+//    }
     public Calendar generarFechaAleatoria(int añoInicial, int añoFinal) {
         int año = añoInicial + random.nextInt(añoFinal - añoInicial + 1);
-        int mes = random.nextInt(12) + 1; 
-        int dia = random.nextInt(Month.of(mes).length(true)) + 1;
+        int mes = random.nextInt(12) + 1;
+        int maxDias = YearMonth.of(año, mes).lengthOfMonth();
+        int dia = random.nextInt(maxDias) + 1;
 
-        LocalDate fechaLocal = LocalDate.of(año, mes, dia);
-        int añoCalendar = fechaLocal.getYear();
-        int mesCalendar = fechaLocal.getMonthValue();
-        int diaCalendar = fechaLocal.getDayOfMonth();
-
-        return new GregorianCalendar(añoCalendar, mesCalendar - 1, diaCalendar);
+        return new GregorianCalendar(año, mes - 1, dia);
     }
 
     /**
      * Genera un número de teléfono aleatorio.
+     *
      * @return Un número de teléfono generado aleatoriamente.
      */
     public String generarNumeroTelefono() {
@@ -131,10 +150,11 @@ public class GeneradorPersonas {
 
     /**
      * Genera un valor booleano aleatorio.
+     *
      * @return Un valor booleano generado aleatoriamente.
      */
     public Boolean generarBooleanoAleatorio() {
-    
+
         return random.nextInt(2) == 1;
     }
 }

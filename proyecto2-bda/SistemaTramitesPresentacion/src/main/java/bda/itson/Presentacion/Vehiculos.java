@@ -1,6 +1,6 @@
 /**
  * Clase creada el 11 de Abril de 2024
- *
+ * Vehiculos.java
  */
 package bda.itson.Presentacion;
 

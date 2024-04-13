@@ -1,6 +1,6 @@
 /*
 *Clase creade el 10 de abril de 2024
-* Esta clase es la representacion grafica en la capa del usuario para interactuar con el sistema y ver su historial de tramites
+* Historial.java
  */
 package bda.itson.Presentacion;
 
@@ -31,6 +31,8 @@ import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
 /**
+ * Esta clase es la representacion grafica en la capa del usuario para
+ * interactuar con el sistema y ver su historial de tramites
  *
  * @author abelc
  */
@@ -256,10 +258,10 @@ public class Historial extends javax.swing.JFrame {
      * @param evt
      */
     private void generarReporteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarReporteBtnActionPerformed
-        if(isTableEmpty(historialTabla)){
+        if (isTableEmpty(historialTabla)) {
             JOptionPane.showMessageDialog(null, "No hay datos encontrados");
             return;
-        } 
+        }
         LocalDate fecha1 = datePicker1.getDate(); // Obtener la fecha del primer datePicker
         LocalDate fecha2 = datePicker2.getDate();
 
@@ -270,17 +272,21 @@ public class Historial extends javax.swing.JFrame {
         try {
             String ruta = System.getProperty("user.home");
 
-            // CAMBIAR A CUALQUIER RUTA
+            // CAMBIAR A CUALQUIER RUTA //
             String rutaAbs = "/Documents/Reporte.pdf";
             PdfWriter.getInstance(documento, new FileOutputStream(ruta + rutaAbs));
             documento.open();
             PdfPTable tablaPdf;
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+            // SI EL USUARIO SELECCIONO LA OPCION 'LICENCIAS'
             if (tramiteComboBox.getSelectedItem().equals("Licencias")) {
 
+                // TITULO DEL REPORTE
                 Paragraph titulo = new Paragraph("Reporte de Licencias de " + personaDTO.getNombres() + " " + personaDTO.getApellidoPaterno() + " " + personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
                 titulo.setAlignment(Element.ALIGN_CENTER);
                 documento.add(titulo);
+                // CREA LA TABLA EN EL DOCUMENTO PDF
                 tablaPdf = new PdfPTable(4);
                 tablaPdf.addCell("Costo");
                 tablaPdf.addCell("Fecha de Expedicion");
@@ -288,6 +294,7 @@ public class Historial extends javax.swing.JFrame {
                 tablaPdf.addCell("Estado");
 //                tablaPdf.addCell("Vigencia");
 
+                // SI AMBAS FECHAS NO ESTAN VACIAS, ES DECIR, EL USUARIO QUIERE UN REPORTE EN FECHAS DETALLADAS
                 if (fecha1 != null && fecha2 != null) {
                     Calendar desde = Calendar.getInstance();
                     desde.clear();
@@ -295,7 +302,8 @@ public class Historial extends javax.swing.JFrame {
                     Calendar hasta = Calendar.getInstance();
                     hasta.clear();
                     hasta.set(fecha2.getYear(), fecha2.getMonthValue() - 1, fecha2.getDayOfMonth());
-
+                    // OBTIENES AMBAS FECHAS
+                    // Y LAS PASAS COMO PARAMETRO EN EL METODO PARA OBTENER LICENCIAS POR PERIODO
                     licencias = consultas.obtenerLicenciasPorPeriodo(personaDTO, desde, hasta);
                 } else {
                     licencias = consultas.obtenerLicenciasPorPersona(personaDTO);
@@ -314,6 +322,7 @@ public class Historial extends javax.swing.JFrame {
                 documento.add(tablaPdf);
                 documento.close();
 
+                // EL USUARIO SELECCIONO EL TRAMITE 'PLACAS'
             } else if (tramiteComboBox.getSelectedItem().equals("Placas")) {
                 Paragraph titulo = new Paragraph("Reporte de placas de " + personaDTO.getNombres() + " " + personaDTO.getApellidoPaterno() + " " + personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
                 titulo.setAlignment(Element.ALIGN_CENTER);
@@ -338,7 +347,7 @@ public class Historial extends javax.swing.JFrame {
                     placas = consultas.obtenerPlacasPorPersona(personaDTO);
 
                 }
-
+                // LLENA LA TABLA CON LA INFORMACION DE CADA PLACA
                 for (PlacaDTO placa : placas) {
 
                     tablaPdf.addCell(placa.getCodigo());
@@ -352,7 +361,8 @@ public class Historial extends javax.swing.JFrame {
                 documento.add(tablaPdf);
                 documento.close();
 
-            } else if (tramiteComboBox.getSelectedItem().equals("Todos")) {
+            } // SE GENERA UN REPORTE DE PLACAS Y DE LICENCIAS
+            else if (tramiteComboBox.getSelectedItem().equals("Todos")) {
                 Paragraph titulo = new Paragraph("Reporte de licencias y placas de " + personaDTO.getNombres() + " " + personaDTO.getApellidoPaterno() + " " + personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
                 titulo.setAlignment(Element.ALIGN_CENTER);
                 documento.add(titulo);
@@ -434,18 +444,24 @@ public class Historial extends javax.swing.JFrame {
         if (tramiteComboBox.getSelectedItem() == "Todos") {
             crearTablaHistorial();
         }
+
+        // SE ESTABLECEN ALGORITMOS PARA GENERAR EL HISTORIAL, PARECIDOS EN TODAS LAS OPCIONES
+        // SE CREAN TABLAS Y SE ASIGNAN LOS VALORES
+        // SI EL USUARIO QUIERE CONOCER EL HISTORIAL DE LICENCIAS TRAMITADAS
         if (tramiteComboBox.getSelectedItem() == "Licencias") {
             DefaultTableModel model = (DefaultTableModel) historialTabla.getModel();
             model.setRowCount(0);
             DefaultTableModel newModel = tabla.licenciasTableModel(consultas.obtenerLicenciasPorPersona(personaDTO));
             historialTabla.setModel(newModel);
         }
+        // SI EL USUARIO QUIERE CONOCER EL HISTORIAL DE PLACAS TRAMITADAS
         if (tramiteComboBox.getSelectedItem() == "Placas") {
             DefaultTableModel model = (DefaultTableModel) historialTabla.getModel();
             model.setRowCount(0);
             DefaultTableModel newModel = tabla.placasTableModel(consultas.obtenerPlacasPorPersona(personaDTO));
             historialTabla.setModel(newModel);
         }
+        // EL USUARIO DESEA UN HISTORIAL GENERAL DE TRAMITES, CONSIDERANDO FECHAS ESPECIFICAS
         if (tramiteComboBox.getSelectedItem() == "Todos" && fecha1 != null && fecha2 != null) {
             Calendar desde = Calendar.getInstance();
             desde.clear();
@@ -484,14 +500,25 @@ public class Historial extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_buscarBtnActionPerformed
+
+    /**
+     * Metodo privado para crear y llenar los datos de la tabla, generando los
+     * datos con el historial de la persona
+     */
     private void crearTablaHistorial() {
         DefaultTableModel model = (DefaultTableModel) historialTabla.getModel();
         model.setRowCount(0);
         DefaultTableModel newModel = tabla.tramitesTableModel(consultas.obtenerLicenciasPorPersona(personaDTO), consultas.obtenerPlacasPorPersona(personaDTO));
         historialTabla.setModel(newModel);
     }
-    
-     public  boolean isTableEmpty(JTable table) {
+
+    /**
+     * Metodo privado auxiliar, para verificar si la tabla esta vacia
+     *
+     * @param table tabla a verificar
+     * @return true si esta vacia, false caso contrario.
+     */
+    private boolean isTableEmpty(JTable table) {
         TableModel model = table.getModel();
         if (model.getRowCount() == 0) {
             return true;
@@ -507,7 +534,7 @@ public class Historial extends javax.swing.JFrame {
         return true;
     }
 
-  
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarBtn;
     private com.github.lgooddatepicker.components.DatePicker datePicker1;

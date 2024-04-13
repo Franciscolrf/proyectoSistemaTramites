@@ -1,6 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
+/**
+ * Clase creada en Abril de 2024
+ *
+ * DlgConfirmacion.java
  */
 package bda.itson.Presentacion;
 
@@ -14,6 +15,11 @@ import negocio.RegistrarLicencia;
 import negocio.RegistrarPlaca;
 
 /**
+ *
+ * Clase para hacer el sistema mas reutilizable. Esta clase es solamente una
+ * clase generica Para reutilizar codigo comun entre interfaces graficas.
+ * Muestra al usuario un mensaje de confirmaciones
+ *
  *
  * @author abelc
  */
@@ -278,6 +284,11 @@ public class DlgConfirmaciones extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodo para regresar al menu principal
+     *
+     * @param evt
+     */
     private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
         if (operacion == 1) {
             BuscarPersona ventanaAnterior = new BuscarPersona(1);
@@ -293,6 +304,11 @@ public class DlgConfirmaciones extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_regresarBtnActionPerformed
 
+    /**
+     * Metodo para confirmar el registro de licencia o placa
+     *
+     * @param evt
+     */
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
 
         if (operacion == 1) {

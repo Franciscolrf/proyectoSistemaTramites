@@ -1,5 +1,8 @@
 /**
- * 
+ * Clase creada en abril de 2024
+ *
+ * InsercionesFrm.java
+ *
  */
 package bda.itson.Presentacion;
 
@@ -17,6 +20,9 @@ import tablas.Conversiones;
 import interfaces.IregistrarPersona;
 
 /**
+ * Clase de interfaz grafica para interactuar con el usuario de la aplicacion
+ * Esta clase se conecta con la capa de negocios para realizar transacciones y
+ * demas
  *
  * @author abelc
  */
@@ -213,99 +219,73 @@ public class InsercionesFrm extends javax.swing.JFrame {
         List<PersonaDTO> listaPersonas = persona.generarlista(1);
         DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
         tablaPersonas.setModel(newModel);
+        tablaPersonas.setDefaultEditor(Object.class, null);
+
     }//GEN-LAST:event_generarPersonasBtnActionPerformed
-    /*
-    Metodo que recupera todo lo que hay en la tabla y lo mete en una lista para despues meterla
-    en la base de datos
+    /**
+     * Metodo que recupera todo lo que hay en la tabla y lo mete en una lista
+     * para despues meterla * en la base de datos
+     *
      */
     private void registrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarBtnActionPerformed
-    List<PersonaDTO> listaPersonas = new ArrayList<>();
-    DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
-    int rowCount = model.getRowCount();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-    boolean esDiscapacitado;
+        List<PersonaDTO> listaPersonas = new ArrayList<>();
+        DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
+        int rowCount = model.getRowCount();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        boolean esDiscapacitado;
 
-    if (rowCount == 0) {
-        JOptionPane.showMessageDialog(this, "No hay personas para registrar", "Tabla Vacía", JOptionPane.WARNING_MESSAGE);
-        return; 
-    }
-    
-    for (int i = 0; i < rowCount; i++) {
-        String nombre = (String) model.getValueAt(i, 0);
-        String apellidoPaterno = (String) model.getValueAt(i, 1);
-        String apellidoMaterno = (String) model.getValueAt(i, 2);
-        String telefono = (String) model.getValueAt(i, 3);
-        String rfc = (String) model.getValueAt(i, 4);
-       
-        esDiscapacitado = "Si".equals((String) model.getValueAt(i, 5));
-
-        String fechaNacimientoString = (String) model.getValueAt(i, 6);
-
-        Calendar fechaNacimiento = Calendar.getInstance();
-        try {
-            fechaNacimiento.setTime(dateFormat.parse(fechaNacimientoString));
-        } catch (ParseException ex) {
-            ex.printStackTrace();
+        if (rowCount == 0) {
+            JOptionPane.showMessageDialog(this, "No hay personas para registrar", "Tabla Vacía", JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
-        PersonaDTO persona = new PersonaDTO();
-        persona.setNombres(nombre);
-        persona.setApellidoPaterno(apellidoPaterno);
-        persona.setApellidoMaterno(apellidoMaterno);
-        persona.setTelefono(telefono);
-        persona.setRFC(rfc);
-        persona.setEsDiscapacitado(esDiscapacitado);
-        persona.setFechaNacimiento(fechaNacimiento);
+        for (int i = 0; i < rowCount; i++) {
+            String nombre = (String) model.getValueAt(i, 0);
+            String apellidoPaterno = (String) model.getValueAt(i, 1);
+            String apellidoMaterno = (String) model.getValueAt(i, 2);
+            String telefono = (String) model.getValueAt(i, 3);
+            String rfc = (String) model.getValueAt(i, 4);
 
-        listaPersonas.add(persona);
-    }
- 
-    persona.registroMasivo(listaPersonas);
-    model.setRowCount(0); // Limpia la tabla
-   
-    JOptionPane.showMessageDialog(this, "El registro se ha realizado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+            esDiscapacitado = "Si".equals((String) model.getValueAt(i, 5));
+
+            String fechaNacimientoString = (String) model.getValueAt(i, 6);
+
+            Calendar fechaNacimiento = Calendar.getInstance();
+            try {
+                fechaNacimiento.setTime(dateFormat.parse(fechaNacimientoString));
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+
+            PersonaDTO persona = new PersonaDTO();
+            persona.setNombres(nombre);
+            persona.setApellidoPaterno(apellidoPaterno);
+            persona.setApellidoMaterno(apellidoMaterno);
+            persona.setTelefono(telefono);
+            persona.setRFC(rfc);
+            persona.setEsDiscapacitado(esDiscapacitado);
+            persona.setFechaNacimiento(fechaNacimiento);
+
+            listaPersonas.add(persona);
+        }
+
+        persona.registroMasivo(listaPersonas);
+        model.setRowCount(0); // Limpia la tabla
+
+        JOptionPane.showMessageDialog(this, "El registro se ha realizado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_registrarBtnActionPerformed
 
+    /**
+     * Regresa al menu principal
+     *
+     * @param evt
+     */
     private void regresarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtn1ActionPerformed
-        MenuPrincipal menu=new MenuPrincipal();
+        MenuPrincipal menu = new MenuPrincipal();
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_regresarBtn1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InsercionesFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InsercionesFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InsercionesFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InsercionesFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new InsercionesFrm().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton generarPersonasBtn;

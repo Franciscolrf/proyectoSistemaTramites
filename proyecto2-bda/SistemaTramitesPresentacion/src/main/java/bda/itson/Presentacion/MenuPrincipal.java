@@ -1,15 +1,19 @@
 /**
- * 
+ * MenuPrincipal.java
+ *
+ * Clase creada en Abril de 2024
  */
 package bda.itson.Presentacion;
 
 /**
+ * Interfaz Grafica de Usuario para navegar entre funcionalidades del sistema
  *
- * @author abelc
- * Frame del menu principal
+ * @author abelc Frame del menu principal
  */
 public class MenuPrincipal extends javax.swing.JFrame {
-   BuscarPersona seleccionarPersona;
+
+    BuscarPersona seleccionarPersona;
+
     /**
      * Creates new form MenuPrincipal
      */
@@ -149,11 +153,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Si se desea realizar un tramite, se instancia la clase y el usuario
+     * navega en ella
+     *
+     * @param evt
+     */
     private void realizarTramiteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_realizarTramiteBtnActionPerformed
         this.dispose();
-        DlgEleccionTramite elegirTramite=new  DlgEleccionTramite(this,true);
+        DlgEleccionTramite elegirTramite = new DlgEleccionTramite(this, true);
     }//GEN-LAST:event_realizarTramiteBtnActionPerformed
 
+    /**
+     * Si se desea realizar consultas, se instancia la clase y el usuario navega
+     * en ella
+     *
+     * @param evt
+     */
     private void consultasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultasBtnActionPerformed
 
         seleccionarPersona = new BuscarPersona(3);
@@ -161,12 +177,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_consultasBtnActionPerformed
 
+    /**
+     * Si se desea generar clientes, se instancia la clase y el usuario navega
+     * en ella
+     *
+     * @param evt
+     */
     private void generarClientesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarClientesBtnActionPerformed
-       InsercionesFrm insercionClientes=new InsercionesFrm();
-       insercionClientes.setVisible(true);
-       this.dispose();
+        InsercionesFrm insercionClientes = new InsercionesFrm();
+        insercionClientes.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_generarClientesBtnActionPerformed
 
+    /**
+     * Salir de la aplicacion
+     *
+     * @param evt
+     */
     private void salirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirBtnActionPerformed
         this.dispose();
     }//GEN-LAST:event_salirBtnActionPerformed

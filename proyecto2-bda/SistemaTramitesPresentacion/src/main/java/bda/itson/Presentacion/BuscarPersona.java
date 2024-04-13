@@ -1,7 +1,7 @@
 /**
  * Clase creada el 04 de Abril de 2024
- * 
- * 
+ *
+ *
  */
 package bda.itson.Presentacion;
 
@@ -17,9 +17,10 @@ import tablas.Conversiones;
 import interfaces.IregistrarPersona;
 
 /**
- * Esta clase es la conexion entre el usuario y las funcionalidades para buscar usuarios
- * Aqui el usuario puede buscar a los clientes registrados en la base de datos.
- * 
+ * Esta clase es la conexion entre el usuario y las funcionalidades para buscar
+ * usuarios Aqui el usuario puede buscar a los clientes registrados en la base
+ * de datos.
+ *
  * @author abelc
  */
 public class BuscarPersona extends javax.swing.JFrame {
@@ -28,11 +29,12 @@ public class BuscarPersona extends javax.swing.JFrame {
     IregistrarPersona personas;
     Conversiones tabla;
     LicenciaDTO licenciaDTO;
-    private int operacion;
+    private final int operacion;
     PersonaDTO personaDTO;
 
     /**
      * Creates new form buscarPersonas
+     *
      * @param operacion
      */
     public BuscarPersona(int operacion) {
@@ -247,12 +249,14 @@ public class BuscarPersona extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    
     /**
-     * Metodo para ejecutar la busqueda de personas, donde se traeran de la logica de negocios, la lista de usuarios.
-     * 
-     * Si no existen parametros, traera todos los clientes, si existen parametros, verificara que existan en la base de datos.
-     * @param evt 
+     * Metodo para ejecutar la busqueda de personas, donde se traeran de la
+     * logica de negocios, la lista de usuarios.
+     *
+     * Si no existen parametros, traera todos los clientes, si existen
+     * parametros, verificara que existan en la base de datos.
+     *
+     * @param evt
      */
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
         DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
@@ -277,14 +281,14 @@ public class BuscarPersona extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_buscarBtnActionPerformed
 
-    
     /**
-     * Metodo para ejecutar la seleccion de un cliente.
-     * Verifica si el cliente selecciono la opcion para tramitar licencia.
-     *  Si ya tiene licencia vigente, el sistema manda un mensaje de advertencia.
-     *  Si el usuario selecciona la opcion para tramitar placas, el sistema verifica primero si ya tiene licencia
-     *  
-     * @param evt 
+     * Metodo para ejecutar la seleccion de un cliente. Verifica si el cliente
+     * selecciono la opcion para tramitar licencia. Si ya tiene licencia
+     * vigente, el sistema manda un mensaje de advertencia. Si el usuario
+     * selecciona la opcion para tramitar placas, el sistema verifica primero si
+     * ya tiene licencia
+     *
+     * @param evt
      */
     private void seleccionarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtnActionPerformed
         if (operacion == 1) {
@@ -351,7 +355,8 @@ public class BuscarPersona extends javax.swing.JFrame {
 
     /**
      * Metodo para regresar al menu principal
-     * @param evt 
+     *
+     * @param evt
      */
     private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
         if (operacion == 1 || operacion == 2) {
@@ -366,7 +371,7 @@ public class BuscarPersona extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_regresarBtnActionPerformed
-   
+
     /**
      * Metodo para obtener los datos de la persona seleccionada
      */
@@ -418,47 +423,6 @@ public class BuscarPersona extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BuscarPersona.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BuscarPersona.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BuscarPersona.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BuscarPersona.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BuscarPersona(1).setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarBtn;

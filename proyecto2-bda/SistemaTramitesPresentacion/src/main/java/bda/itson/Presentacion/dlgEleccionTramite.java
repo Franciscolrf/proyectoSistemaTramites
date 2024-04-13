@@ -1,12 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
+/**
+ * Clase creada en Abril de 2024
+ *
+ * DlgEleccionTramite.java
  */
 package bda.itson.Presentacion;
 
-import interfaces.IRegistrarLicenciaBO;
-
 /**
+ *
+ * Interfaz grafica de usuario para que pueda elegir el tramite que quiere
+ * hacer. Placa o Licencia. Si se requiere agregar mas tramites en un futuro, se
+ * puede hacer.
  *
  * @author abelc
  */
@@ -39,7 +42,7 @@ public class DlgEleccionTramite extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         tramitarLicenciaBtn = new javax.swing.JButton();
-        tramitarLicenciaBtn1 = new javax.swing.JButton();
+        tramitarPlacasBtn = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
         jButton1.setText("jButton1");
@@ -84,18 +87,17 @@ public class DlgEleccionTramite extends javax.swing.JDialog {
             }
         });
 
-        tramitarLicenciaBtn1.setBackground(new java.awt.Color(107, 27, 56));
-        tramitarLicenciaBtn1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        tramitarLicenciaBtn1.setForeground(new java.awt.Color(255, 255, 255));
-        tramitarLicenciaBtn1.setText("Placas");
-        tramitarLicenciaBtn1.addActionListener(new java.awt.event.ActionListener() {
+        tramitarPlacasBtn.setBackground(new java.awt.Color(107, 27, 56));
+        tramitarPlacasBtn.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        tramitarPlacasBtn.setForeground(new java.awt.Color(255, 255, 255));
+        tramitarPlacasBtn.setText("Placas");
+        tramitarPlacasBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tramitarLicenciaBtn1ActionPerformed(evt);
+                tramitarPlacasBtnActionPerformed(evt);
             }
         });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 48)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("←");
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -112,7 +114,7 @@ public class DlgEleccionTramite extends javax.swing.JDialog {
                 .addContainerGap(194, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tramitarLicenciaBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tramitarLicenciaBtn1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tramitarPlacasBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(189, 189, 189))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -128,7 +130,7 @@ public class DlgEleccionTramite extends javax.swing.JDialog {
                 .addGap(41, 41, 41)
                 .addComponent(tramitarLicenciaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
-                .addComponent(tramitarLicenciaBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tramitarPlacasBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 107, Short.MAX_VALUE))
         );
 
@@ -147,23 +149,38 @@ public class DlgEleccionTramite extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodo para redirigir a la interfaz grafica de licencias
+     *
+     * @param evt
+     */
     private void tramitarLicenciaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tramitarLicenciaBtnActionPerformed
         licenciaTramite = new BuscarPersona(1);
         this.dispose();
         licenciaTramite.setVisible(true);
     }//GEN-LAST:event_tramitarLicenciaBtnActionPerformed
 
-    private void tramitarLicenciaBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tramitarLicenciaBtn1ActionPerformed
+    /**
+     * Metodo para redirigir a la interfaz grafica de placas
+     *
+     * @param evt
+     */
+    private void tramitarPlacasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tramitarPlacasBtnActionPerformed
         licenciaTramite = new BuscarPersona(2);
         this.dispose();
         licenciaTramite.setVisible(true);
-    }//GEN-LAST:event_tramitarLicenciaBtn1ActionPerformed
+    }//GEN-LAST:event_tramitarPlacasBtnActionPerformed
 
+    /**
+     * Metodo para regresar al menu principal
+     *
+     * @param evt
+     */
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         MenuPrincipal menu = new MenuPrincipal();
         this.dispose();
         menu.setVisible(true);
-        
+
     }//GEN-LAST:event_jLabel3MouseClicked
 
 
@@ -175,6 +192,6 @@ public class DlgEleccionTramite extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton tramitarLicenciaBtn;
-    private javax.swing.JButton tramitarLicenciaBtn1;
+    private javax.swing.JButton tramitarPlacasBtn;
     // End of variables declaration//GEN-END:variables
 }
