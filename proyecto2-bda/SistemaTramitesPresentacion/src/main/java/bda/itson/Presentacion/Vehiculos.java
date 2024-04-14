@@ -30,6 +30,8 @@ public class Vehiculos extends javax.swing.JFrame {
     Conversiones tabla;
     PlacaDTO placaDTO;
     Consultas consultas;
+    DefaultTableModel model;
+    DefaultTableModel newModel;
 
     /**
      * Creates new form Vehiculos
@@ -43,12 +45,7 @@ public class Vehiculos extends javax.swing.JFrame {
         this.placaDTO = new PlacaDTO();
         this.placa = new RegistrarPlaca();
         initComponents();
-        DefaultTableModel model = (DefaultTableModel) tablaVehiculos.getModel();
-        model.setRowCount(0);
-        List<VehiculoDTO> vehiculos = placa.obtenerVehiculosDePersona(persona);
-        DefaultTableModel newModel = tabla.vehiculosTableModel(vehiculos);
-        tablaVehiculos.setModel(newModel);
-        tablaVehiculos.setDefaultEditor(Object.class, null);
+        llenarTabla(persona);
     }
 
     /**
@@ -213,36 +210,72 @@ public class Vehiculos extends javax.swing.JFrame {
      * @param evt
      */
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
-        String codigo = parametroTxtField.getText().toUpperCase();
-        if (!"".equals(codigo)) {
-            if (!regex(codigo, "^[A-Za-z]{3}-?[1-9]{3}$")) {
-                JOptionPane.showMessageDialog(null, "Introduce el codigo correcto, (ej AAA-111 o AAA111)");
+        llenarTabla(personaDTO);
+
+        String parametro = parametroTxtField.getText().toUpperCase();
+        boolean existe = false;
+        if (!"".equals(parametro)) {
+
+            if ((!regex(parametro, "(?=.*[a-zA-Z])(?=.*\\d)^\\w{1,9}$")) && (!regex(parametro, "^[A-Za-z]{3}-?[1-9]{3}$")) && (!regex(parametro, "^[A-Za-z]{3}-[1-9]{3}$"))) {
+                JOptionPane.showMessageDialog(null, "Introduce el numero de serie o codigo de placa correcto (ej. AAAA1111 o AAA-111)");
                 return;
             }
-            if (!regex(codigo, "^[A-Za-z]{3}-[1-9]{3}$")) {
-                codigo = formatearTexto(codigo);
-                System.out.println(codigo);
-            }
-            List<PlacaDTO> placas = consultas.obtenerPlacasPorPersona(personaDTO);
-            boolean existe = false;
-            for (PlacaDTO pl : placas) {
-                if (consultas.consultarPlacaPorCodigo(codigo).getCodigo() == null ? pl.getCodigo() == null : consultas.consultarPlacaPorCodigo(codigo).getCodigo().equals(pl.getCodigo())) {
-                    existe = true;
+
+            if (regex(parametro, "^[A-Za-z]{3}[1-9]{3}$") || regex(parametro, "^[A-Za-z]{3}-[1-9]{3}$")) {
+                if (!regex(parametro, "^[A-Za-z]{3}-[1-9]{3}$")) {
+                    parametro = formatearTexto(parametro);
                 }
-            }
-            if (consultas.consultarPlacaPorCodigo(codigo) != null && existe == true) {
-                DefaultTableModel model = (DefaultTableModel) tablaVehiculos.getModel();
-                model.setRowCount(0);
-                PlacaDTO placaUser = consultas.consultarPlacaPorCodigo(codigo);
-                Object[] row = {placaUser.getCodigo(), placaUser.getEstado(), placaUser.getVehiculo().getColor(), placaUser.getVehiculo().getModelo(), placaUser.getVehiculo().getMarca(), placaUser.getVehiculo().getLinea(), placaUser.getVehiculo().getTipoVehiculo()};
-                model.addRow(row);
-                tablaVehiculos.setModel(model);
+                List<PlacaDTO> placas = consultas.obtenerPlacasPorPersona(personaDTO);
+
+                for (PlacaDTO pl : placas) {
+                    if (consultas.consultarPlacaPorCodigo(parametro).getCodigo().equals(pl.getCodigo())) {
+                        existe = true;
+                    }
+                }
+                if (consultas.consultarPlacaPorCodigo(parametro) != null && existe == true) {
+                    DefaultTableModel model = (DefaultTableModel) tablaVehiculos.getModel();
+                    model.setRowCount(0);
+                    tablaVehiculos.getColumnModel().getColumn(0).setHeaderValue("Placa");
+                    PlacaDTO placaUser = consultas.consultarPlacaPorCodigo(parametro);
+                    Object[] row = {placaUser.getCodigo(), placaUser.getEstado(), placaUser.getVehiculo().getColor(), placaUser.getVehiculo().getModelo(), placaUser.getVehiculo().getMarca(), placaUser.getVehiculo().getLinea(), placaUser.getVehiculo().getTipoVehiculo()};
+                    model.addRow(row);
+                    tablaVehiculos.setModel(model);
+                    System.out.println("Si entro a placas");
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "El codigo de placa no esta asociado a ningun vehiculo del cliente");
+
+                }
+
             } else {
-                JOptionPane.showMessageDialog(null, "El codigo no esta asociado a ninguna placa del cliente");
+
+                VehiculoDTO vehiculo = consultas.consultarVehiculos(parametro);
+                List<VehiculoDTO> vehiculos = consultas.consultarVehiculosPorPersona(personaDTO);
+
+                existe = false;
+                for (VehiculoDTO v : vehiculos) {
+
+                    if (consultas.consultarVehiculos(parametro).getNumeroSerie().equals(v.getNumeroSerie())) {
+                        existe = true;
+                    }
+                }
+                System.out.println(existe);
+                if (vehiculo != null && existe == true) {
+                    tablaVehiculos.getColumnModel().getColumn(0).setHeaderValue("Numero de Serie");
+                    DefaultTableModel model1 = (DefaultTableModel) tablaVehiculos.getModel();
+                    model1.setRowCount(0);
+                    Object[] row2 = {vehiculo.getNumeroSerie(), vehiculo.getEstado(), vehiculo.getColor(), vehiculo.getModelo(), vehiculo.getMarca(), vehiculo.getLinea(), vehiculo.getTipoVehiculo()};
+                    model1.addRow(row2);
+                    tablaVehiculos.setModel(model1);
+                    System.out.println("si entro al nu mserie");
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "El numero de serie no esta asociado a ningun vehiculo del cliente");
+                }
             }
 
         } else {
-            JOptionPane.showMessageDialog(null, "Introduzca el codigo de la placa (ej. AAA-111)");
+            JOptionPane.showMessageDialog(null, "Introduzca el numero de serie o el codigo de placa (ej. AAA11111)");
 
         }
     }//GEN-LAST:event_buscarBtnActionPerformed
@@ -280,7 +313,7 @@ public class Vehiculos extends javax.swing.JFrame {
      * @param texto texto a cambiar
      * @return texto cambiado
      */
-    public String formatearTexto(String texto) {
+    private String formatearTexto(String texto) {
         String expresionRegular = "^([A-Za-z]{3})([1-9]{3})$";
         String textoFormateado = texto.replaceAll(expresionRegular, "$1-$2");
         return textoFormateado;
@@ -292,28 +325,55 @@ public class Vehiculos extends javax.swing.JFrame {
      * @param evt
      */
     private void seleccionarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtn1ActionPerformed
-        obtenerDatosFilaSeleccionada();
-        placa.generarPlaca(placaDTO);
-        this.dispose();
-        DlgConfirmaciones confirmacion = new DlgConfirmaciones(this, true, null, placaDTO, 2);
+
+        if (obtenerDatosFilaSeleccionada() == 1) {
+            placa.generarPlaca(placaDTO);
+            this.dispose();
+            DlgConfirmaciones confirmacion = new DlgConfirmaciones(this, true, null, placaDTO, 2);
+        }
+        
+
 
     }//GEN-LAST:event_seleccionarBtn1ActionPerformed
 
     /**
      * Metodo para obtener los datos del vehiculo seleccionado
      */
-    public void obtenerDatosFilaSeleccionada() {
+    private int obtenerDatosFilaSeleccionada() {
         int filaSeleccionada = tablaVehiculos.getSelectedRow();
         if (filaSeleccionada != -1) {
-            String numSerie = tablaVehiculos.getValueAt(filaSeleccionada, 0).toString();
-            VehiculoDTO vehiculo = placa.buscarVehiculoPorNumeroSerie(numSerie);
+            String parametro = tablaVehiculos.getValueAt(filaSeleccionada, 0).toString();
+            VehiculoDTO vehiculo = placa.buscarVehiculoPorNumeroSerie(parametro);
+            List<PlacaDTO> placas = consultas.obtenerPlacasPorPersona(personaDTO);
+
+            for (PlacaDTO p : placas) {
+                if (p.getVehiculo().getNumeroSerie().equals(vehiculo.getNumeroSerie())) {
+                    int respuesta = JOptionPane.showConfirmDialog(null, "Este vehiculo ya tiene placas activas, deseas inhabilitar las anteriores y habilitar otras nuevas? ");
+                    if (respuesta == 0) {
+                        placaDTO.setVehiculo(vehiculo);
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+
+            }
+
             placaDTO.setVehiculo(vehiculo);
         } else {
             JOptionPane.showMessageDialog(null, "Por favor, seleccione un vehiculo.");
         }
+        return 1;
     }
 
-
+    private void llenarTabla(PersonaDTO persona) {
+        model = (DefaultTableModel) tablaVehiculos.getModel();
+        model.setRowCount(0);
+        List<VehiculoDTO> vehiculos = placa.obtenerVehiculosDePersona(persona);
+        newModel = tabla.vehiculosTableModel(vehiculos);
+        tablaVehiculos.setModel(newModel);
+        tablaVehiculos.setDefaultEditor(Object.class, null);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarBtn;
     private javax.swing.JLabel jLabel1;

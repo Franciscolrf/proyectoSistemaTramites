@@ -7,12 +7,12 @@ package bda.itson.Presentacion;
 
 import dtos.LicenciaDTO;
 import dtos.PlacaDTO;
-import interfaces.IRegistrarLicenciaBO;
 import interfaces.IRegistrarPlaca;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import negocio.RegistrarLicencia;
 import negocio.RegistrarPlaca;
+import interfaces.IRegistrarLicencia;
 
 /**
  *
@@ -26,7 +26,7 @@ import negocio.RegistrarPlaca;
 public class DlgConfirmaciones extends javax.swing.JDialog {
 
     LicenciaDTO licenciaDatos;
-    IRegistrarLicenciaBO licencia;
+    IRegistrarLicencia licencia;
     PlacaDTO placaDTO;
     int operacion;
     IRegistrarPlaca placa;
@@ -314,7 +314,10 @@ public class DlgConfirmaciones extends javax.swing.JDialog {
         if (operacion == 1) {
             licencia.registrarLicencia(licenciaDatos);
             JOptionPane.showMessageDialog(this, "La licencia se ha registrado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
+            this.dispose();
+            MenuPrincipal p = new MenuPrincipal();
+            p.setVisible(true);
+
         }
         if (operacion == 2) {
             placa.registrarPLaca(placaDTO);

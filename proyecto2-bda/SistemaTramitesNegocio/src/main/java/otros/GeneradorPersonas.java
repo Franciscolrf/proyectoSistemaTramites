@@ -14,9 +14,10 @@ import java.util.GregorianCalendar;
 import java.util.Random;
 
 /**
+ * Clase que proporciona métodos para generar datos aleatorios relacionados con
+ * personas.
  *
- * @author abelc Clase que proporciona métodos para generar datos aleatorios
- * relacionados con personas.
+ * @author abelc
  */
 public class GeneradorPersonas {
 

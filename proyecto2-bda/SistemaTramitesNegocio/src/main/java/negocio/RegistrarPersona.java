@@ -1,3 +1,8 @@
+/**
+ * RegistrarPersona.java
+ *
+ * Clase creada en Abril de 2024
+ */
 package negocio;
 
 import bda.itson.entidadesJPA.Persona;
@@ -21,15 +26,15 @@ import otros.Conversiones;
 import otros.GeneradorPersonas;
 import otros.GeneradorPlacas;
 import otros.GeneradorVehiculos;
-import interfaces.IregistrarPersona;
 import otros.Encriptacion;
+import interfaces.IRegistrarPersona;
 
 /**
- *Esta clase proporciona todos los metodos relacionados al registro de personas
- * 
+ * Esta clase proporciona todos los metodos relacionados al registro de personas
+ *
  * @author abelc
  */
-public class RegistrarPersona implements IregistrarPersona {
+public class RegistrarPersona implements IRegistrarPersona {
 
     /**
      * Unidad de persistencia para la conexión JPA.

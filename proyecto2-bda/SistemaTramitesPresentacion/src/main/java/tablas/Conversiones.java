@@ -9,11 +9,11 @@ import dtos.LicenciaDTO;
 import dtos.PersonaDTO;
 import dtos.PlacaDTO;
 import dtos.VehiculoDTO;
-import interfaces.IRegistrarLicenciaBO;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import negocio.RegistrarLicencia;
+import interfaces.IRegistrarLicencia;
 
 /**
  *
@@ -71,7 +71,7 @@ public class Conversiones {
      * licencia.
      */
     public DefaultTableModel personasModuloPlacasTableModel(List<PersonaDTO> listaPersonas) {
-        IRegistrarLicenciaBO licencia = new RegistrarLicencia();
+        IRegistrarLicencia licencia = new RegistrarLicencia();
         String[] columnas = {"Nombres", "Apellido Paterno", "Apellido Materno", "Teléfono", "RFC", "Discapacidad", "Fecha de Nacimiento", "Licencia"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
         String discapacitado;

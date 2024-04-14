@@ -1,6 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
+/**
+ * IregistrarPersona.java
+ *
+ * Clase creada en Abril de 2024
  */
 package interfaces;
 
@@ -8,10 +9,11 @@ import dtos.PersonaDTO;
 import java.util.List;
 
 /**
- * @author abelc 
  * Interfaz para el registro de personas en el sistema.
+ *
+ * @author abelc
  */
-public interface IregistrarPersona {
+public interface IRegistrarPersona {
 
     /**
      * Método para realizar un registro masivo de personas en el sistema.

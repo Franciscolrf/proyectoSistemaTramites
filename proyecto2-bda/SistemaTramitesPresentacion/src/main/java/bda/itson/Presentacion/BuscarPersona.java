@@ -7,14 +7,14 @@ package bda.itson.Presentacion;
 
 import dtos.LicenciaDTO;
 import dtos.PersonaDTO;
-import interfaces.IRegistrarLicenciaBO;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import negocio.RegistrarLicencia;
 import negocio.RegistrarPersona;
 import tablas.Conversiones;
-import interfaces.IregistrarPersona;
+import interfaces.IRegistrarPersona;
+import interfaces.IRegistrarLicencia;
 
 /**
  * Esta clase es la conexion entre el usuario y las funcionalidades para buscar
@@ -25,12 +25,12 @@ import interfaces.IregistrarPersona;
  */
 public class BuscarPersona extends javax.swing.JFrame {
 
-    IRegistrarLicenciaBO licencia;
-    IregistrarPersona personas;
+    IRegistrarLicencia licencia;
+    IRegistrarPersona personas;
     Conversiones tabla;
     LicenciaDTO licenciaDTO;
     private final int operacion;
-    PersonaDTO personaDTO;
+    PersonaDTO personaDto;
 
     /**
      * Creates new form buscarPersonas
@@ -43,7 +43,7 @@ public class BuscarPersona extends javax.swing.JFrame {
         this.licenciaDTO = new LicenciaDTO();
         this.personas = new RegistrarPersona();
         this.operacion = operacion;
-        this.personaDTO = new PersonaDTO();
+        this.personaDto = new PersonaDTO();
         initComponents();
         if (operacion == 1) {
             vigenciaCombobox.setVisible(true);
@@ -291,6 +291,7 @@ public class BuscarPersona extends javax.swing.JFrame {
      * @param evt
      */
     private void seleccionarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtnActionPerformed
+
         if (operacion == 1) {
             obtenerDatosFilaSeleccionada();
             if (licencia.verificarLicenciaActiva(licenciaDTO.getPersona()) == false) {
@@ -303,54 +304,62 @@ public class BuscarPersona extends javax.swing.JFrame {
         }
 
         if (operacion == 2) {
-            obtenerDatosFilaSeleccionada();
-            if (licencia.verificarLicenciaActiva(personaDTO) == true) {
-                Vehiculos vehiculosVentana = new Vehiculos(personaDTO);
-                vehiculosVentana.setVisible(true);
-                this.dispose();
-            } else {
-                int respuesta = JOptionPane.showOptionDialog(null, "¿Quiere tramitar una licencia?", "La persona seleccionada no cuenta con licencia activa", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sí", "No"}, "Sí");
-                if (respuesta == JOptionPane.YES_OPTION) {
-                    licenciaDTO.setPersona(personaDTO);
-                    int resp = JOptionPane.showOptionDialog(
-                            null,
-                            "Seleccione la vigencia para la licencia:",
-                            "Duración de la licencia",
-                            JOptionPane.DEFAULT_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            new String[]{"1 año", "2 años", "3 años"},
-                            "1 año");
-                    int duracion = 0;
-                    if (resp == 0) {
+            if (obtenerDatosFilaSeleccionada()) {
+                if (licencia.verificarLicenciaActiva(personaDto) == true) {
+                    Vehiculos vehiculosVentana = new Vehiculos(personaDto);
+                    vehiculosVentana.setVisible(true);
+                    this.dispose();
+                } else {
+                    int respuesta = JOptionPane.showOptionDialog(null, "¿Quiere tramitar una licencia?", "La persona seleccionada no cuenta con licencia activa", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sí", "No"}, "Sí");
+                    if (respuesta == JOptionPane.YES_OPTION) {
+                        licenciaDTO.setPersona(personaDto);
+                        int resp = JOptionPane.showOptionDialog(
+                                null,
+                                "Seleccione la vigencia para la licencia:",
+                                "Duración de la licencia",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                new String[]{"1 año", "2 años", "3 años"},
+                                "1 año");
+                        int duracion = 0;
+                        if (resp == 0) {
 
-                        duracion = 1;
+                            duracion = 1;
 
-                    } else if (resp == 1) {
+                        } else if (resp == 1) {
 
-                        duracion = 2;
+                            duracion = 2;
 
-                    } else if (resp == 2) {
+                        } else if (resp == 2) {
 
-                        duracion = 3;
+                            duracion = 3;
+
+                        }
+                        if (duracion != 0) {
+                            licenciaDTO.setVigencia(duracion);
+                            licencia.asignarValoresLicencia(licenciaDTO);
+                            this.dispose();
+                            DlgConfirmaciones dlgConfLicencia = new DlgConfirmaciones(this, true, licenciaDTO, null, 1);
+                        }
 
                     }
-                    if (duracion != 0) {
-                        licenciaDTO.setVigencia(duracion);
-                        licencia.asignarValoresLicencia(licenciaDTO);
-                        this.dispose();
-                        DlgConfirmaciones dlgConfLicencia = new DlgConfirmaciones(this, true, licenciaDTO, null, 1);
-                    }
-
                 }
+            } else {
+                return;
             }
+
         }
         if (operacion == 3) {
-            obtenerDatosFilaSeleccionada();
-            Historial historial = new Historial(personaDTO);
-            historial.setVisible(true);
-            this.dispose();
+            if (obtenerDatosFilaSeleccionada()) {
+                Historial historial = new Historial(personaDto);
+                historial.setVisible(true);
+                this.dispose();
+            }
+
         }
+
+
     }//GEN-LAST:event_seleccionarBtnActionPerformed
 
     /**
@@ -375,7 +384,7 @@ public class BuscarPersona extends javax.swing.JFrame {
     /**
      * Metodo para obtener los datos de la persona seleccionada
      */
-    private void obtenerDatosFilaSeleccionada() {
+    private boolean obtenerDatosFilaSeleccionada() {
         if (operacion == 1) {
             int filaSeleccionada = tablaPersonas.getSelectedRow();
 
@@ -397,6 +406,8 @@ public class BuscarPersona extends javax.swing.JFrame {
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, seleccione una persona.");
+                return false;
+
             }
         }
         if (operacion == 2) {
@@ -405,9 +416,10 @@ public class BuscarPersona extends javax.swing.JFrame {
             if (filaSeleccionada != -1) {
                 String rfc = tablaPersonas.getValueAt(filaSeleccionada, 4).toString();
 
-                personaDTO = personas.buscarRFC(rfc);
+                personaDto = personas.buscarRFC(rfc);
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, seleccione una persona.");
+                return false;
             }
         }
         if (operacion == 3) {
@@ -416,11 +428,14 @@ public class BuscarPersona extends javax.swing.JFrame {
             if (filaSeleccionada != -1) {
                 String rfc = tablaPersonas.getValueAt(filaSeleccionada, 4).toString();
 
-                personaDTO = personas.buscarRFC(rfc);
+                personaDto = personas.buscarRFC(rfc);
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, seleccione una persona.");
+                return false;
+
             }
         }
+        return true;
     }
 
 

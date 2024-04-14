@@ -1,15 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * VehiculoDTO.java
+ *
+ * Clase creada en Abril de 2024
  */
 package dtos;
 
 /**
+ * Esta clase representa un objeto de transferencia de datos (DTO) para los
+ * vehículos. Contiene información sobre las características de un vehículo y su
+ * propietario.
  *
- * @author abelc 
- * Esta clase representa un objeto de transferencia de datos (DTO)
- * para los vehículos. Contiene información sobre las características de un
- * vehículo y su propietario.
+ * @author abelc
  *
  */
 public class VehiculoDTO {
@@ -282,5 +283,4 @@ public class VehiculoDTO {
         this.propietario = propietario;
     }
 
-    
 }

@@ -1,3 +1,8 @@
+/**
+ * GeneradorVehiculos.java
+ *
+ * Clase creada en Abril de 2024
+ */
 package otros;
 
 import dtos.VehiculoDTO;
@@ -9,6 +14,12 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ *
+ * Clase para generar vehiculos aleatorios y persistirlos en la base de datos
+ *
+ * @author abelc
+ */
 public class GeneradorVehiculos {
 
     // Objeto Random para generar valores aleatorios

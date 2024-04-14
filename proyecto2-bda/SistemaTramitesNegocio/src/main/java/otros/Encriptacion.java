@@ -44,7 +44,7 @@ public class Encriptacion {
      * @throws Exception Si ocurre un error durante la desencriptación.
      */
     public static String desencriptarTelefono(String telefonoEncriptado) throws Exception {
-        Cipher cifrador = Cipher.getInstance(ALGORITMO);
+        Cipher cifrador = Cipher.getInstance(ALGORITMO );
         SecretKey clave = new SecretKeySpec(CLAVE_SECRETA.getBytes(), ALGORITMO);
         cifrador.init(Cipher.DECRYPT_MODE, clave);
         byte[] textoCifrado = Base64.getDecoder().decode(telefonoEncriptado);

@@ -181,7 +181,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
      * Si se desea generar clientes, se instancia la clase y el usuario navega
      * en ella
      *
-     * @param evt
+     * @param evt evento
      */
     private void generarClientesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarClientesBtnActionPerformed
         InsercionesFrm insercionClientes = new InsercionesFrm();

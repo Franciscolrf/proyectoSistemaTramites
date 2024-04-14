@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import negocio.RegistrarPersona;
 import tablas.Conversiones;
-import interfaces.IregistrarPersona;
+import interfaces.IRegistrarPersona;
 
 /**
  * Clase de interfaz grafica para interactuar con el usuario de la aplicacion
@@ -28,7 +28,7 @@ import interfaces.IregistrarPersona;
  */
 public class InsercionesFrm extends javax.swing.JFrame {
 
-    IregistrarPersona persona;
+    IRegistrarPersona persona;
     Conversiones tabla;
 
     /**

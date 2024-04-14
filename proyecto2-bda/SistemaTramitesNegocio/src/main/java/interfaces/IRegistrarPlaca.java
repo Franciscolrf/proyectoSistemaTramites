@@ -1,6 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * IRegistrarPlaca.java
+ *
+ * Clase creada en Abril de 2024
  */
 package interfaces;
 
@@ -10,9 +11,9 @@ import dtos.VehiculoDTO;
 import java.util.List;
 
 /**
- *
- * @author abelc 
  * interfaz para el registro y acciones necesarias relacionadas a placas
+ *
+ * @author abelc
  */
 public interface IRegistrarPlaca {
 

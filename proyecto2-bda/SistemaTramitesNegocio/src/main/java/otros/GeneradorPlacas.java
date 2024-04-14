@@ -18,8 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author abelc Clase encargada de generar las placas
+ * Clase encargada de generar  y persistir en la base de datos las placas
+ * @author abelc 
  */
 public class GeneradorPlacas {
 
