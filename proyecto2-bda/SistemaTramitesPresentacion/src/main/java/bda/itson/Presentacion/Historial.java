@@ -462,13 +462,18 @@ public class Historial extends javax.swing.JFrame {
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
         LocalDate fecha1 = datePicker1.getDate(); // Obtener la fecha del primer datePicker
         LocalDate fecha2 = datePicker2.getDate();
+        String parametro = txtBuscarPlaca.getText().toUpperCase();
+        System.out.println(parametro);
 
-        if (!txtBuscarPlaca.getText().isEmpty()) {
-            String parametro = txtBuscarPlaca.getText().toUpperCase();
-            if (regex(parametro, "^[A-Za-z]{3}[1-9]{3}$") || regex(parametro, "^[A-Za-z]{3}-[1-9]{3}$")) {
-                if (!regex(parametro, "^[A-Za-z]{3}-[1-9]{3}$")) {
+        if (!txtBuscarPlaca.getText().equals("O ingrese placa...") && !parametro.isEmpty()) {
+            System.out.println("puto");
+            if (regex(parametro, "^[A-Za-z]{3}[0-9]{3}$") || regex(parametro, "^[A-Za-z]{3}-[0-9]{3}$")) {
+                System.out.println(parametro);
+                if (!regex(parametro, "^[A-Za-z]{3}-[1=0-9]{3}$")) {
                     parametro = formatearTexto(parametro);
+                    System.out.println("si lo formatie puto" + parametro);
                 }
+
                 DefaultTableModel model = (DefaultTableModel) historialTabla.getModel();
                 model.setRowCount(0);
                 List<PlacaDTO> placa = new ArrayList<>();
@@ -476,9 +481,11 @@ public class Historial extends javax.swing.JFrame {
                 placa.add(p);
                 DefaultTableModel newModel = tabla.placasTableModel(placa);
                 historialTabla.setModel(newModel);
+                txtBuscarPlaca.setText("");
                 return;
             } else {
                 JOptionPane.showMessageDialog(null, "El formato del codigo de placa es incorrecto");
+                txtBuscarPlaca.setText("");
             }
 
         }
@@ -597,7 +604,7 @@ public class Historial extends javax.swing.JFrame {
      * @return texto cambiado
      */
     private String formatearTexto(String texto) {
-        String expresionRegular = "^([A-Za-z]{3})([1-9]{3})$";
+        String expresionRegular = "^([A-Za-z]{3})([0-9]{3})$";
         String textoFormateado = texto.replaceAll(expresionRegular, "$1-$2");
         return textoFormateado;
     }
