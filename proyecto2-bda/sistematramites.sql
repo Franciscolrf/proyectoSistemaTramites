@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS Persona (
     RFC VARCHAR(13) UNIQUE,
     fechaNacimiento DATE,
     esDiscapacitado BOOLEAN,
-    telefono VARCHAR(20),
+    telefono VARCHAR(30),
     nombres VARCHAR(50),
     apellidoPaterno VARCHAR(50),
     apellidoMaterno VARCHAR(50)

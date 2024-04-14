@@ -1,41 +1,41 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+/**
+ * Clase creada el 04 de Abril de 2024
+ *
+ *
  */
 package bda.itson.Presentacion;
 
 import dtos.LicenciaDTO;
 import dtos.PersonaDTO;
-import interfaces.IRegistrarLicenciaBO;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import negocio.RegistrarLicencia;
 import negocio.RegistrarPersona;
 import tablas.Conversiones;
-import interfaces.IregistrarPersona;
+import interfaces.IRegistrarPersona;
+import interfaces.IRegistrarLicencia;
 
 /**
+ * Esta clase es la conexion entre el usuario y las funcionalidades para buscar
+ * usuarios Aqui el usuario puede buscar a los clientes registrados en la base
+ * de datos.
  *
  * @author abelc
  */
 public class BuscarPersona extends javax.swing.JFrame {
 
-    IRegistrarLicenciaBO licencia;
-    IregistrarPersona personas;
+    IRegistrarLicencia licencia;
+    IRegistrarPersona personas;
     Conversiones tabla;
     LicenciaDTO licenciaDTO;
-    private int operacion;
-    PersonaDTO personaDTO;
+    private final int operacion;
+    PersonaDTO personaDto;
 
     /**
      * Creates new form buscarPersonas
+     *
+     * @param operacion
      */
     public BuscarPersona(int operacion) {
         this.tabla = new Conversiones();
@@ -43,7 +43,7 @@ public class BuscarPersona extends javax.swing.JFrame {
         this.licenciaDTO = new LicenciaDTO();
         this.personas = new RegistrarPersona();
         this.operacion = operacion;
-        this.personaDTO = new PersonaDTO();
+        this.personaDto = new PersonaDTO();
         initComponents();
         if (operacion == 1) {
             vigenciaCombobox.setVisible(true);
@@ -53,6 +53,7 @@ public class BuscarPersona extends javax.swing.JFrame {
             List<PersonaDTO> listaPersonas = licencia.obtenerPersonas();
             DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
             tablaPersonas.setModel(newModel);
+            tablaPersonas.setDefaultEditor(Object.class, null);
         } else {
             vigenciaCombobox.setVisible(false);
             jLabel3.setVisible(false);
@@ -61,6 +62,8 @@ public class BuscarPersona extends javax.swing.JFrame {
             List<PersonaDTO> listaPersonas = licencia.obtenerPersonas();
             DefaultTableModel newModel = tabla.personasModuloPlacasTableModel(listaPersonas);
             tablaPersonas.setModel(newModel);
+            tablaPersonas.setDefaultEditor(Object.class, null);
+
         }
         if (operacion == 3) {
             seleccionarBtn.setText("Ver historial");
@@ -69,6 +72,8 @@ public class BuscarPersona extends javax.swing.JFrame {
             List<PersonaDTO> listaPersonas = licencia.obtenerPersonas();
             DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
             tablaPersonas.setModel(newModel);
+            tablaPersonas.setDefaultEditor(Object.class, null);
+
         }
     }
 
@@ -97,9 +102,6 @@ public class BuscarPersona extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(232, 232, 232));
-
-        parametroTxtField.setBackground(new java.awt.Color(255, 255, 255));
-        parametroTxtField.setForeground(new java.awt.Color(0, 0, 0));
 
         jPanel2.setBackground(new java.awt.Color(107, 27, 56));
 
@@ -137,8 +139,6 @@ public class BuscarPersona extends javax.swing.JFrame {
             }
         });
 
-        tablaPersonas.setBackground(new java.awt.Color(255, 255, 255));
-        tablaPersonas.setForeground(new java.awt.Color(0, 0, 0));
         tablaPersonas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -178,11 +178,8 @@ public class BuscarPersona extends javax.swing.JFrame {
             }
         });
 
-        vigenciaCombobox.setBackground(new java.awt.Color(255, 255, 255));
-        vigenciaCombobox.setForeground(new java.awt.Color(0, 0, 0));
         vigenciaCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
 
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Vigencia:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -252,6 +249,15 @@ public class BuscarPersona extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodo para ejecutar la busqueda de personas, donde se traeran de la
+     * logica de negocios, la lista de usuarios.
+     *
+     * Si no existen parametros, traera todos los clientes, si existen
+     * parametros, verificara que existan en la base de datos.
+     *
+     * @param evt
+     */
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
         DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
         model.setRowCount(0);
@@ -275,7 +281,17 @@ public class BuscarPersona extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_buscarBtnActionPerformed
 
+    /**
+     * Metodo para ejecutar la seleccion de un cliente. Verifica si el cliente
+     * selecciono la opcion para tramitar licencia. Si ya tiene licencia
+     * vigente, el sistema manda un mensaje de advertencia. Si el usuario
+     * selecciona la opcion para tramitar placas, el sistema verifica primero si
+     * ya tiene licencia
+     *
+     * @param evt
+     */
     private void seleccionarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtnActionPerformed
+
         if (operacion == 1) {
             obtenerDatosFilaSeleccionada();
             if (licencia.verificarLicenciaActiva(licenciaDTO.getPersona()) == false) {
@@ -288,56 +304,69 @@ public class BuscarPersona extends javax.swing.JFrame {
         }
 
         if (operacion == 2) {
-            obtenerDatosFilaSeleccionada();
-            if (licencia.verificarLicenciaActiva(personaDTO) == true) {
-                Vehiculos vehiculosVentana = new Vehiculos(personaDTO);
-                vehiculosVentana.setVisible(true);
-                this.dispose();
-            } else {
-                int respuesta = JOptionPane.showOptionDialog(null, "¿Quiere tramitar una licencia?", "La persona seleccionada no cuenta con licencia activa", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sí", "No"}, "Sí");
-                if (respuesta == JOptionPane.YES_OPTION) {
-                    licenciaDTO.setPersona(personaDTO);
-                    int resp = JOptionPane.showOptionDialog(
-                            null,
-                            "Seleccione la vigencia para la licencia:",
-                            "Duración de la licencia",
-                            JOptionPane.DEFAULT_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            new String[]{"1 año", "2 años", "3 años"},
-                            "1 año");
-                    int duracion = 0;
-                    if (resp == 0) {
+            if (obtenerDatosFilaSeleccionada()) {
+                if (licencia.verificarLicenciaActiva(personaDto) == true) {
+                    Vehiculos vehiculosVentana = new Vehiculos(personaDto);
+                    vehiculosVentana.setVisible(true);
+                    this.dispose();
+                } else {
+                    int respuesta = JOptionPane.showOptionDialog(null, "¿Quiere tramitar una licencia?", "La persona seleccionada no cuenta con licencia activa", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sí", "No"}, "Sí");
+                    if (respuesta == JOptionPane.YES_OPTION) {
+                        licenciaDTO.setPersona(personaDto);
+                        int resp = JOptionPane.showOptionDialog(
+                                null,
+                                "Seleccione la vigencia para la licencia:",
+                                "Duración de la licencia",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                new String[]{"1 año", "2 años", "3 años"},
+                                "1 año");
+                        int duracion = 0;
+                        if (resp == 0) {
 
-                        duracion = 1;
+                            duracion = 1;
 
-                    } else if (resp == 1) {
+                        } else if (resp == 1) {
 
-                        duracion = 2;
+                            duracion = 2;
 
-                    } else if (resp == 2) {
+                        } else if (resp == 2) {
 
-                        duracion = 3;
+                            duracion = 3;
+
+                        }
+                        if (duracion != 0) {
+                            licenciaDTO.setVigencia(duracion);
+                            licencia.asignarValoresLicencia(licenciaDTO);
+                            this.dispose();
+                            DlgConfirmaciones dlgConfLicencia = new DlgConfirmaciones(this, true, licenciaDTO, null, 1);
+                        }
 
                     }
-                    if (duracion!=0) {
-                        licenciaDTO.setVigencia(duracion);
-                        licencia.asignarValoresLicencia(licenciaDTO);
-                        this.dispose();
-                        DlgConfirmaciones dlgConfLicencia = new DlgConfirmaciones(this, true, licenciaDTO, null, 1);
-                    }
-      
                 }
+            } else {
+                return;
             }
+
         }
         if (operacion == 3) {
-            obtenerDatosFilaSeleccionada();
-            Historial historial = new Historial(personaDTO);
-            historial.setVisible(true);
-            this.dispose();
+            if (obtenerDatosFilaSeleccionada()) {
+                Historial historial = new Historial(personaDto);
+                historial.setVisible(true);
+                this.dispose();
+            }
+
         }
+
+
     }//GEN-LAST:event_seleccionarBtnActionPerformed
 
+    /**
+     * Metodo para regresar al menu principal
+     *
+     * @param evt
+     */
     private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
         if (operacion == 1 || operacion == 2) {
             this.dispose();
@@ -351,7 +380,11 @@ public class BuscarPersona extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_regresarBtnActionPerformed
-    private void obtenerDatosFilaSeleccionada() {
+
+    /**
+     * Metodo para obtener los datos de la persona seleccionada
+     */
+    private boolean obtenerDatosFilaSeleccionada() {
         if (operacion == 1) {
             int filaSeleccionada = tablaPersonas.getSelectedRow();
 
@@ -373,6 +406,8 @@ public class BuscarPersona extends javax.swing.JFrame {
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, seleccione una persona.");
+                return false;
+
             }
         }
         if (operacion == 2) {
@@ -381,9 +416,10 @@ public class BuscarPersona extends javax.swing.JFrame {
             if (filaSeleccionada != -1) {
                 String rfc = tablaPersonas.getValueAt(filaSeleccionada, 4).toString();
 
-                personaDTO = personas.buscarRFC(rfc);
+                personaDto = personas.buscarRFC(rfc);
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, seleccione una persona.");
+                return false;
             }
         }
         if (operacion == 3) {
@@ -392,54 +428,16 @@ public class BuscarPersona extends javax.swing.JFrame {
             if (filaSeleccionada != -1) {
                 String rfc = tablaPersonas.getValueAt(filaSeleccionada, 4).toString();
 
-                personaDTO = personas.buscarRFC(rfc);
+                personaDto = personas.buscarRFC(rfc);
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, seleccione una persona.");
+                return false;
+
             }
         }
+        return true;
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BuscarPersona.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BuscarPersona.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BuscarPersona.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BuscarPersona.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BuscarPersona(1).setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarBtn;

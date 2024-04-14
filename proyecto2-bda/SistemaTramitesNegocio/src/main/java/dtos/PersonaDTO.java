@@ -1,53 +1,72 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * PersonaDTO.java
+ *
+ * Clase creada en Abril de 2024
  */
 package dtos;
 
 import java.util.Calendar;
 
 /**
+ * Clase que representa los datos de una persona. Esta clase se utiliza para
+ * transferir datos de personas entre las capas del sistema.
  *
  * @author abelc
  *
- * Clase que representa los datos de una persona.
- * Esta clase se utiliza para transferir datos de personas entre las capas del sistema.
  */
 public class PersonaDTO {
-   
-   /** Identificador único de la persona. */
-   private Long id;
-   
-   /** RFC (Registro Federal de Contribuyentes) de la persona. */
-   private String RFC;
-   
-   /** Fecha de nacimiento de la persona. */
-   private Calendar fechaNacimiento;
-   
-   /** Indica si la persona tiene alguna discapacidad. */
-   private boolean esDiscapacitado;
-   
-   /** Número de teléfono de la persona. */
-   private String telefono;
-   
-   /** Nombres de la persona. */
-   private String nombres;
-   
-   /** Apellido paterno de la persona. */
-   private String apellidoPaterno;
-   
-   /** Apellido materno de la persona. */
-   private String apellidoMaterno;
 
     /**
-     * Constructor por defecto de la clase PersonaDTO.
-     * Inicializa todos los atributos en sus valores por defecto.
+     * Identificador único de la persona.
+     */
+    private Long id;
+
+    /**
+     * RFC (Registro Federal de Contribuyentes) de la persona.
+     */
+    private String RFC;
+
+    /**
+     * Fecha de nacimiento de la persona.
+     */
+    private Calendar fechaNacimiento;
+
+    /**
+     * Indica si la persona tiene alguna discapacidad.
+     */
+    private boolean esDiscapacitado;
+
+    /**
+     * Número de teléfono de la persona.
+     */
+    private String telefono;
+
+    /**
+     * Nombres de la persona.
+     */
+    private String nombres;
+
+    /**
+     * Apellido paterno de la persona.
+     */
+    private String apellidoPaterno;
+
+    /**
+     * Apellido materno de la persona.
+     */
+    private String apellidoMaterno;
+
+    /**
+     * Constructor por defecto de la clase PersonaDTO. Inicializa todos los
+     * atributos en sus valores por defecto.
      */
     public PersonaDTO() {
     }
 
     /**
-     * Constructor de la clase PersonaDTO que recibe todos los atributos como parámetros.
+     * Constructor de la clase PersonaDTO que recibe todos los atributos como
+     * parámetros.
+     *
      * @param RFC El RFC de la persona.
      * @param fechaNacimiento La fecha de nacimiento de la persona.
      * @param esDiscapacitado Indica si la persona tiene alguna discapacidad.
@@ -67,7 +86,9 @@ public class PersonaDTO {
     }
 
     /**
-     * Constructor de la clase PersonaDTO que recibe todos los atributos como parámetros.
+     * Constructor de la clase PersonaDTO que recibe todos los atributos como
+     * parámetros.
+     *
      * @param id El identificador único de la persona.
      * @param RFC El RFC de la persona.
      * @param fechaNacimiento La fecha de nacimiento de la persona.
@@ -90,6 +111,7 @@ public class PersonaDTO {
 
     /**
      * Método getter para el identificador único de la persona.
+     *
      * @return El identificador único de la persona.
      */
     public Long getId() {
@@ -98,6 +120,7 @@ public class PersonaDTO {
 
     /**
      * Método setter para el identificador único de la persona.
+     *
      * @param id El identificador único de la persona a establecer.
      */
     public void setId(Long id) {
@@ -106,6 +129,7 @@ public class PersonaDTO {
 
     /**
      * Método getter para el RFC de la persona.
+     *
      * @return El RFC de la persona.
      */
     public String getRFC() {
@@ -114,6 +138,7 @@ public class PersonaDTO {
 
     /**
      * Método setter para el RFC de la persona.
+     *
      * @param RFC El RFC de la persona a establecer.
      */
     public void setRFC(String RFC) {
@@ -122,6 +147,7 @@ public class PersonaDTO {
 
     /**
      * Método getter para la fecha de nacimiento de la persona.
+     *
      * @return La fecha de nacimiento de la persona.
      */
     public Calendar getFechaNacimiento() {
@@ -130,6 +156,7 @@ public class PersonaDTO {
 
     /**
      * Método setter para la fecha de nacimiento de la persona.
+     *
      * @param fechaNacimiento La fecha de nacimiento de la persona a establecer.
      */
     public void setFechaNacimiento(Calendar fechaNacimiento) {
@@ -138,7 +165,9 @@ public class PersonaDTO {
 
     /**
      * Método getter para indicar si la persona tiene alguna discapacidad.
-     * @return true si la persona tiene alguna discapacidad, false de lo contrario.
+     *
+     * @return true si la persona tiene alguna discapacidad, false de lo
+     * contrario.
      */
     public boolean isEsDiscapacitado() {
         return esDiscapacitado;
@@ -146,7 +175,9 @@ public class PersonaDTO {
 
     /**
      * Método setter para indicar si la persona tiene alguna discapacidad.
-     * @param esDiscapacitado true si la persona tiene alguna discapacidad, false de lo contrario.
+     *
+     * @param esDiscapacitado true si la persona tiene alguna discapacidad,
+     * false de lo contrario.
      */
     public void setEsDiscapacitado(boolean esDiscapacitado) {
         this.esDiscapacitado = esDiscapacitado;
@@ -154,6 +185,7 @@ public class PersonaDTO {
 
     /**
      * Método getter para el número de teléfono de la persona.
+     *
      * @return El número de teléfono de la persona.
      */
     public String getTelefono() {
@@ -162,6 +194,7 @@ public class PersonaDTO {
 
     /**
      * Método setter para el número de teléfono de la persona.
+     *
      * @param telefono El número de teléfono de la persona a establecer.
      */
     public void setTelefono(String telefono) {
@@ -170,6 +203,7 @@ public class PersonaDTO {
 
     /**
      * Método getter para los nombres de la persona.
+     *
      * @return Los nombres de la persona.
      */
     public String getNombres() {
@@ -178,6 +212,7 @@ public class PersonaDTO {
 
     /**
      * Método setter para los nombres de la persona.
+     *
      * @param nombres Los nombres de la persona a establecer.
      */
     public void setNombres(String nombres) {
@@ -186,6 +221,7 @@ public class PersonaDTO {
 
     /**
      * Método getter para el apellido paterno de la persona.
+     *
      * @return El apellido paterno de la persona.
      */
     public String getApellidoPaterno() {
@@ -194,6 +230,7 @@ public class PersonaDTO {
 
     /**
      * Método setter para el apellido paterno de la persona.
+     *
      * @param apellidoPaterno El apellido paterno de la persona a establecer.
      */
     public void setApellidoPaterno(String apellidoPaterno) {
@@ -202,19 +239,21 @@ public class PersonaDTO {
 
     /**
      * Método getter para el apellido materno de la persona.
+     *
      * @return El apellido materno de la persona.
      */
     public String getApellidoMaterno() {
         return apellidoMaterno;
     }
-/**
- * Establece el apellido materno de la persona.
- * @param apellidoMaterno El apellido materno de la persona a establecer.
- */
-    
+
+    /**
+     * Establece el apellido materno de la persona.
+     *
+     * @param apellidoMaterno El apellido materno de la persona a establecer.
+     */
+
     public void setApellidoMaterno(String apellidoMaterno) {
         this.apellidoMaterno = apellidoMaterno;
     }
-    
-    
+
 }

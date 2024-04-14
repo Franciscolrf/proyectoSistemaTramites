@@ -1,6 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * RegistrarLicencia.java
+ *
+ * Clase creada en Abril de 2024
  */
 package negocio;
 
@@ -12,16 +13,14 @@ import dtos.LicenciaDTO;
 import dtos.PersonaDTO;
 import excepciones.PersistenciaException;
 import interfaces.ILicencia;
-import interfaces.IRegistrarLicenciaBO;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import otros.Conversiones;
 import otros.Encriptacion;
+import interfaces.IRegistrarLicencia;
 
 /**
  * Esta clase proporciona metodos para realizar todas las operacionas
@@ -29,7 +28,7 @@ import otros.Encriptacion;
  *
  * @author fabri
  */
-public class RegistrarLicencia implements IRegistrarLicenciaBO {
+public class RegistrarLicencia implements IRegistrarLicencia {
 
     private final ILicencia licenciaDAO;
     private final Conversiones conversiones;

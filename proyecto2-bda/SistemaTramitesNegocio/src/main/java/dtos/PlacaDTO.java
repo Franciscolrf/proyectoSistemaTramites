@@ -1,26 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * PlacaDTO.java
+ *
+ * Clase creada en Abril de 2024
  */
 package dtos;
 
 import java.util.Calendar;
 
 /**
- * @author abelc
- *
  * Clase que representa un objeto de transferencia de datos (DTO) para una
  * Placa.
+ *
+ * @author abelc
+ *
  */
 public class PlacaDTO {
 
-    private Long id; 
+    private Long id;
     private String codigo;
-    private double costo; 
+    private double costo;
     private Calendar fechaRecepcion;
-    private String estado; 
-    private Calendar fechaExpedicion; 
-    private VehiculoDTO vehiculo; 
+    private String estado;
+    private Calendar fechaExpedicion;
+    private VehiculoDTO vehiculo;
 
     /**
      * Constructor vacío de la clase PlacaDTO.

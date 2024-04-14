@@ -1,6 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+/**
+ * Clase creada el 11 de Abril de 2024
+ * Vehiculos.java
  */
 package bda.itson.Presentacion;
 
@@ -9,13 +9,17 @@ import dtos.PlacaDTO;
 import dtos.VehiculoDTO;
 import interfaces.IRegistrarPlaca;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import negocio.Consultas;
 import negocio.RegistrarPlaca;
 import tablas.Conversiones;
-import tablas.Tabla;
 
 /**
+ *
+ * Interfaz grafica de usuario para mostrar los vehiculos del cliente
  *
  * @author abelc
  */
@@ -25,21 +29,23 @@ public class Vehiculos extends javax.swing.JFrame {
     IRegistrarPlaca placa;
     Conversiones tabla;
     PlacaDTO placaDTO;
+    Consultas consultas;
+    DefaultTableModel model;
+    DefaultTableModel newModel;
 
     /**
      * Creates new form Vehiculos
+     *
+     * @param persona
      */
     public Vehiculos(PersonaDTO persona) {
+        consultas = new Consultas();
         this.personaDTO = persona;
         tabla = new Conversiones();
         this.placaDTO = new PlacaDTO();
         this.placa = new RegistrarPlaca();
         initComponents();
-        DefaultTableModel model = (DefaultTableModel) tablaVehiculos.getModel();
-        model.setRowCount(0);
-        List<VehiculoDTO> vehiculos = placa.obtenerVehiculosDePersona(persona);
-        DefaultTableModel newModel = tabla.vehiculosTableModel(vehiculos);
-        tablaVehiculos.setModel(newModel);
+        llenarTabla(persona);
     }
 
     /**
@@ -196,71 +202,178 @@ public class Vehiculos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodo para ejecutar la busqueda de un vehiculo mediante sus placas Se
+     * pueden ingresar en formato AAA-111 o AAA111 El sistema verifica que
+     * exista y que pertenezcan al mismo cliente
+     *
+     * @param evt
+     */
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
+        llenarTabla(personaDTO);
 
+        String parametro = parametroTxtField.getText().toUpperCase();
+        boolean existe = false;
+        if (!"".equals(parametro)) {
+
+            if ((!regex(parametro, "(?=.*[a-zA-Z])(?=.*\\d)^\\w{1,9}$")) && (!regex(parametro, "^[A-Za-z]{3}-?[1-9]{3}$")) && (!regex(parametro, "^[A-Za-z]{3}-[1-9]{3}$"))) {
+                JOptionPane.showMessageDialog(null, "Introduce el numero de serie o codigo de placa correcto (ej. AAAA1111 o AAA-111)");
+                return;
+            }
+
+            if (regex(parametro, "^[A-Za-z]{3}[1-9]{3}$") || regex(parametro, "^[A-Za-z]{3}-[1-9]{3}$")) {
+                if (!regex(parametro, "^[A-Za-z]{3}-[1-9]{3}$")) {
+                    parametro = formatearTexto(parametro);
+                }
+                List<PlacaDTO> placas = consultas.obtenerPlacasPorPersona(personaDTO);
+
+                for (PlacaDTO pl : placas) {
+                    if (consultas.consultarPlacaPorCodigo(parametro).getCodigo().equals(pl.getCodigo())) {
+                        existe = true;
+                    }
+                }
+                if (consultas.consultarPlacaPorCodigo(parametro) != null && existe == true) {
+                    DefaultTableModel model = (DefaultTableModel) tablaVehiculos.getModel();
+                    model.setRowCount(0);
+                    tablaVehiculos.getColumnModel().getColumn(0).setHeaderValue("Placa");
+                    PlacaDTO placaUser = consultas.consultarPlacaPorCodigo(parametro);
+                    Object[] row = {placaUser.getCodigo(), placaUser.getEstado(), placaUser.getVehiculo().getColor(), placaUser.getVehiculo().getModelo(), placaUser.getVehiculo().getMarca(), placaUser.getVehiculo().getLinea(), placaUser.getVehiculo().getTipoVehiculo()};
+                    model.addRow(row);
+                    tablaVehiculos.setModel(model);
+                    System.out.println("Si entro a placas");
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "El codigo de placa no esta asociado a ningun vehiculo del cliente");
+
+                }
+
+            } else {
+
+                VehiculoDTO vehiculo = consultas.consultarVehiculos(parametro);
+                List<VehiculoDTO> vehiculos = consultas.consultarVehiculosPorPersona(personaDTO);
+
+                existe = false;
+                for (VehiculoDTO v : vehiculos) {
+
+                    if (consultas.consultarVehiculos(parametro).getNumeroSerie().equals(v.getNumeroSerie())) {
+                        existe = true;
+                    }
+                }
+                System.out.println(existe);
+                if (vehiculo != null && existe == true) {
+                    tablaVehiculos.getColumnModel().getColumn(0).setHeaderValue("Numero de Serie");
+                    DefaultTableModel model1 = (DefaultTableModel) tablaVehiculos.getModel();
+                    model1.setRowCount(0);
+                    Object[] row2 = {vehiculo.getNumeroSerie(), vehiculo.getEstado(), vehiculo.getColor(), vehiculo.getModelo(), vehiculo.getMarca(), vehiculo.getLinea(), vehiculo.getTipoVehiculo()};
+                    model1.addRow(row2);
+                    tablaVehiculos.setModel(model1);
+                    System.out.println("si entro al nu mserie");
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "El numero de serie no esta asociado a ningun vehiculo del cliente");
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Introduzca el numero de serie o el codigo de placa (ej. AAA11111)");
+
+        }
     }//GEN-LAST:event_buscarBtnActionPerformed
 
+    /**
+     * Metodo privado para hacer verificaciones de expresiones regulares
+     *
+     * @param texto texto a verificar
+     * @param expresionRegular expresion que se debe cumplir
+     * @return verdadero si se cumple, falso en caso contrario
+     */
+    private boolean regex(String texto, String expresionRegular) {
+        Pattern pattern = Pattern.compile(expresionRegular);
+        Matcher matcher = pattern.matcher(texto);
+        return matcher.matches();
+    }
+
+    /**
+     * Metodo para regresar al menu principal
+     *
+     * @param evt
+     */
     private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
-        BuscarPersona buscarPersonas=new BuscarPersona(2);
+        BuscarPersona buscarPersonas = new BuscarPersona(2);
         buscarPersonas.setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_regresarBtnActionPerformed
 
+    /**
+     * Metodo para poner un guion entre los 3 digitos de letras y los 3 digitos
+     * numericos Para que no existan problemas al buscar la placa en la base de
+     * datos
+     *
+     * @param texto texto a cambiar
+     * @return texto cambiado
+     */
+    private String formatearTexto(String texto) {
+        String expresionRegular = "^([A-Za-z]{3})([1-9]{3})$";
+        String textoFormateado = texto.replaceAll(expresionRegular, "$1-$2");
+        return textoFormateado;
+    }
+
+    /**
+     * Metodo para ejecutar la seleccion del vehiculo, y asi tramitar sus placas
+     *
+     * @param evt
+     */
     private void seleccionarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtn1ActionPerformed
-        obtenerDatosFilaSeleccionada();
-        placa.generarPlaca(placaDTO);
-        this.dispose();
-        DlgConfirmaciones confirmacion = new DlgConfirmaciones(this, true, null, placaDTO, 2);
+
+        if (obtenerDatosFilaSeleccionada() == 1) {
+            placa.generarPlaca(placaDTO);
+            this.dispose();
+            DlgConfirmaciones confirmacion = new DlgConfirmaciones(this, true, null, placaDTO, 2);
+        }
         
+
+
     }//GEN-LAST:event_seleccionarBtn1ActionPerformed
-    public void obtenerDatosFilaSeleccionada() {
+
+    /**
+     * Metodo para obtener los datos del vehiculo seleccionado
+     */
+    private int obtenerDatosFilaSeleccionada() {
         int filaSeleccionada = tablaVehiculos.getSelectedRow();
         if (filaSeleccionada != -1) {
-            String numSerie = tablaVehiculos.getValueAt(filaSeleccionada, 0).toString();
-            VehiculoDTO vehiculo = placa.buscarVehiculoPorNumeroSerie(numSerie);
+            String parametro = tablaVehiculos.getValueAt(filaSeleccionada, 0).toString();
+            VehiculoDTO vehiculo = placa.buscarVehiculoPorNumeroSerie(parametro);
+            List<PlacaDTO> placas = consultas.obtenerPlacasPorPersona(personaDTO);
+
+            for (PlacaDTO p : placas) {
+                if (p.getVehiculo().getNumeroSerie().equals(vehiculo.getNumeroSerie())) {
+                    int respuesta = JOptionPane.showConfirmDialog(null, "Este vehiculo ya tiene placas activas, deseas inhabilitar las anteriores y habilitar otras nuevas? ");
+                    if (respuesta == 0) {
+                        placaDTO.setVehiculo(vehiculo);
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+
+            }
+
             placaDTO.setVehiculo(vehiculo);
         } else {
             JOptionPane.showMessageDialog(null, "Por favor, seleccione un vehiculo.");
         }
-    }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Vehiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Vehiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Vehiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Vehiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                PersonaDTO persona = new PersonaDTO(); // Creas un objeto PersonaDTO
-                Vehiculos vehiculos = new Vehiculos(persona);
-                vehiculos.setVisible(true);
-            }
-        });
+        return 1;
     }
 
+    private void llenarTabla(PersonaDTO persona) {
+        model = (DefaultTableModel) tablaVehiculos.getModel();
+        model.setRowCount(0);
+        List<VehiculoDTO> vehiculos = placa.obtenerVehiculosDePersona(persona);
+        newModel = tabla.vehiculosTableModel(vehiculos);
+        tablaVehiculos.setModel(newModel);
+        tablaVehiculos.setDefaultEditor(Object.class, null);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarBtn;
     private javax.swing.JLabel jLabel1;

@@ -1,20 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Consultas.java
+ *
+ * Clase creada en Abril de 2024
  */
 package negocio;
 
 import bda.itson.entidadesJPA.Licencia;
 import bda.itson.entidadesJPA.Placa;
-import dao.LicenciaDAO;
-import dao.PlacaDAO;
-import dtos.LicenciaDTO;
-import dtos.PersonaDTO;
-import dtos.PlacaDTO;
+import dao.*;
+import dtos.*;
 import excepciones.PersistenciaException;
-import interfaces.IConsultas;
-import interfaces.ILicencia;
-import interfaces.IPlacaDAO;
+import interfaces.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -33,6 +29,7 @@ public class Consultas implements IConsultas {
     Conversiones conversiones;
     ILicencia licenciaDAO;
     IPlacaDAO placaDAO;
+    IVehiculoDAO vehiculoDAO;
 
     /**
      * Constructor de la clase Consultas. Inicializa las instancias de las
@@ -42,6 +39,7 @@ public class Consultas implements IConsultas {
         conversiones = new Conversiones();
         licenciaDAO = new LicenciaDAO();
         placaDAO = new PlacaDAO();
+        vehiculoDAO = new VehiculoDAO();
     }
 
     /**
@@ -142,6 +140,87 @@ public class Consultas implements IConsultas {
             placasDTO.add(placaDTO);
         }
         return placasDTO;
+    }
+
+    /**
+     * Metodo para consultar una placa mediante el codigo
+     *
+     * @param codigo codigo de la placa
+     * @return regesa la placa encontrada
+     */
+    @Override
+    public PlacaDTO consultarPlacaPorCodigo(String codigo) {
+        Placa placa = null;
+        PlacaDTO placaDTO = new PlacaDTO();
+
+        try {
+
+            placa = placaDAO.buscarPlacaCodigo(codigo);
+            if (placa == null) {
+                throw new PersistenciaException("La placa no se encuentra en la base de datos");
+            } else {
+                placaDTO = conversiones.placaAPlacaDTO(placa);
+
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return placaDTO;
+
+    }
+
+    /**
+     * Metodo para buscar un vehiculo por su numero de serie
+     *
+     * @param numSerie numero de serie del vehiculo
+     * @return regresa el vehiculo encontrado
+     */
+    @Override
+    public VehiculoDTO consultarVehiculos(String numSerie) {
+        bda.itson.entidadesJPA.Vehiculo vehiculo = null;
+        VehiculoDTO vDto = new VehiculoDTO();
+        try {
+            vehiculo = vehiculoDAO.consultarNumeroSeria(numSerie);
+
+            if (vehiculo == null) {
+                throw new PersistenciaException("La placa no se encuentra en la base de datos");
+
+            } else {
+                vDto = conversiones.VehiculoAVehiculoDTO(vehiculo);
+            }
+
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return vDto;
+    }
+
+    /**
+     * Metodo para obtener todos los vehiculos de una persona
+     *
+     * @param personaDto persona a buscar
+     * @return lista de vehiculos de la persona
+     */
+    @Override
+    public List<VehiculoDTO> consultarVehiculosPorPersona(PersonaDTO personaDto) {
+        List<VehiculoDTO> vehiculosDto = new ArrayList<>();
+        List<bda.itson.entidadesJPA.Vehiculo> ve = null;
+
+        try {
+            ve = vehiculoDAO.consultarVehiculosPersona(conversiones.PersonaDTOAPersona(personaDto));
+
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (bda.itson.entidadesJPA.Vehiculo v : ve) {
+            VehiculoDTO veDto = conversiones.VehiculoAVehiculoDTO(v);
+            vehiculosDto.add(veDto);
+
+        }
+
+        return vehiculosDto;
     }
 
 }

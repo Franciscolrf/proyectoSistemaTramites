@@ -1,19 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * LicenciaDTO.java
+ *
+ * Clase creada en Abril de 2024
  */
 package dtos;
 
-import bda.itson.entidadesJPA.Persona;
 import java.util.Calendar;
 
 /**
+ * Clase que representa una licencia de conducir en formato DTO (Data Transfer
+ * Object). Contiene información sobre la licencia, como la persona a la que
+ * pertenece, la fecha de expedición, la fecha de vencimiento, el costo y el
+ * estado actual.
  *
- * @author fabri 
- * Clase que representa una licencia de conducir en formato DTO
- * (Data Transfer Object). Contiene información sobre la licencia, como la
- * persona a la que pertenece, la fecha de expedición, la fecha de vencimiento,
- * el costo y el estado actual.
+ * @author fabri
  */
 public class LicenciaDTO {
 
@@ -40,15 +40,16 @@ public class LicenciaDTO {
      */
     public LicenciaDTO() {
     }
-/**
+
+    /**
      * Constructor de LicenciaDTO que inicializa todos los atributos.
      *
      * @param idLicencia Identificador único de la licencia.
-     * @param persona    Persona a la que pertenece la licencia.
-     * @param fechaExpedicion   Fecha de expedición de la licencia.
-     * @param fechaVencimiento  Fecha de vencimiento de la licencia.
+     * @param persona Persona a la que pertenece la licencia.
+     * @param fechaExpedicion Fecha de expedición de la licencia.
+     * @param fechaVencimiento Fecha de vencimiento de la licencia.
      * @param costo Costo de la licencia.
-     * @param estadoActual  Estado actual de la licencia.
+     * @param estadoActual Estado actual de la licencia.
      */
     public LicenciaDTO(Long idLicencia, PersonaDTO persona, Calendar fechaExpedicion, Calendar fechaVencimiento, double costo, estadoDTO estadoActual) {
         this.idLicencia = idLicencia;
@@ -58,7 +59,8 @@ public class LicenciaDTO {
         this.costo = costo;
         this.estadoActual = estadoActual;
     }
-/**
+
+    /**
      * Obtiene el identificador único de la licencia.
      *
      * @return El identificador único de la licencia.
@@ -106,7 +108,8 @@ public class LicenciaDTO {
     /**
      * Establece la fecha de expedición de la licencia.
      *
-     * @param fechaExpedicion La fecha de expedición de la licencia a establecer.
+     * @param fechaExpedicion La fecha de expedición de la licencia a
+     * establecer.
      */
     public void setFechaExpedicion(Calendar fechaExpedicion) {
         this.fechaExpedicion = fechaExpedicion;
@@ -124,7 +127,8 @@ public class LicenciaDTO {
     /**
      * Establece la fecha de vencimiento de la licencia.
      *
-     * @param fechaVencimiento La fecha de vencimiento de la licencia a establecer.
+     * @param fechaVencimiento La fecha de vencimiento de la licencia a
+     * establecer.
      */
     public void setFechaVencimiento(Calendar fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
@@ -183,7 +187,7 @@ public class LicenciaDTO {
     public void setEstadoActual(estadoDTO estadoActual) {
         this.estadoActual = estadoActual;
     }
-    
+
     @Override
     public String toString() {
         return "LicenciaDTO{" + "idLicencia=" + idLicencia + ", persona=" + persona + ", fechaExpedicion=" + fechaExpedicion + ", fechaVencimiento=" + fechaVencimiento + ", costo=" + costo + ", estadoActual=" + estadoActual + '}';

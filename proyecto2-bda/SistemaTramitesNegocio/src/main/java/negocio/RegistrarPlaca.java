@@ -1,6 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * RegistrarPlaca.java
+ *
+ * Clase creada en Abril de 2024
  */
 package negocio;
 
@@ -12,7 +13,6 @@ import dtos.PersonaDTO;
 import dtos.PlacaDTO;
 import dtos.VehiculoDTO;
 import excepciones.PersistenciaException;
-import interfaces.IConexion;
 import interfaces.IPlacaDAO;
 import interfaces.IRegistrarPlaca;
 import interfaces.IVehiculoDAO;
@@ -24,12 +24,12 @@ import otros.Conversiones;
 import otros.GeneradorPlacas;
 
 /**
- *
- * @author abelc
- *
  * Esta clase se encarga de gestionar el registro y generación de placas, así
  * como también de realizar consultas relacionadas con los vehículos. Implementa
  * la interfaz IRegistrarPlaca.
+ *
+ * @author abelc
+ *
  */
 public class RegistrarPlaca implements IRegistrarPlaca {
 
@@ -140,5 +140,6 @@ public class RegistrarPlaca implements IRegistrarPlaca {
             Logger.getLogger(RegistrarPlaca.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 
 }

@@ -1,6 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * GeneradorPlacas.java
+ * 
+ * Clase creada en Abril de 2024
+ * 
  */
 package otros;
 
@@ -16,8 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author abelc Clase encargada de generar las placas
+ * Clase encargada de generar  y persistir en la base de datos las placas
+ * @author abelc 
  */
 public class GeneradorPlacas {
 

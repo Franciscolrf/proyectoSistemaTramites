@@ -55,7 +55,7 @@
                   <EmptySpace pref="194" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="tramitarLicenciaBtn" alignment="1" min="-2" pref="99" max="-2" attributes="0"/>
-                      <Component id="tramitarLicenciaBtn1" alignment="1" min="-2" pref="99" max="-2" attributes="0"/>
+                      <Component id="tramitarPlacasBtn" alignment="1" min="-2" pref="99" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="189" pref="189" max="-2" attributes="0"/>
               </Group>
@@ -75,7 +75,7 @@
                   <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
                   <Component id="tramitarLicenciaBtn" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                  <Component id="tramitarLicenciaBtn1" min="-2" pref="32" max="-2" attributes="0"/>
+                  <Component id="tramitarPlacasBtn" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="107" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -148,7 +148,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tramitarLicenciaBtnActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="tramitarLicenciaBtn1">
+        <Component class="javax.swing.JButton" name="tramitarPlacasBtn">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="38" green="1b" red="6b" type="rgb"/>
@@ -162,16 +162,13 @@
             <Property name="text" type="java.lang.String" value="Placas"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tramitarLicenciaBtn1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tramitarPlacasBtnActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="48" style="3"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#x2190;"/>
           </Properties>

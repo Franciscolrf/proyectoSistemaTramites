@@ -178,7 +178,6 @@ public class PlacaDAO implements IPlacaDAO {
     @Override
     public Placa buscarPlacaCodigo(String codigo) throws PersistenciaException {
         EntityManager entityManager = null;
-        Placa placa = null;
         try {
             entityManager = conexion.getEntityManager();
             TypedQuery<Placa> query = entityManager.createQuery(

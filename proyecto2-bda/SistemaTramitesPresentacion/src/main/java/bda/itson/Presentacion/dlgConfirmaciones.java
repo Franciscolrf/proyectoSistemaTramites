@@ -1,26 +1,32 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
+/**
+ * Clase creada en Abril de 2024
+ *
+ * DlgConfirmacion.java
  */
 package bda.itson.Presentacion;
 
 import dtos.LicenciaDTO;
 import dtos.PlacaDTO;
-import interfaces.IRegistrarLicenciaBO;
 import interfaces.IRegistrarPlaca;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import negocio.RegistrarLicencia;
 import negocio.RegistrarPlaca;
+import interfaces.IRegistrarLicencia;
 
 /**
+ *
+ * Clase para hacer el sistema mas reutilizable. Esta clase es solamente una
+ * clase generica Para reutilizar codigo comun entre interfaces graficas.
+ * Muestra al usuario un mensaje de confirmaciones
+ *
  *
  * @author abelc
  */
 public class DlgConfirmaciones extends javax.swing.JDialog {
 
     LicenciaDTO licenciaDatos;
-    IRegistrarLicenciaBO licencia;
+    IRegistrarLicencia licencia;
     PlacaDTO placaDTO;
     int operacion;
     IRegistrarPlaca placa;
@@ -278,6 +284,11 @@ public class DlgConfirmaciones extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodo para regresar al menu principal
+     *
+     * @param evt
+     */
     private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
         if (operacion == 1) {
             BuscarPersona ventanaAnterior = new BuscarPersona(1);
@@ -293,12 +304,20 @@ public class DlgConfirmaciones extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_regresarBtnActionPerformed
 
+    /**
+     * Metodo para confirmar el registro de licencia o placa
+     *
+     * @param evt
+     */
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
 
         if (operacion == 1) {
             licencia.registrarLicencia(licenciaDatos);
             JOptionPane.showMessageDialog(this, "La licencia se ha registrado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
+            this.dispose();
+            MenuPrincipal p = new MenuPrincipal();
+            p.setVisible(true);
+
         }
         if (operacion == 2) {
             placa.registrarPLaca(placaDTO);
