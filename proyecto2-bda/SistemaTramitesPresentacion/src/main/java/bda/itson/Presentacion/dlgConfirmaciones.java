@@ -30,17 +30,19 @@ public class DlgConfirmaciones extends javax.swing.JDialog {
     PlacaDTO placaDTO;
     int operacion;
     IRegistrarPlaca placa;
+    int ventanaAnterior;
 
     /**
      * Creates new form dlgConfirmarLicencia
      */
-    public DlgConfirmaciones(java.awt.Frame parent, boolean modal, LicenciaDTO licenciaDatos, PlacaDTO placaDTO, int operacion) {
+    public DlgConfirmaciones(java.awt.Frame parent, boolean modal, LicenciaDTO licenciaDatos, PlacaDTO placaDTO, int operacion, int ventanaAnterior) {
         super(parent, modal);
         placa = new RegistrarPlaca();
         this.licencia = new RegistrarLicencia();
         this.operacion = operacion;
         this.licenciaDatos = licenciaDatos;
         this.placaDTO = placaDTO;
+        this.ventanaAnterior = ventanaAnterior;
         initComponents();
         if (operacion == 1) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -290,11 +292,15 @@ public class DlgConfirmaciones extends javax.swing.JDialog {
      * @param evt
      */
     private void regresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBtnActionPerformed
-        if (operacion == 1) {
-            BuscarPersona ventanaAnterior = new BuscarPersona(1);
+        if (ventanaAnterior == 1) {
+            BuscarPersona ventanaAnterior = new BuscarPersona(1); 
             this.dispose();
             ventanaAnterior.setVisible(true);
-
+        }
+        if (ventanaAnterior == 2) {
+           BuscarPersona ventanaAnterior = new BuscarPersona(2); 
+           this.dispose();
+            ventanaAnterior.setVisible(true);
         }
         if (operacion == 2) {
             Vehiculos ventanaVehiculos = new Vehiculos(placaDTO.getVehiculo().getPropietario());
@@ -312,11 +318,20 @@ public class DlgConfirmaciones extends javax.swing.JDialog {
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
 
         if (operacion == 1) {
-            licencia.registrarLicencia(licenciaDatos);
-            JOptionPane.showMessageDialog(this, "La licencia se ha registrado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-            MenuPrincipal p = new MenuPrincipal();
-            p.setVisible(true);
+            if (ventanaAnterior == 1) {
+                licencia.registrarLicencia(licenciaDatos);
+                JOptionPane.showMessageDialog(this, "La licencia se ha registrado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                BuscarPersona ventanaAnterior = new BuscarPersona(1);
+                ventanaAnterior.setVisible(true);
+            }
+            if (ventanaAnterior == 2) {
+                licencia.registrarLicencia(licenciaDatos);
+                JOptionPane.showMessageDialog(this, "La licencia se ha registrado con éxito", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                BuscarPersona ventanaAnterior = new BuscarPersona(2);
+                ventanaAnterior.setVisible(true);
+            }
 
         }
         if (operacion == 2) {
@@ -325,7 +340,7 @@ public class DlgConfirmaciones extends javax.swing.JDialog {
             Vehiculos ventanaVehiculos = new Vehiculos(placaDTO.getVehiculo().getPropietario());
             this.dispose();
             ventanaVehiculos.setVisible(true);
-            
+
         }
     }//GEN-LAST:event_confirmarBtnActionPerformed
 

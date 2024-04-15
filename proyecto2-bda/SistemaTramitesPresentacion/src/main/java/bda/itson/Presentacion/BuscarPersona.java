@@ -293,13 +293,17 @@ public class BuscarPersona extends javax.swing.JFrame {
     private void seleccionarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtnActionPerformed
 
         if (operacion == 1) {
-            obtenerDatosFilaSeleccionada();
-            if (licencia.verificarLicenciaActiva(licenciaDTO.getPersona()) == false) {
-                System.out.println(licenciaDTO.getCosto());
-                this.dispose();
-                DlgConfirmaciones dlgConfLicencia = new DlgConfirmaciones(this, true, licenciaDTO, null, 1);
+            if (obtenerDatosFilaSeleccionada()) {
+
+                if (licencia.verificarLicenciaActiva(licenciaDTO.getPersona()) == false) {
+                    System.out.println(licenciaDTO.getCosto());
+                    this.dispose();
+                    DlgConfirmaciones dlgConfLicencia = new DlgConfirmaciones(this, true, licenciaDTO, null, 1, 1);
+                } else {
+                    JOptionPane.showMessageDialog(null, "La persona ya tiene una licencia activa.", "Licencia activa encontrada", JOptionPane.INFORMATION_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "La persona ya tiene una licencia activa.", "Licencia activa encontrada", JOptionPane.INFORMATION_MESSAGE);
+                return;
             }
         }
 
@@ -340,7 +344,7 @@ public class BuscarPersona extends javax.swing.JFrame {
                             licenciaDTO.setVigencia(duracion);
                             licencia.asignarValoresLicencia(licenciaDTO);
                             this.dispose();
-                            DlgConfirmaciones dlgConfLicencia = new DlgConfirmaciones(this, true, licenciaDTO, null, 1);
+                            DlgConfirmaciones dlgConfLicencia = new DlgConfirmaciones(this, true, licenciaDTO, null, 1, 2);
                         }
 
                     }

@@ -235,9 +235,9 @@ public class Vehiculos extends javax.swing.JFrame {
                 if (consultas.consultarPlacaPorCodigo(parametro) != null && existe == true) {
                     DefaultTableModel model = (DefaultTableModel) tablaVehiculos.getModel();
                     model.setRowCount(0);
-                    tablaVehiculos.getColumnModel().getColumn(0).setHeaderValue("Placa");
+                    tablaVehiculos.getColumnModel().getColumn(1).setHeaderValue("Placa");
                     PlacaDTO placaUser = consultas.consultarPlacaPorCodigo(parametro);
-                    Object[] row = {placaUser.getCodigo(), placaUser.getEstado(), placaUser.getVehiculo().getColor(), placaUser.getVehiculo().getModelo(), placaUser.getVehiculo().getMarca(), placaUser.getVehiculo().getLinea(), placaUser.getVehiculo().getTipoVehiculo()};
+                    Object[] row = {placaUser.getVehiculo().getNumeroSerie(), placaUser.getCodigo(), placaUser.getEstado(), placaUser.getVehiculo().getColor(), placaUser.getVehiculo().getModelo(), placaUser.getVehiculo().getMarca(), placaUser.getVehiculo().getLinea(), placaUser.getVehiculo().getTipoVehiculo()};
                     model.addRow(row);
                     tablaVehiculos.setModel(model);
                     System.out.println("Si entro a placas");
@@ -326,12 +326,11 @@ public class Vehiculos extends javax.swing.JFrame {
      */
     private void seleccionarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtn1ActionPerformed
 
-        if (obtenerDatosFilaSeleccionada() == 1) {
+        if (obtenerDatosFilaSeleccionada() == 1 && placaDTO.getVehiculo() != null) {
             placa.generarPlaca(placaDTO);
             this.dispose();
-            DlgConfirmaciones confirmacion = new DlgConfirmaciones(this, true, null, placaDTO, 2);
+            DlgConfirmaciones confirmacion = new DlgConfirmaciones(this, true, null, placaDTO, 2,0);
         }
-        
 
 
     }//GEN-LAST:event_seleccionarBtn1ActionPerformed
@@ -347,16 +346,16 @@ public class Vehiculos extends javax.swing.JFrame {
             List<PlacaDTO> placas = consultas.obtenerPlacasPorPersona(personaDTO);
 
             for (PlacaDTO p : placas) {
-                if (p.getVehiculo().getNumeroSerie().equals(vehiculo.getNumeroSerie())) {
-                    int respuesta = JOptionPane.showConfirmDialog(null, "Este vehiculo ya tiene placas activas, deseas inhabilitar las anteriores y habilitar otras nuevas? ");
-                    if (respuesta == 0) {
+                if (p.getVehiculo().getNumeroSerie().equals(vehiculo.getNumeroSerie()) && p.getEstado().equalsIgnoreCase("activa")) {
+                    int respuesta = JOptionPane.showOptionDialog(null, "El vehiculo cuenta con placas activas,  ¿desea deshabilitar las anteriores?", "Cambio de placas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sí", "No"}, "Sí");
+
+                    if (respuesta == JOptionPane.YES_OPTION) {
                         placaDTO.setVehiculo(vehiculo);
                         return 1;
                     } else {
                         return 0;
                     }
                 }
-
             }
 
             placaDTO.setVehiculo(vehiculo);
