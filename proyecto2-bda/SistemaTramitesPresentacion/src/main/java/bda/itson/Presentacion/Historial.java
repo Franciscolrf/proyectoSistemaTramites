@@ -20,11 +20,19 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import dtos.LicenciaDTO;
 import dtos.PlacaDTO;
+import dtos.TramiteReporteDTO;
+import interfaces.IReportes;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -32,6 +40,18 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
+import negocio.Reportes;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  * Esta clase es la representacion grafica en la capa del usuario para
@@ -44,6 +64,8 @@ public class Historial extends javax.swing.JFrame {
     PersonaDTO personaDTO;
     IConsultas consultas;
     Conversiones tabla;
+    IReportes reporteTramites;
+    private List<TramiteReporteDTO> listaTramites;
 
     /**
      * Creates new form Historial
@@ -54,6 +76,8 @@ public class Historial extends javax.swing.JFrame {
         this.personaDTO = persona;
         this.consultas = new Consultas();
         this.tabla = new Conversiones();
+        this.reporteTramites = new Reportes();
+        this.listaTramites = new ArrayList<>();
         initComponents();
         jLabel2.setText("Historial de " + persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
         crearTablaHistorial();
@@ -274,171 +298,48 @@ public class Historial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Metodo para generar el reporte integrando la biblioteca IText
+     * Metodo para generar el reporte integrando JasperReports
      *
      * @param evt
      */
     private void generarReporteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarReporteBtnActionPerformed
-        if (isTableEmpty(historialTabla)) {
-            JOptionPane.showMessageDialog(null, "No hay datos encontrados");
+          /* Output file location to create report in pdf form */
+        String outputFile = System.getProperty("user.home") + "\\Downloads\\" + "Tramites.pdf";
+
+        if (this.listaTramites == null) {
+            JOptionPane.showMessageDialog(this, "No hay tramites");
             return;
         }
-        LocalDate fecha1 = datePicker1.getDate(); // Obtener la fecha del primer datePicker
-        LocalDate fecha2 = datePicker2.getDate();
 
-        Document documento = new Document();
-        List<LicenciaDTO> licencias;
-        List<PlacaDTO> placas;
 
+        JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(this.listaTramites);
+
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("CollectionBeanParam", itemsJRBean);
+         parameters.put("NombrePersona",personaDTO.getNombres()+" "+personaDTO.getApellidoPaterno()+" "+personaDTO.getApellidoMaterno());
+        InputStream input = null;
         try {
-            String ruta = System.getProperty("user.home");
+            input = new FileInputStream(new File("src\\main\\resources\\JasperFile\\ReportesTramites.jrxml"));
 
-            // CAMBIAR A CUALQUIER RUTA //
-            String rutaAbs = "/Documents/Reporte.pdf";
-            PdfWriter.getInstance(documento, new FileOutputStream(ruta + rutaAbs));
-            documento.open();
-            PdfPTable tablaPdf;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            JasperDesign jasperDesign = JRXmlLoader.load(input);
 
-            // SI EL USUARIO SELECCIONO LA OPCION 'LICENCIAS'
-            if (tramiteComboBox.getSelectedItem().equals("Licencias")) {
+            /*compiling jrxml with help of JasperReport class*/
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
-                // TITULO DEL REPORTE
-                Paragraph titulo = new Paragraph("Reporte de Licencias de " + personaDTO.getNombres() + " " + personaDTO.getApellidoPaterno() + " " + personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
-                titulo.setAlignment(Element.ALIGN_CENTER);
-                documento.add(titulo);
-                // CREA LA TABLA EN EL DOCUMENTO PDF
-                tablaPdf = new PdfPTable(4);
-                tablaPdf.addCell("Costo");
-                tablaPdf.addCell("Fecha de Expedicion");
-                tablaPdf.addCell("Fecha de Vencimiento");
-                tablaPdf.addCell("Estado");
-//                tablaPdf.addCell("Vigencia");
+            /* Using jasperReport object to generate PDF */
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
 
-                // SI AMBAS FECHAS NO ESTAN VACIAS, ES DECIR, EL USUARIO QUIERE UN REPORTE EN FECHAS DETALLADAS
-                if (fecha1 != null && fecha2 != null) {
-                    Calendar desde = Calendar.getInstance();
-                    desde.clear();
-                    desde.set(fecha1.getYear(), fecha1.getMonthValue() - 1, fecha1.getDayOfMonth());
-                    Calendar hasta = Calendar.getInstance();
-                    hasta.clear();
-                    hasta.set(fecha2.getYear(), fecha2.getMonthValue() - 1, fecha2.getDayOfMonth());
-                    // OBTIENES AMBAS FECHAS
-                    // Y LAS PASAS COMO PARAMETRO EN EL METODO PARA OBTENER LICENCIAS POR PERIODO
-                    licencias = consultas.obtenerLicenciasPorPeriodo(personaDTO, desde, hasta);
-                } else {
-                    licencias = consultas.obtenerLicenciasPorPersona(personaDTO);
+            OutputStream outputStream = new FileOutputStream(new File(outputFile));
 
-                }
-                for (LicenciaDTO licencia : licencias) {
-                    String estado = licencia.getEstadoActual() == LicenciaDTO.estadoDTO.EXPIRADA ? "Expirada" : "No expirada";
-                    // OPCIONAL REEMPLAZAR POR LOCALDATE ENVEZ DE DATE
-                    tablaPdf.addCell("$" + licencia.getCosto());
-                    tablaPdf.addCell("Dia " + licencia.getFechaExpedicion().getTime().getDate() + " del mes " + (licencia.getFechaExpedicion().getTime().getMonth() + 1) + " de " + (licencia.getFechaExpedicion().getTime().getYear() + 1900));
-                    tablaPdf.addCell("Dia " + licencia.getFechaVencimiento().getTime().getDate() + " del mes " + (licencia.getFechaVencimiento().getTime().getMonth() + 1) + " de " + (licencia.getFechaVencimiento().getTime().getYear() + 1900));
-                    tablaPdf.addCell(estado);
-//                    tablaPdf.addCell(licencia.getVigencia() + " Años");
-                }
+            JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
 
-                documento.add(tablaPdf);
-                documento.close();
-
-                // EL USUARIO SELECCIONO EL TRAMITE 'PLACAS'
-            } else if (tramiteComboBox.getSelectedItem().equals("Placas")) {
-                Paragraph titulo = new Paragraph("Reporte de placas de " + personaDTO.getNombres() + " " + personaDTO.getApellidoPaterno() + " " + personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
-                titulo.setAlignment(Element.ALIGN_CENTER);
-                documento.add(titulo);
-                tablaPdf = new PdfPTable(5);
-                tablaPdf.addCell("Codigo");
-                tablaPdf.addCell("Costo");
-                tablaPdf.addCell("Fecha de Recepcion");
-                tablaPdf.addCell("Fecha de Expedicion");
-                tablaPdf.addCell("Estado");
-
-                if (fecha1 != null && fecha2 != null) {
-                    Calendar desde = Calendar.getInstance();
-                    desde.clear();
-                    desde.set(fecha1.getYear(), fecha1.getMonthValue() - 1, fecha1.getDayOfMonth());
-                    Calendar hasta = Calendar.getInstance();
-                    hasta.clear();
-                    hasta.set(fecha2.getYear(), fecha2.getMonthValue() - 1, fecha2.getDayOfMonth());
-
-                    placas = consultas.obtenerPlacasPorPeriodo(personaDTO, desde, hasta);
-                } else {
-                    placas = consultas.obtenerPlacasPorPersona(personaDTO);
-
-                }
-                // LLENA LA TABLA CON LA INFORMACION DE CADA PLACA
-                for (PlacaDTO placa : placas) {
-
-                    tablaPdf.addCell(placa.getCodigo());
-                    tablaPdf.addCell(String.valueOf(placa.getCosto()));
-                    tablaPdf.addCell(placa.getFechaRecepcion() != null ? dateFormat.format(placa.getFechaRecepcion().getTime()) : "Placa vigente");
-                    tablaPdf.addCell("Dia " + placa.getFechaExpedicion().getTime().getDate() + " del mes " + (placa.getFechaExpedicion().getTime().getMonth() + 1) + " de " + (placa.getFechaExpedicion().getTime().getYear() + 1900));
-                    tablaPdf.addCell(placa.getEstado());
-
-                }
-
-                documento.add(tablaPdf);
-                documento.close();
-
-            } // SE GENERA UN REPORTE DE PLACAS Y DE LICENCIAS
-            else if (tramiteComboBox.getSelectedItem().equals("Todos")) {
-                Paragraph titulo = new Paragraph("Reporte de licencias y placas de " + personaDTO.getNombres() + " " + personaDTO.getApellidoPaterno() + " " + personaDTO.getApellidoMaterno(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
-                titulo.setAlignment(Element.ALIGN_CENTER);
-                documento.add(titulo);
-                tablaPdf = new PdfPTable(5);
-                tablaPdf.addCell("Tramite");
-                tablaPdf.addCell("Costo");
-                tablaPdf.addCell("Fecha de Expedicion");
-                tablaPdf.addCell("Fecha de Vencimiento");
-                tablaPdf.addCell("Estado");
-
-                if (fecha1 != null && fecha2 != null) {
-                    Calendar desde = Calendar.getInstance();
-                    desde.clear();
-                    desde.set(fecha1.getYear(), fecha1.getMonthValue() - 1, fecha1.getDayOfMonth());
-                    Calendar hasta = Calendar.getInstance();
-                    hasta.clear();
-                    hasta.set(fecha2.getYear(), fecha2.getMonthValue() - 1, fecha2.getDayOfMonth());
-                    placas = consultas.obtenerPlacasPorPeriodo(personaDTO, desde, hasta);
-                    licencias = consultas.obtenerLicenciasPorPeriodo(personaDTO, desde, hasta);
-                } else {
-                    licencias = consultas.obtenerLicenciasPorPersona(personaDTO);
-                    placas = consultas.obtenerPlacasPorPersona(personaDTO);
-
-                }
-
-                for (LicenciaDTO licencia : licencias) {
-                    String estado = licencia.getEstadoActual() == LicenciaDTO.estadoDTO.EXPIRADA ? "Expirada" : "No expirada";
-                    tablaPdf.addCell("Licencia");
-                    tablaPdf.addCell("$" + licencia.getCosto());
-                    tablaPdf.addCell(dateFormat.format(licencia.getFechaExpedicion().getTime()));
-                    tablaPdf.addCell(licencia.getFechaVencimiento() != null ? dateFormat.format(licencia.getFechaVencimiento().getTime()) : "Licencia vigente");
-                    tablaPdf.addCell(estado);
-
-                }
-                for (PlacaDTO placa : placas) {
-                    tablaPdf.addCell("Placa");
-                    tablaPdf.addCell("$" + placa.getCosto());
-                    tablaPdf.addCell(dateFormat.format(placa.getFechaExpedicion().getTime()));
-                    tablaPdf.addCell(placa.getFechaRecepcion() != null ? dateFormat.format(placa.getFechaRecepcion().getTime()) : "Placa vigente");
-                    tablaPdf.addCell(placa.getEstado());
-
-                }
-                documento.add(new Paragraph("\n"));
-                documento.add(tablaPdf);
-                documento.close();
-            }
-
-            JOptionPane.showMessageDialog(null, "Reporte Creado en: " + ruta + rutaAbs);
-
-        } catch (DocumentException e) {
+            JasperViewer.viewReport(jasperPrint,false);
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Historial.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(Historial.class.getName()).log(Level.SEVERE, null, ex);
         }
-
 
     }//GEN-LAST:event_generarReporteBtnActionPerformed
 
@@ -464,14 +365,11 @@ public class Historial extends javax.swing.JFrame {
         LocalDate fecha2 = datePicker2.getDate();
         String parametro = txtBuscarPlaca.getText().toUpperCase();
         System.out.println(parametro);
-
         if (!txtBuscarPlaca.getText().equals("O ingrese placa...") && !parametro.isEmpty()) {
-            System.out.println("puto");
             if (regex(parametro, "^[A-Za-z]{3}[0-9]{3}$") || regex(parametro, "^[A-Za-z]{3}-[0-9]{3}$")) {
                 System.out.println(parametro);
                 if (!regex(parametro, "^[A-Za-z]{3}-[1=0-9]{3}$")) {
                     parametro = formatearTexto(parametro);
-                    System.out.println("si lo formatie puto" + parametro);
                 }
 
                 DefaultTableModel model = (DefaultTableModel) historialTabla.getModel();
@@ -482,6 +380,7 @@ public class Historial extends javax.swing.JFrame {
                 DefaultTableModel newModel = tabla.placasTableModel(placa);
                 historialTabla.setModel(newModel);
                 txtBuscarPlaca.setText("");
+                listaTramites = reporteTramites.listaReportePlacas(placa);
                 return;
             } else {
                 JOptionPane.showMessageDialog(null, "El formato del codigo de placa es incorrecto");
@@ -502,6 +401,7 @@ public class Historial extends javax.swing.JFrame {
             model.setRowCount(0);
             DefaultTableModel newModel = tabla.licenciasTableModel(consultas.obtenerLicenciasPorPersona(personaDTO));
             historialTabla.setModel(newModel);
+            listaTramites = reporteTramites.listaReporteLicencias(consultas.obtenerLicenciasPorPersona(personaDTO));
         }
         // SI EL USUARIO QUIERE CONOCER EL HISTORIAL DE PLACAS TRAMITADAS
         if (tramiteComboBox.getSelectedItem() == "Placas") {
@@ -509,6 +409,7 @@ public class Historial extends javax.swing.JFrame {
             model.setRowCount(0);
             DefaultTableModel newModel = tabla.placasTableModel(consultas.obtenerPlacasPorPersona(personaDTO));
             historialTabla.setModel(newModel);
+            listaTramites = reporteTramites.listaReportePlacas(consultas.obtenerPlacasPorPersona(personaDTO));
         }
         // EL USUARIO DESEA UN HISTORIAL GENERAL DE TRAMITES, CONSIDERANDO FECHAS ESPECIFICAS
         if (tramiteComboBox.getSelectedItem() == "Todos" && fecha1 != null && fecha2 != null) {
@@ -526,6 +427,7 @@ public class Historial extends javax.swing.JFrame {
             model.setRowCount(0);
             DefaultTableModel newModel = tabla.tramitesTableModel(consultas.obtenerLicenciasPorPeriodo(personaDTO, desde, hasta), consultas.obtenerPlacasPorPeriodo(personaDTO, desde, hasta));
             historialTabla.setModel(newModel);
+            listaTramites = reporteTramites.listaReporteTramites(consultas.obtenerPlacasPorPeriodo(personaDTO, desde, hasta), consultas.obtenerLicenciasPorPeriodo(personaDTO, desde, hasta));
         }
         if (tramiteComboBox.getSelectedItem() == "Licencia" && fecha1 != null && fecha2 != null) {
             if (fecha1.isAfter(fecha2)) {
@@ -542,6 +444,7 @@ public class Historial extends javax.swing.JFrame {
             model.setRowCount(0);
             DefaultTableModel newModel = tabla.licenciasTableModel(consultas.obtenerLicenciasPorPeriodo(personaDTO, desde, hasta));
             historialTabla.setModel(newModel);
+            listaTramites = reporteTramites.listaReporteLicencias(consultas.obtenerLicenciasPorPeriodo(personaDTO, desde, hasta));
         }
         if (tramiteComboBox.getSelectedItem() == "Placas" && fecha1 != null && fecha2 != null) {
             if (fecha1.isAfter(fecha2)) {
@@ -558,6 +461,7 @@ public class Historial extends javax.swing.JFrame {
             model.setRowCount(0);
             DefaultTableModel newModel = tabla.placasTableModel(consultas.obtenerPlacasPorPeriodo(personaDTO, desde, hasta));
             historialTabla.setModel(newModel);
+            listaTramites = reporteTramites.listaReportePlacas(consultas.obtenerPlacasPorPeriodo(personaDTO, desde, hasta));
         }
 
     }//GEN-LAST:event_buscarBtnActionPerformed
@@ -571,6 +475,12 @@ public class Historial extends javax.swing.JFrame {
         model.setRowCount(0);
         DefaultTableModel newModel = tabla.tramitesTableModel(consultas.obtenerLicenciasPorPersona(personaDTO), consultas.obtenerPlacasPorPersona(personaDTO));
         historialTabla.setModel(newModel);
+        listaTramites = reporteTramites.listaReporteTramites(consultas.obtenerPlacasPorPersona(personaDTO), consultas.obtenerLicenciasPorPersona(personaDTO));
+        if (listaTramites != null) {
+            System.out.println("Se han guardado " + listaTramites.size() + " elementos en la listaTramites.");
+        } else {
+            System.out.println("La listaTramites está vacía.");
+        }
     }
 
     /**

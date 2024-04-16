@@ -216,7 +216,7 @@ public class InsercionesFrm extends javax.swing.JFrame {
         model.setRowCount(0);
 
         // Llenar la tabla con la lista generada
-        List<PersonaDTO> listaPersonas = persona.generarlista(1);
+        List<PersonaDTO> listaPersonas = persona.generarlista(20);
         DefaultTableModel newModel = tabla.personasTableModel(listaPersonas);
         tablaPersonas.setModel(newModel);
         tablaPersonas.setDefaultEditor(Object.class, null);
