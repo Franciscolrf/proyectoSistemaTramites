@@ -117,7 +117,7 @@
 							<staticText>
 								<reportElement x="0" y="0" width="120" height="30" uuid="ef867944-45a6-491e-b280-1b611aacfece"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Fecha]]></text>
+								<text><![CDATA[Fecha expedición]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
@@ -134,7 +134,7 @@
 							<staticText>
 								<reportElement x="0" y="0" width="140" height="30" uuid="1cfe6233-f34c-4ed7-92a9-572299ef54c7"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Cliente]]></text>
+								<text><![CDATA[Fecha recepción]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
